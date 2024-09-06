@@ -1,0 +1,2 @@
+
+export const NEST_DELIVERY_EVENT_NAME = 'DELIVERY_EVENT'

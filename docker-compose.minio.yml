@@ -1,0 +1,30 @@
+version: '3'
+services:
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - 'minio:/data'
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+      MINIO_DEFAULT_BUCKETS: nosh
+  create-buckets:
+    image: minio/minio:latest
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add myminio http://minio:9000 ${MINIO_USER} ${MINIO_PASSWORD}) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb -p myminio/nosh;
+      /usr/bin/mc anonymous set public myminio/nosh;
+      exit 0;
+      "
+    volumes:
+      - 'minio:/data'
+
+volumes:
+  minio: ~

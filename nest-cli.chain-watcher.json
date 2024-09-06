@@ -1,0 +1,7 @@
+{
+  "sourceRoot": "apps/backend/src",
+  "entryFile": "main.chain-watcher",
+  "compilerOptions": {
+    "assets": ["swagger"]
+  }
+}

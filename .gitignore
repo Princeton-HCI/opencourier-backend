@@ -1,0 +1,13 @@
+/node_modules
+/dist
+/client-sdk
+# /scripts/restaurant-export/scraped-data
+.env
+tmp
+.yarn
+.eslintcache
+libquery_engine-darwin-arm64.dylib.node
+prisma/client
+turbo-*.log
+.DS_Store
+yarn.lock

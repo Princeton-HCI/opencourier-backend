@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "inlineSources": false,
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noUncheckedIndexedAccess": true,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "module": "commonjs",
+    "removeComments": true,
+    "isolatedModules": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "lib": ["ES2020"],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "incremental": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@nosh/shared-types": ["../../packages/shared-types/src"]
+    }
+  },
+  "include": ["src", "jest.config.js"],
+  "exclude": ["dist", "node_modules"]
+}

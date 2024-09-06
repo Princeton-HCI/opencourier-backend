@@ -1,0 +1,575 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "postgresqlExtensions", "tracing"]
+  engineType      = "library"
+  output          = "./client"
+}
+
+generator types {
+  provider = "prisma-client-js"
+  output   = "./types"
+}
+
+datasource postgres {
+  provider   = "postgresql"
+  url        = env("DB_URL")
+  extensions = [postgis()]
+}
+
+model User {
+  id       String         @id @default(cuid())
+  email    String?        @unique
+  password String?
+  role     EnumUserRole[]
+
+  username String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courier Courier?
+  partner Partner?
+}
+
+model Comment {
+  id              String   @id @default(cuid())
+  text            String?  @postgres.VarChar(255)
+  likes           Int?     @default(0)
+  likers          String[] @default([])
+  commentableId   String
+  commentableType String   @postgres.VarChar(255)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courierId String?
+  couriers  Courier? @relation(fields: [courierId], references: [id], onDelete: Cascade)
+}
+
+model Courier {
+  id              String                                @id @default(cuid())
+  node_uri        String?                               @default("https://localhost") @postgres.VarChar(255)
+  firstName       String                                @postgres.VarChar(255)
+  lastName        String                                @postgres.VarChar(255)
+  phoneNumber     String?                               @unique @postgres.VarChar(255)
+  status          EnumCourierStatus                     @default(OFFLINE)
+  deliverySetting EnumCourierDeliverySetting            @default(MANUAL)
+  currentLocation Unsupported("geometry(Point, 4326)")?
+  rejectedOffers  String[]                              @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  stripeAccountId     String?                 @unique
+  stripeAccountStatus EnumStripeAccountStatus @default(REJECTED)
+
+  comments              Comment[]
+  earnings              Earning[]
+  deliveries            Delivery[]
+  settings              CourierSetting?
+  Payout                Payout[]
+  Transfer              Transfer[]
+  locationNotes         LocationNote[]
+  locationNoteReactions LocationNoteReaction[]
+
+  // the index for that column
+  @@index([currentLocation], name: "courier_location_idx", type: Gist)
+}
+
+model Earning {
+  id           String  @id @default(cuid())
+  total        Int
+  pending      Int
+  received     Int
+  payoutMethod String? @postgres.VarChar(255)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courierId String?
+  couriers  Courier? @relation(fields: [courierId], references: [id], onDelete: Cascade)
+}
+
+model Location {
+  id               String          @id @default(cuid())
+  addressLine1     String?         @postgres.VarChar(255)
+  addressLine2     String?         @postgres.VarChar(255)
+  city             String?         @postgres.VarChar(255)
+  state            String?         @postgres.VarChar(255)
+  street           String?         @postgres.VarChar(255)
+  zipCode          String?         @postgres.VarChar(255)
+  countryCode      EnumCountryCode @default(US)
+  stateCode        String?         @postgres.VarChar(255)
+  houseNumber      String?         @postgres.VarChar(255)
+  longitude        Float
+  latitude         Float
+  formattedAddress String?         @postgres.VarChar(255)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  locationNotes LocationNote[]
+
+  pickupDelivery  Delivery[] @relation(name: "pickupDelivery")
+  dropoffDelivery Delivery[] @relation(name: "dropoffDelivery")
+
+  pickupDeliveryQuotes  DeliveryQuote[] @relation(name: "pickupDeliveryQuotes")
+  dropoffDeliveryQuotes DeliveryQuote[] @relation(name: "dropoffDeliveryQuotes")
+}
+
+model Partner {
+  id          String  @id @default(cuid())
+  name        String  @postgres.VarChar(255)
+  logo        String? @postgres.VarChar(255)
+  phoneNumber String? @postgres.VarChar(255)
+  webhookUrl  String? @postgres.VarChar(255)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deliveries     Delivery[]
+  deliveryQuotes DeliveryQuote[]
+
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model DeliveryQuote {
+  id             String           @id @default(cuid())
+  quote          Float?
+  quoteRangeFrom Float
+  quoteRangeTo   Float
+  feePercentage  Float            @default(0)
+  currency       String           @postgres.VarChar(255)
+  duration       Int
+  distance       Float
+  distanceUnit   EnumDistanceUnit @default(MILES)
+
+  pickupPhoneNumber String? @postgres.VarChar(255)
+  pickupName        String? @postgres.VarChar(255)
+
+  dropoffPhoneNumber String? @postgres.VarChar(255)
+  dropoffName        String? @postgres.VarChar(255)
+
+  expiresAt DateTime?
+
+  pickupReadyAt    DateTime?
+  pickupDeadlineAt DateTime?
+
+  dropoffReadyAt    DateTime?
+  dropoffEta        DateTime?
+  dropoffDeadlineAt DateTime?
+
+  orderTotalValue Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pickupLocationId String
+  pickupLocation   Location @relation(fields: [pickupLocationId], references: [id], onDelete: Cascade, name: "pickupDeliveryQuotes")
+
+  dropoffLocationId String
+  dropoffLocation   Location @relation(fields: [dropoffLocationId], references: [id], onDelete: Cascade, name: "dropoffDeliveryQuotes")
+
+  partnerId String?
+  partners  Partner? @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  deliveryId String?
+  Delivery   Delivery?
+}
+
+model Delivery {
+  id String @id @default(cuid())
+
+  // Pickup data
+  pickupName         String    @postgres.VarChar(255)
+  pickupPhoneNumber  String    @postgres.VarChar(255)
+  pickupBusinessName String    @postgres.VarChar(255)
+  pickupNotes        String?   @postgres.VarChar(255)
+  pickupVerification Json?     @postgres.Json
+  pickupLocationId   String
+  pickupReadyAt      DateTime? @postgres.Timestamptz(6)
+  pickupDeadlineAt   DateTime? @postgres.Timestamptz(6)
+
+  // Dropoff data
+  dropoffName         String    @postgres.VarChar(255)
+  dropoffPhoneNumber  String    @postgres.VarChar(255)
+  dropoffBusinessName String?   @postgres.VarChar(255)
+  dropoffNotes        String?   @postgres.VarChar(255)
+  dropoffSellerNotes  String?   @postgres.VarChar(255)
+  dropoffVerification Json?     @postgres.Json
+  dropoffReadyAt      DateTime? @postgres.Timestamptz(6)
+  dropoffEta          DateTime? @postgres.Timestamptz(6)
+  dropoffDeadlineAt   DateTime? @postgres.Timestamptz(6)
+
+  deliverableAction        EnumDeliverableAction    @default(MEET_AT_DOOR)
+  undeliverableAction      EnumUndeliverableAction?
+  undeliverableReason      String?                  @postgres.VarChar(255)
+  dropoffLocationId        String
+  deliveryTypes            String[]                 @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  requiresDropoffSignature Boolean                  @default(false)
+  requiresId               Boolean                  @default(false)
+
+  // Order data
+  orderReference  String?
+  orderTotalValue Int?
+  orderItems      Json?   @postgres.Json
+
+  // Delivery data
+  status             EnumDeliveryStatus @default(CREATED)
+  customerNotes      String[]           @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  currencyCode       String             @postgres.VarChar(255)
+  pickupTypes        String[]           @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  imageType          String?            @postgres.VarChar(255)
+  imageName          String?            @postgres.VarChar(255)
+  imageData          Bytes?
+  idempotencyKey     String?
+  externalStoreId    String?
+  returnVerification Json?              @postgres.Json
+  externalUserInfo   Json?
+  externalId         String?
+  courierId          String?
+  partnerId          String?
+  deliveryQuoteId    String             @unique
+
+  totalCost         Float?
+  fee               Float?
+  feePercentage     Float?
+  pay               Float?
+  tips              Float  @default(0)
+  totalCompensation Float?
+
+  // Delivery matching data
+  rejectedByCouriers String[] @default([])
+  matchedCourierId   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pickupLocation  Location?     @relation(fields: [pickupLocationId], references: [id], onDelete: Cascade, name: "pickupDelivery")
+  dropoffLocation Location?     @relation(fields: [dropoffLocationId], references: [id], onDelete: Cascade, name: "dropoffDelivery")
+  courier         Courier?      @relation(fields: [courierId], references: [id])
+  partner         Partner?      @relation(fields: [partnerId], references: [id])
+  delivery        DeliveryQuote @relation(fields: [deliveryQuoteId], references: [id], onDelete: Cascade)
+
+  payment       Payment[]
+  deliveryEvent DeliveryEvent[]
+  locationNote  LocationNote[]
+
+  @@unique([idempotencyKey, partnerId])
+}
+
+model DeliveryEvent {
+  id                   String                  @id @default(cuid())
+  transitionSuccessful Boolean
+  type                 EnumDeliveryEventType
+  actor                EnumEventActor
+  eventSource          EnumDeliveryEventSource
+  oldStatus            EnumDeliveryStatus?
+  newStatus            EnumDeliveryStatus?
+  message              String?
+
+  delivery   Delivery @relation(fields: [deliveryId], references: [id])
+  deliveryId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LocationNote {
+  id        String   @id @default(cuid())
+  note      String?  @postgres.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  actor EnumLocationNoteActor
+
+  locationId String?
+  locations  Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  deliveryId String?
+  delivery   Delivery? @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+
+  courierId     String?
+  couriers      Courier?               @relation(fields: [courierId], references: [id], onDelete: Cascade)
+  noteReactions LocationNoteReaction[]
+}
+
+model LocationNoteReaction {
+  id        String                       @id @default(cuid())
+  reaction  EnumLocationNoteReactionType
+  createdAt DateTime                     @default(now())
+  updatedAt DateTime                     @updatedAt
+
+  locationNoteId String
+  locationNote   LocationNote @relation(fields: [locationNoteId], references: [id], onDelete: Cascade)
+
+  courierId String
+  couriers  Courier @relation(fields: [courierId], references: [id], onDelete: Cascade)
+}
+
+model CourierSetting {
+  id                          String                    @id @default(cuid())
+  deliveryPolygon             Unsupported("geometry")?
+  vehicleType                 EnumSettingVehicleType?
+  preferredAreas              String[]                  @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  shiftAvailability           Json?                     @default("{\"sunday\":[],\"monday\":[],\"tuesday\":[],\"wednesday\":[],\"thursday\":[],\"friday\":[],\"saturday\":[]}") @postgres.Json
+  deliveryPreferences         String[]                  @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  foodPreferences             String[]                  @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  earningGoals                Json?                     @postgres.Json
+  deliverySpeed               EnumSettingDeliverySpeed? @default(REGULAR)
+  restaurantTypes             String[]                  @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  cuisineTypes                String[]                  @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  preferredRestaurantPartners String[]                  @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  dietaryRestrictions         String[]                  @default(dbgenerated("(ARRAY[]::character varying[])::character varying(255)[]")) @postgres.VarChar(255)
+  payRate                     Json?                     @postgres.Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courierId String?  @unique
+  couriers  Courier? @relation(fields: [courierId], references: [id], onDelete: Cascade)
+}
+
+model Payout {
+  id                  String           @id @default(cuid())
+  amount              Int // The amount (in cents) that transfers to your bank account or debit card.
+  arrivalDate         DateTime // Date that the payout will arrive in the bank.
+  description         String? // An arbitrary string attached to the object.
+  statementDescriptor String? // Extra information about a payout for the bank statement.
+  status              EnumPayoutStatus // Current status of the payout.
+
+  payment   Payment @relation(fields: [paymentId], references: [id])
+  paymentId String
+
+  courier   Courier? @relation(fields: [courierId], references: [id])
+  courierId String?
+}
+
+model Payment {
+  id String @id @default(cuid())
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  capturedAt DateTime?
+  canceledAt DateTime?
+
+  amount     Decimal
+  status     EnumPaymentStatus   @default(REQUIRES_CONFIRMATION)
+  delivery   Delivery            @relation(fields: [deliveryId], references: [id])
+  deliveryId String
+  provider   EnumPaymentProvider @default(STRIPE)
+
+  transfers  Transfer[]
+  refunds    Refund[]
+  payouts    Payout[]
+  stripeData StripePaymentData?
+}
+
+model StripePaymentData {
+  id              String  @id @default(cuid())
+  paymentIntentId String  @unique
+  paymentMethodId String
+  latestChargeId  String? @unique
+
+  payment   Payment? @relation(fields: [paymentId], references: [id])
+  paymentId String?  @unique
+}
+
+model Transfer {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transferId         String  @unique // the transfer identifier in stripe. tr_1c...
+  amount             Int
+  amountReversed     Int // Amount in cents reversed (can be less than the amount attribute on the transfer if a partial reversal was issued).
+  destination        String // ID of the Stripe account the transfer was sent to.
+  destinationPayment String? // The ID of the stripe payment. Can be used to
+  reversed           Boolean @default(false) // Whether the transfer has been fully reversed. If the transfer is only partially reversed, this attribute will still be false.
+
+  payment   Payment? @relation(fields: [paymentId], references: [id])
+  paymentId String?
+
+  courier   Courier? @relation(fields: [courierId], references: [id])
+  courierId String?
+}
+
+model Refund {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  refundId  String?  @unique // Stripe refund id
+
+  amount      Int // Amount, in cents.
+  description String? // An arbitrary string attached to the object.
+  reason      EnumRefundReason? // Reason for the refund.
+  status      EnumRefundStatus? // Status of the refund.
+
+  payment   Payment @relation(fields: [paymentId], references: [id])
+  paymentId String
+}
+
+model Config {
+  key   String @id
+  type  String
+  value String
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @postgres.VarChar(256)
+  auth_srid Int?
+  srtext    String? @postgres.VarChar(2048)
+  proj4text String? @postgres.VarChar(2048)
+}
+
+enum EnumCourierDeliverySetting {
+  AUTO_ACCEPT
+  AUTO_REJECT
+  MANUAL
+  NONE
+}
+
+enum EnumCourierStatus {
+  ONLINE
+  OFFLINE
+  LAST_CALL
+}
+
+enum EnumDeliveryStatus {
+  CREATED
+  ASSIGNING_COURIER
+  ACCEPTED
+  DISPATCHED
+  PICKED_UP
+  ON_THE_WAY
+  DROPPED_OFF
+  CANCELED
+  FAILED
+}
+
+enum EnumDeliveryEventType {
+  CREATED
+  CONFIRMED
+  ACCEPTED
+  REJECTED
+  DISPATCHED
+  CANCELED
+  FULFILLED
+  DROPPED_OFF
+  PICKED_UP
+  ON_THE_WAY
+  FAILED
+}
+
+enum EnumCountryCode {
+  US
+}
+
+enum EnumDistanceUnit {
+  KILOMETERS
+  MILES
+}
+
+enum EnumSettingDeliverySpeed {
+  REGULAR
+  RUSH
+}
+
+enum EnumSettingVehicleType {
+  BICYCLE
+  MOTORCYCLE
+  CAR
+  SCOOTER
+  ON_FOOT
+}
+
+enum EnumUserRole {
+  ADMIN
+  COURIER
+  PARTNER
+}
+
+enum EnumPaymentStatus {
+  CANCELED
+  REQUIRES_CONFIRMATION // default when order is created
+  REQUIRES_CAPTURE // After an order is confirmed
+  PROCESSING // Card payments do not enter this state, so keeping out for now. If we add bank charges, read on: After required actions are handled, the PaymentIntent moves to processing for asynchronous payment methods, such as bank debits. These types of payment methods can take up to a few days to process. Other payment methods, such as cards, are processed more quickly and don’t go into the processing status.
+  REQUIRES_ACTION //  the payment requires additional actions, such as authenticating with 3D Secure, the PaymentIntent has a status of requires_action1.
+  REQUIRES_PAYMENT_METHOD // If the payment attempt fails (for example due to a decline), the PaymentIntent’s status returns to requires_payment_method so that the payment can be retried.
+  SUCCEEDED
+}
+
+enum EnumRefundReason {
+  DUPLICATE
+  FRAUDULENT
+  REQUESTED_BY_CUSTOMER
+  EXPIRED_UNCAPTURED_CHARGE
+}
+
+enum EnumRefundStatus {
+  PENDING
+  REQUIRES_ACTION
+  SUCCEEDED
+  FAILED
+  CANCELED
+}
+
+enum EnumPayoutStatus {
+  PAID
+  PENDING
+  IN_TRANSIT
+  CANCELED
+  FAILED
+}
+
+enum EnumStripeAccountStatus {
+  COMPLETE
+  ENABLED
+  PENDING
+  REJECTED
+  RESTRICTED
+  ATTENTION_NEEDED
+}
+
+enum EnumPaymentProvider {
+  STRIPE
+}
+
+enum EnumEventActor {
+  COURIER
+  ADMIN
+  PARTNER
+}
+
+enum EnumLocationNoteActor {
+  COURIER
+  ADMIN
+  PARTNER
+}
+
+enum EnumLocationNoteReactionType {
+  UPVOTE
+  DOWNVOTE
+}
+
+enum EnumDeliveryEventSource {
+  OPENCOURIER
+  PARTNER_APP
+}
+
+enum EnumUndeliverableAction {
+  LEAVE_AT_DOOR
+  RETURN
+  DISCARD
+}
+
+enum EnumDeliverableAction {
+  MEET_AT_DOOR
+  LEAVE_AT_DOOR
+}

@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Delivery" ALTER COLUMN "totalCharge" DROP NOT NULL,
+ALTER COLUMN "pay" DROP NOT NULL,
+ALTER COLUMN "totalCompensation" DROP NOT NULL,
+ALTER COLUMN "fee" DROP NOT NULL;

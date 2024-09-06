@@ -1,0 +1,15 @@
+.git
+.gitignore
+.github
+
+.prettierignore
+.eslintcache
+.husky
+
+docker-compose.yml
+docker-compose.db.yml
+Dockerfile
+
+node_modules
+dist/
+.env

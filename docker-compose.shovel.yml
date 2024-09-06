@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  postgres-shovel:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${SHOVEL_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${SHOVEL_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${SHOVEL_POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5433"
+    command: -p 5433
+
+  shovel:
+    build:
+      context: .
+      dockerfile: Dockerfile.shovel
+    environment:
+      PORT: 4001
+      DATABASE_URL: ${SHOVEL_DATABASE_URL}
+      SHOVEL_CHAIN_START_BLOCK: ${SHOVEL_CHAIN_START_BLOCK}
+      SHOVEL_CHAIN_RPC_URL: ${SHOVEL_CHAIN_RPC_URL}
+      SHOVEL_CHAIN_ID: ${SHOVEL_CHAIN_ID}
+      SHOVEL_CHAIN_NAME: ${SHOVEL_CHAIN_NAME}
+      SHOVEL_DASHBOARD_PORT: ${SHOVEL_DASHBOARD_PORT}
+    depends_on:
+      - postgres-shovel
+    ports:
+      - "4001:4001"
+
+volumes:
+  postgres_data:
+
+

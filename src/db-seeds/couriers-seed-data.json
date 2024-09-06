@@ -1,0 +1,296 @@
+[
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "status": "ONLINE",
+    "currentLocation": {
+      "latitude": 40.712776,
+      "longitude": -74.005974
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Michael",
+    "lastName": "Johnson",
+    "status": "LAST_CALL",
+    "currentLocation": {
+      "latitude": 40.73061,
+      "longitude": -73.935242
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Emily",
+    "lastName": "Davis",
+    "status": "OFFLINE",
+    "currentLocation": {
+      "latitude": 40.712776,
+      "longitude": -74.013379
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "David",
+    "lastName": "Martinez",
+    "status": "ONLINE",
+    "currentLocation": {
+      "latitude": 40.706192,
+      "longitude": -74.00916
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Sarah",
+    "lastName": "Lopez",
+    "status": "LAST_CALL",
+    "currentLocation": {
+      "latitude": 40.704844,
+      "longitude": -74.013917
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Chris",
+    "lastName": "Wilson",
+    "status": "OFFLINE",
+    "currentLocation": {
+      "latitude": 40.712776,
+      "longitude": -73.994033
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Laura",
+    "lastName": "Anderson",
+    "status": "ONLINE",
+    "currentLocation": {
+      "latitude": 40.742054,
+      "longitude": -74.002769
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Kevin",
+    "lastName": "Taylor",
+    "status": "LAST_CALL",
+    "currentLocation": {
+      "latitude": 40.759896,
+      "longitude": -73.98513
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Emma",
+    "lastName": "Thomas",
+    "status": "OFFLINE",
+    "currentLocation": {
+      "latitude": 40.758896,
+      "longitude": -73.968027
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Daniel",
+    "lastName": "Jackson",
+    "status": "ONLINE",
+    "currentLocation": {
+      "latitude": 40.743142,
+      "longitude": -73.97322
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Megan",
+    "lastName": "White",
+    "status": "LAST_CALL",
+    "currentLocation": {
+      "latitude": 40.719299,
+      "longitude": -74.00209
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Brian",
+    "lastName": "Harris",
+    "status": "OFFLINE",
+    "currentLocation": {
+      "latitude": 40.728288,
+      "longitude": -73.9874
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Sophia",
+    "lastName": "Martin",
+    "status": "ONLINE",
+    "currentLocation": {
+      "latitude": 40.75059,
+      "longitude": -73.993303
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Nathan",
+    "lastName": "Lee",
+    "status": "LAST_CALL",
+    "currentLocation": {
+      "latitude": 40.748817,
+      "longitude": -73.985428
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Olivia",
+    "lastName": "Clark",
+    "status": "OFFLINE",
+    "currentLocation": {
+      "latitude": 40.730823,
+      "longitude": -73.997332
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Ethan",
+    "lastName": "Rodriguez",
+    "status": "ONLINE",
+    "currentLocation": {
+      "latitude": 40.748441,
+      "longitude": -73.985664
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Grace",
+    "lastName": "Walker",
+    "status": "LAST_CALL",
+    "currentLocation": {
+      "latitude": 40.753255,
+      "longitude": -73.989688
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Henry",
+    "lastName": "Hall",
+    "status": "OFFLINE",
+    "currentLocation": {
+      "latitude": 40.755733,
+      "longitude": -73.986859
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Lily",
+    "lastName": "King",
+    "status": "ONLINE",
+    "currentLocation": {
+      "latitude": 40.745968,
+      "longitude": -73.998206
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Matthew",
+    "lastName": "Scott",
+    "status": "LAST_CALL",
+    "currentLocation": {
+      "latitude": 40.734724,
+      "longitude": -74.002182
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  },
+  {
+    "node_uri": "https://localhost",
+    "firstName": "Zoe",
+    "lastName": "Green",
+    "status": "OFFLINE",
+    "currentLocation": {
+      "latitude": 40.726581,
+      "longitude": -74.002821
+    },
+    "userPassword": "password",
+    "createdAt": "2024-07-24 13:48:07.672",
+    "updatedAt": "2024-07-24 13:48:07.672",
+    "deliverySetting": "MANUAL"
+  }
+]

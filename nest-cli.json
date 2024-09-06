@@ -1,0 +1,7 @@
+{
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "builder": "webpack",
+    "assets": ["swagger"]
+  }
+}

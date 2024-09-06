@@ -1,0 +1,4 @@
+# used to pull data from the blockchain, using shovel (https://indexsupply.com/shovel/)
+FROM indexsupply/shovel:1.2
+COPY shovel-config.json .
+CMD echo "SHOVEL_DASHBOARD_PORT is set to: $SHOVEL_DASHBOARD_PORT" && shovel -config shovel-config.json -l :$SHOVEL_DASHBOARD_PORT

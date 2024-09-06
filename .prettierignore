@@ -1,0 +1,6 @@
+.turbo/
+client-sdk/
+dist/
+node_modules/
+prisma/migrations/
+coverage/

@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod, ModuleMetadata } from '@nestjs/common'
-import { APP_GUARD } from '@nestjs/core'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { BullModule } from '@nestjs/bullmq'
@@ -19,9 +18,6 @@ import { WebsocketModule } from './services/websocket/websocket.module'
 import { DeliveryCalculationModule } from './services/delivery-calculation/delivery-calculation.module'
 
 // Guards
-import { AuthHttpGuard } from './guards/auth-http.guard'
-import { RolesGuard } from './guards/roles.guard'
-import { AuthRefreshHttpGuard } from './guards/auth-refresh-http.guard'
 
 // Middleware
 import { AuthMiddleware } from './middleware/AuthMiddleware'
@@ -59,6 +55,11 @@ import { DeliveryMatchingModule } from './services/delivery-matching/delivery-ma
 import { SocketIOModule } from './services/socketio/socketio.module'
 import { DeliveryEventDomainModule } from './domains/delivery-event/delivery-event.domain.module'
 import { PayoutDomainModule } from './domains/payout/partner.domain.module'
+import { APP_GUARD } from '@nestjs/core'
+import { AuthApiKeyGuard } from './guards/auth-api-key.guard'
+import { AuthHttpGuard } from './guards/auth-http.guard'
+import { AuthRefreshHttpGuard } from './guards/auth-refresh-http.guard'
+import { RolesGuard } from './guards/roles.guard'
 
 const DOMAIN_MODULES: ModuleMetadata['imports'] = [
   AuthDomainModule,
@@ -147,6 +148,10 @@ if (process.env.NODE_ENV === 'development') {
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthApiKeyGuard,
     },
     {
       provide: APP_GUARD,

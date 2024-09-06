@@ -18,12 +18,12 @@ export class RolesGuard implements CanActivate {
       return true
     }
 
-    const { user } = context.switchToHttp().getRequest()
+    const { currentUser } = context.switchToHttp().getRequest()
 
-    if (!(user instanceof UserEntity)) {
+    if (!(currentUser instanceof UserEntity)) {
       return false
     }
 
-    return Boolean(requiredRoles.filter((role) => user.role.includes(role)).length)
+    return Boolean(requiredRoles.filter((role) => currentUser.role.includes(role)).length)
   }
 }

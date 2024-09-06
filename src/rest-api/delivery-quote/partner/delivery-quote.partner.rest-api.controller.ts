@@ -9,6 +9,7 @@ import { DeliverQuoteCreatePartnerInput } from './queries/delivery-quote-create.
 import { DeliveryQuotePartnerRestApiService } from './delivery-quote.partner.rest-api.service'
 import { CurrentUserPartner } from 'src/decorators/currentUserPartner.decorator'
 import { PartnerEntity } from 'src/domains/partner/entities/partner.entity'
+import { ApiKeyAuth } from 'src/decorators/api-key-auth.decorator'
 
 @swagger.ApiBearerAuth()
 @swagger.ApiTags('delivery-quotes')
@@ -23,6 +24,7 @@ export class DeliveryQuotePartnerRestApiController {
   })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiOperation({ summary: 'Fetch delivery quote data by id' })
+  @ApiKeyAuth()
   @Roles(EnumUserRole.PARTNER)
   async getDeliveryQuote(@common.Param('deliveryQuoteId') deliveryQuoteId: string): Promise<DeliveryQuotePartnerDto> {
     const deliveryQuote = await this.deliveryQuoteRestApiPartnerService.getByIdOrThrow(deliveryQuoteId)
@@ -45,6 +47,7 @@ export class DeliveryQuotePartnerRestApiController {
     type: errors.ForbiddenException,
   })
   @swagger.ApiOperation({ summary: 'Create delivery quote' })
+  @ApiKeyAuth()
   @Roles(EnumUserRole.PARTNER)
   async createDeliveryQuote(
     @common.Body() data: DeliverQuoteCreatePartnerInput,

@@ -21,17 +21,20 @@ export class AuthMiddleware implements NestMiddleware {
   async use(req: AuthedRequest, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization ?? ''
     const refreshToken = req.headers['x-refresh-token']?.toString() ?? ''
+    const apiKey = req.headers['x-api-key']?.toString() ?? req.query.api_key?.toString() ?? ''
 
-    if (!authHeader.startsWith('Bearer ') && !refreshToken) {
+    if (!authHeader.startsWith('Bearer ') && !refreshToken && !apiKey) {
       return next()
     }
 
     try {
       let user
       if (refreshToken) {
-        user = await this.authService.userForAuthorizationHeader(refreshToken, 'JWT_REFRESH')
+        user = await this.findUserForRefreshToken(refreshToken)
+      } else if (apiKey) {
+        user = await this.findUserForApiKey(apiKey)
       } else {
-        user = await this.authService.userForAuthorizationHeader(authHeader, 'JWT')
+        user = await this.findUserForAuthorizationHeader(authHeader)
       }
 
       req.currentUser = user
@@ -60,5 +63,17 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     next()
+  }
+
+  async findUserForAuthorizationHeader(authorizationHeader: string) {
+    return this.authService.userForAuthorizationHeader(authorizationHeader)
+  }
+
+  async findUserForRefreshToken(refreshToken: string) {
+    return this.authService.userForRefreshToken(refreshToken)
+  }
+
+  async findUserForApiKey(apiKey: string) {
+    return this.authService.userForApiKey(apiKey)
   }
 }

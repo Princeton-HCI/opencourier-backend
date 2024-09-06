@@ -33,6 +33,15 @@ export class UserRepository extends EntityRepository implements IUserRepository 
     return this.toDomain(result)
   }
 
+  async findByApiKey(apiKey: string) {
+    const result = await this.prisma.user.findFirst({
+      where: {
+        apiKey: apiKey,
+      },
+    })
+    return result ? this.toDomain(result) : null
+  }
+
   async findByIdWithCourier(userId: string) {
     const result = await this.prisma.user.findUniqueOrThrow({
       where: {

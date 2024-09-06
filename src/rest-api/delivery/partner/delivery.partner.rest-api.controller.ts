@@ -13,6 +13,7 @@ import { DeliveryFindManyPartnerArgs } from './queries/delivery-find-many.partne
 import { DeliveryPartnerPaginatedDto } from './dtos/delivery.partner.paginated.dto'
 import { DeliveryUpdatePartnerInput } from './queries/delivery-update.partner.input'
 import { DeliveryMatchingService } from 'src/services/delivery-matching/delivery-matching.service'
+import { ApiKeyAuth } from 'src/decorators/api-key-auth.decorator'
 
 @swagger.ApiBearerAuth()
 @swagger.ApiTags('deliveries')
@@ -33,6 +34,7 @@ export class DeliveryPartnerRestApiController {
     type: errors.ForbiddenException,
   })
   @swagger.ApiOperation({ summary: 'List deliveries' })
+  @ApiKeyAuth()
   @Roles(EnumUserRole.PARTNER)
   async listDeliveries(
     @common.Query() args: DeliveryFindManyPartnerArgs,
@@ -56,6 +58,7 @@ export class DeliveryPartnerRestApiController {
     type: errors.ForbiddenException,
   })
   @swagger.ApiOperation({ summary: 'Get a delivery by id' })
+  @ApiKeyAuth()
   @Roles(EnumUserRole.PARTNER)
   async getDelivery(
     @common.Param('deliveryId') deliveryId: string,
@@ -86,6 +89,7 @@ export class DeliveryPartnerRestApiController {
     type: errors.ForbiddenException,
   })
   @swagger.ApiOperation({ summary: 'Create delivery' })
+  @ApiKeyAuth()
   @Roles(EnumUserRole.PARTNER)
   async createDelivery(
     @common.Body() data: DeliveryCreatePartnerInput,
@@ -111,6 +115,7 @@ export class DeliveryPartnerRestApiController {
     type: errors.ForbiddenException,
   })
   @swagger.ApiOperation({ summary: 'Create delivery' })
+  @ApiKeyAuth()
   @Roles(EnumUserRole.PARTNER)
   async updateDelivery(
     @common.Param('deliveryId') deliveryId: string,
@@ -130,6 +135,7 @@ export class DeliveryPartnerRestApiController {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiForbiddenResponse({ type: errors.ForbiddenException })
   @swagger.ApiOperation({ summary: 'Cancel a delivery' })
+  @ApiKeyAuth()
   @Roles(EnumUserRole.PARTNER)
   async cancelDelivery(
     @common.Param('deliveryId') deliveryId: string,
@@ -150,6 +156,7 @@ export class DeliveryPartnerRestApiController {
     type: errors.ForbiddenException,
   })
   @swagger.ApiOperation({ summary: 'Test endpoint: assigning courier for delivery' })
+  @ApiKeyAuth()
   @Roles(EnumUserRole.PARTNER)
   async findCourier(@common.Param('deliveryId') deliveryId: string): Promise<any> {
     const courier = await this.testDeliveryMatchingService.matchDeliveryToCourier(deliveryId)

@@ -138,15 +138,10 @@ export class AuthDomainService {
     return this.userDomainService.deleteMe(user)
   }
 
-  async userForAuthorizationHeader(authorization = '', tokenType: 'JWT' | 'JWT_REFRESH' = 'JWT') {
+  async userForAuthorizationHeader(authorization = '') {
     try {
       const bearer = authorization.replace(/^Bearer\s/, '')
-      let payload
-      if (tokenType === 'JWT_REFRESH') {
-        payload = this.tokenService.decodeRefreshToken(bearer)
-      } else {
-        payload = this.tokenService.decodeToken(bearer)
-      }
+      const payload = this.tokenService.decodeToken(bearer)
 
       const user = await this.userDomainService.findById(payload.sub)
 
@@ -157,6 +152,32 @@ export class AuthDomainService {
       }
       throw error
     }
+  }
+
+  async userForRefreshToken(authorization = '') {
+    try {
+      const bearer = authorization.replace(/^Bearer\s/, '')
+      const payload = this.tokenService.decodeRefreshToken(bearer)
+
+      const user = await this.userDomainService.findById(payload.sub)
+
+      return user
+    } catch (error) {
+      if (error instanceof Error && isRecordNotFoundError(error)) {
+        throw new errors.ForbiddenException('User not found from refresh token')
+      }
+      throw error
+    }
+  }
+
+  async userForApiKey(apiKey = '') {
+    const user = await this.userDomainService.findByApiKey(apiKey)
+
+    if (!user) {
+      throw new errors.ForbiddenException('User not found from apiKey')
+    }
+
+    return user
   }
 
   async getAblyToken(user: UserEntity) {

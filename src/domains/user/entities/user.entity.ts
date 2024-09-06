@@ -9,6 +9,7 @@ export class UserEntity implements User {
   updatedAt: Date
 
   username: string | null
+  apiKey: string | null
 
   constructor(data: User) {
     this.id = data.id
@@ -17,6 +18,7 @@ export class UserEntity implements User {
     this.role = data.role
 
     this.username = data.username
+    this.apiKey = data.apiKey
 
     this.createdAt = data.createdAt
     this.updatedAt = data.updatedAt

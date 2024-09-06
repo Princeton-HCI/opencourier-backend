@@ -17,6 +17,10 @@ export class UserDomainService {
     return await this.userRepository.findById(userId)
   }
 
+  async findByApiKey(userId: string) {
+    return await this.userRepository.findByApiKey(userId)
+  }
+
   async findByIdWithCourier(userId: string) {
     return await this.userRepository.findByIdWithCourier(userId)
   }

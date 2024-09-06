@@ -9,7 +9,6 @@ import { IEmailTokenPayload } from '../interfaces/IEmailTokenPayload'
 import { UserRepository } from '../../../persistence/repositories/user.repository'
 import { UserEntity } from '../../user/entities/user.entity'
 
-
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) implements IAuthStrategy {
   constructor(
@@ -24,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) implements IAuthStra
   }
 
   async validate(payload: IPhoneTokenPayload | IEmailTokenPayload): Promise<UserEntity> {
-    const email = (payload as IEmailTokenPayload).email;
+    const email = (payload as IEmailTokenPayload).email
     const user = await this.userRepository.findUserWithEmail(email)
 
     if (!user) {

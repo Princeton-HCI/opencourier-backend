@@ -44,7 +44,7 @@ export function setupLegacyDocs(app: INestApplication) {
   setupRedocDocs(app, '/api/docs', {
     title: 'OPENCOURIER-API',
     specUrl: '/api/all/docs-json',
-  });
+  })
 }
 
 export function setupAdminDocs(app: INestApplication) {
@@ -52,7 +52,7 @@ export function setupAdminDocs(app: INestApplication) {
     challenge: true,
     users: { opencourier: '0p3nC0ur13r' },
   })
-  
+
   app.use('/api/admin/docs', baseAuth)
 
   swaggerDocumentBuilder.setTitle('OPENCOURIER-API - Admin')
@@ -73,7 +73,7 @@ export function setupAdminDocs(app: INestApplication) {
   setupRedocDocs(app, '/api/docs/admin', {
     title: 'OPENCOURIER-API - Admin',
     specUrl: '/api/admin/docs-json',
-  });
+  })
 }
 
 export function setupCourierDocs(app: INestApplication) {
@@ -102,7 +102,7 @@ export function setupCourierDocs(app: INestApplication) {
   setupRedocDocs(app, '/api/docs/courier', {
     title: 'OPENCOURIER-API - Courier',
     specUrl: '/api/courier/docs-json',
-  });
+  })
 }
 
 export function setupPartnerDocs(app: INestApplication) {
@@ -131,7 +131,7 @@ export function setupPartnerDocs(app: INestApplication) {
   setupRedocDocs(app, '/api/docs/partner', {
     title: 'OPENCOURIER-API - Partner',
     specUrl: '/api/partner/docs-json',
-  });
+  })
 }
 
 export function checkDocumentForPublic(document: OpenAPIObject) {

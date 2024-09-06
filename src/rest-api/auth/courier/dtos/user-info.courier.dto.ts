@@ -15,7 +15,7 @@ export class UserInfoCourierDto extends UserCourierDto {
   @Type(() => UserSessionCourierDto)
   session?: UserSessionCourierDto
 
-  constructor(data: { session: UserSessionEntity; user: UserEntity; }) {
+  constructor(data: { session: UserSessionEntity; user: UserEntity }) {
     super(data.user)
     this.session = new UserSessionCourierDto(data.session)
   }

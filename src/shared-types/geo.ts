@@ -1,5 +1,4 @@
-
 export type GeoPosition = {
-	latitude: number
-	longitude: number
+  latitude: number
+  longitude: number
 }

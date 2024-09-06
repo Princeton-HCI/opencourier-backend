@@ -1,3 +1,1 @@
-
-export interface IPayoutRepository {
-}
+export interface IPayoutRepository {}

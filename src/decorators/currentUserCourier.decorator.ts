@@ -25,6 +25,6 @@ function userFactory(ctx: ExecutionContext): CourierEntity {
   }
 }
 
-export const CurrentUserCourier = createParamDecorator<undefined, ExecutionContext, CourierEntity>((_, ctx: ExecutionContext) =>
-  userFactory(ctx)
+export const CurrentUserCourier = createParamDecorator<undefined, ExecutionContext, CourierEntity>(
+  (_, ctx: ExecutionContext) => userFactory(ctx)
 )

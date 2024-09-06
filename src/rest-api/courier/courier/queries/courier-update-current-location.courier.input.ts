@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNumber } from 'class-validator';
+import { IsNumber } from 'class-validator'
 
 export class CourierUpdateCurrentLocationCourierInput {
   @ApiProperty({
@@ -7,7 +7,7 @@ export class CourierUpdateCurrentLocationCourierInput {
     type: Number,
   })
   @IsNumber()
-  latitude: number;
+  latitude: number
 
   @ApiProperty({
     required: true,

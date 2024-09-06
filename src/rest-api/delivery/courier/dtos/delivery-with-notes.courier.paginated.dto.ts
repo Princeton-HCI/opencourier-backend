@@ -6,27 +6,27 @@ import { DeliveryWithNotesCourierDto } from './delivery-with-notes.courier.dto'
 import { DeliveryWithNotesEntity } from '../delivery.courier.rest-api.service'
 
 export class DeliveryWithNotesCourierPaginatedDto {
-	@ApiProperty({
-		required: true,
-		type: () => [DeliveryWithNotesCourierDto],
-	})
-	@ValidateNested({ each: true })
-	@Type(() => DeliveryWithNotesCourierDto)
-	@Expose()
-	data: DeliveryWithNotesCourierDto[]
+  @ApiProperty({
+    required: true,
+    type: () => [DeliveryWithNotesCourierDto],
+  })
+  @ValidateNested({ each: true })
+  @Type(() => DeliveryWithNotesCourierDto)
+  @Expose()
+  data: DeliveryWithNotesCourierDto[]
 
-	@ApiProperty({
-		required: false,
-		type: () => PaginationDto,
-	})
-	@ValidateNested()
-	@Type(() => PaginationDto)
-	@IsOptional()
-	@Expose()
-	pagination?: PaginationDto
+  @ApiProperty({
+    required: false,
+    type: () => PaginationDto,
+  })
+  @ValidateNested()
+  @Type(() => PaginationDto)
+  @IsOptional()
+  @Expose()
+  pagination?: PaginationDto
 
-	constructor(data: { data: DeliveryWithNotesEntity[]; pagination?: PaginationDto }) {
-		this.data = data.data.map((order) => new DeliveryWithNotesCourierDto(order))
-		this.pagination = data.pagination
-	}
+  constructor(data: { data: DeliveryWithNotesEntity[]; pagination?: PaginationDto }) {
+    this.data = data.data.map((order) => new DeliveryWithNotesCourierDto(order))
+    this.pagination = data.pagination
+  }
 }

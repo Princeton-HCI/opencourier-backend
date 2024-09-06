@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import {
-  Barcode,
-  DeliveryVerification,
-  Identification,
-  Pincode,
-  SignatureRequirement,
-} from 'src/shared-types/index'
+import { Barcode, DeliveryVerification, Identification, Pincode, SignatureRequirement } from 'src/shared-types/index'
 import { Type } from 'class-transformer'
 import { IsBoolean, IsNumber, IsString, ValidateNested } from 'class-validator'
 

@@ -12,8 +12,7 @@ import { PersistenceModule } from './persistence/persistence.module'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { RedisModule } from './services/redis/redis.module'
 
-const CHAIN_DOMAIN_MODULES: ModuleMetadata['imports'] = [
-]
+const CHAIN_DOMAIN_MODULES: ModuleMetadata['imports'] = []
 
 @Module({
   imports: [

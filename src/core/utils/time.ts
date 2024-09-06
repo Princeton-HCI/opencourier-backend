@@ -92,7 +92,6 @@ export function dateTimeToDayJs(dateTime: DateTimeType, tz: string): dayjs.Dayjs
   return dayjs().tz(tz).year(year).month(month).date(day).hour(hour).minute(minute).second(0).millisecond(0)
 }
 
-
 export function areScheduleTimesOverlapping(
   timeLapse1: TimeLapse,
   timeLapse2: TimeLapse,
@@ -220,12 +219,12 @@ export function getTimeRemainingFor(dateTime: DateTimeType, tz: string) {
 
 export function addHours(dateTime: Date, hours: number): Date {
   const date = dayjs(dateTime).add(hours, 'hours')
-  
+
   return date.toDate()
 }
 
 export function addMinutes(dateTime: Date, minutes: number): Date {
   const date = dayjs(dateTime).add(minutes, 'minutes')
-  
+
   return date.toDate()
 }

@@ -6,10 +6,7 @@ import { ExpoService } from './expo.service'
 export class ExpoDispatcher extends NotificationDispatcher {
   private readonly logger = new Logger(ExpoDispatcher.name)
 
-  constructor(
-    private readonly expoService: ExpoService
-  ) {
+  constructor(private readonly expoService: ExpoService) {
     super()
   }
-
 }

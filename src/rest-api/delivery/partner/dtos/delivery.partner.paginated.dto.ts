@@ -7,27 +7,27 @@ import { DeliveryPartnerDto } from './delivery.partner.dto'
 import { DeliveryEntity } from 'src/domains/delivery/entities/delivery.entity'
 
 export class DeliveryPartnerPaginatedDto implements PaginatedResult<DeliveryPartnerDto> {
-	@ApiProperty({
-		required: true,
-		type: () => [DeliveryPartnerDto],
-	})
-	@ValidateNested({ each: true })
-	@Type(() => DeliveryPartnerDto)
-	@Expose()
-	data: DeliveryPartnerDto[]
+  @ApiProperty({
+    required: true,
+    type: () => [DeliveryPartnerDto],
+  })
+  @ValidateNested({ each: true })
+  @Type(() => DeliveryPartnerDto)
+  @Expose()
+  data: DeliveryPartnerDto[]
 
-	@ApiProperty({
-		required: false,
-		type: () => PaginationDto,
-	})
-	@ValidateNested()
-	@Type(() => PaginationDto)
-	@IsOptional()
-	@Expose()
-	pagination?: PaginationDto
+  @ApiProperty({
+    required: false,
+    type: () => PaginationDto,
+  })
+  @ValidateNested()
+  @Type(() => PaginationDto)
+  @IsOptional()
+  @Expose()
+  pagination?: PaginationDto
 
-	constructor(data: { data: DeliveryEntity[]; pagination?: PaginationDto }) {
-		this.data = data.data.map((location) => new DeliveryPartnerDto(location))
-		this.pagination = data.pagination
-	}
+  constructor(data: { data: DeliveryEntity[]; pagination?: PaginationDto }) {
+    this.data = data.data.map((location) => new DeliveryPartnerDto(location))
+    this.pagination = data.pagination
+  }
 }

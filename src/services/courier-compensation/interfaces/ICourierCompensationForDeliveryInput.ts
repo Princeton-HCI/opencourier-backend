@@ -1,5 +1,4 @@
-
 export type ICourierCompensationForDeliveryInput = {
-	courierId: string;
-	deliveryId: string;
+  courierId: string
+  deliveryId: string
 }

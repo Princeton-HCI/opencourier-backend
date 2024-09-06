@@ -50,7 +50,7 @@ import { JwtRefreshStrategy } from './jwt/jwt-refresh.strategy'
     jwtSecretFactory,
     jwtRefreshSecretFactory,
     TokenService,
-    ConfigService
+    ConfigService,
   ],
   exports: [AuthDomainService, PasswordService],
 })

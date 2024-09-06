@@ -1,5 +1,5 @@
-import { IDeliveryAddressDriftCalculationInput } from "./IDeliveryAddressDriftCalculationInput";
+import { IDeliveryAddressDriftCalculationInput } from './IDeliveryAddressDriftCalculationInput'
 
 export interface IQuoteToDeliveryConversionService {
-	isValidDeliveryLocationDrift(input: IDeliveryAddressDriftCalculationInput): Promise<boolean>;
+  isValidDeliveryLocationDrift(input: IDeliveryAddressDriftCalculationInput): Promise<boolean>
 }

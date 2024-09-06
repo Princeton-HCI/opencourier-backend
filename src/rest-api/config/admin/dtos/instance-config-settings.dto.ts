@@ -61,34 +61,20 @@ export class InstanceConfigSettingsDto implements ConfigMap {
     this.courierMatcherType = data.courierMatcherType as EnumCourierMatcherType
     this.quoteCalculationType = data.quoteCalculationType as EnumQuoteCalculationType
     this.geoCalculationType = data.geoCalculationType as EnumGeoCalculationType
-    this.deliveryDurationCalculationType =
-      data.deliveryDurationCalculationType as EnumDeliveryDurationCalculationType
+    this.deliveryDurationCalculationType = data.deliveryDurationCalculationType as EnumDeliveryDurationCalculationType
     this.courierCompensationCalculationType =
       data.courierCompensationCalculationType as EnumCourierCompensationCalculationType
     this.distanceUnit = data.distanceUnit as EnumDistanceUnit
     this.currency = data.currency as EnumCurrency
-    this.defaultDietaryRestrictions =
-      data.defaultDietaryRestrictions as EnumCourierDietaryRestrictions
+    this.defaultDietaryRestrictions = data.defaultDietaryRestrictions as EnumCourierDietaryRestrictions
 
-    this.maxAssignmentDistance = data.maxAssignmentDistance
-      ? (data.maxAssignmentDistance as number)
-      : null
+    this.maxAssignmentDistance = data.maxAssignmentDistance ? (data.maxAssignmentDistance as number) : null
     this.maxDriftDistance = data.maxDriftDistance ? (data.maxDriftDistance as number) : null
-    this.quoteExpirationMinutes = data.quoteExpirationMinutes
-      ? (data.quoteExpirationMinutes as number)
-      : null
-    this.feePercentageAmount = data.feePercentageAmount
-      ? (data.feePercentageAmount as number)
-      : null
+    this.quoteExpirationMinutes = data.quoteExpirationMinutes ? (data.quoteExpirationMinutes as number) : null
+    this.feePercentageAmount = data.feePercentageAmount ? (data.feePercentageAmount as number) : null
 
-    this.defaultCourierPayRate = data.defaultCourierPayRate
-      ? (data.defaultCourierPayRate as number)
-      : null
-    this.defaultMinimumCourierPay = data.defaultMinimumCourierPay
-      ? (data.defaultMinimumCourierPay as number)
-      : null
-    this.defaultMaxWorkingHours = data.defaultMaxWorkingHours
-      ? (data.defaultMaxWorkingHours as number)
-      : null
+    this.defaultCourierPayRate = data.defaultCourierPayRate ? (data.defaultCourierPayRate as number) : null
+    this.defaultMinimumCourierPay = data.defaultMinimumCourierPay ? (data.defaultMinimumCourierPay as number) : null
+    this.defaultMaxWorkingHours = data.defaultMaxWorkingHours ? (data.defaultMaxWorkingHours as number) : null
   }
 }

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
-import { CourierSettingDomainService } from './courier-setting.domain.service';
+import { CourierSettingDomainService } from './courier-setting.domain.service'
 
 @Module({
-	providers: [CourierSettingDomainService],
+  providers: [CourierSettingDomainService],
   exports: [CourierSettingDomainService],
 })
 export class CourierSettingDomainModule {}

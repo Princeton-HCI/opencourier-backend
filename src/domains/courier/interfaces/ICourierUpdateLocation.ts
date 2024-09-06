@@ -1,5 +1,4 @@
-
 export interface ICourierUpdateLocation {
   latitude: number
-	longitude: number
+  longitude: number
 }

@@ -22,5 +22,4 @@ export class ConfigCourierRestApiController {
     const result = await this.configDomainService.checkCourierAppVersion(data)
     return new AppVersionCustomerDto(result)
   }
-
 }

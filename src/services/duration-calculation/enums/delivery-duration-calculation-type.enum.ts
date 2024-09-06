@@ -1,3 +1,3 @@
 export enum EnumDeliveryDurationCalculationType {
-	SIMPLE = 'SIMPLE',
+  SIMPLE = 'SIMPLE',
 }

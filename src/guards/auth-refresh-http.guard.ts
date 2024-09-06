@@ -16,6 +16,6 @@ export class AuthRefreshHttpGuard extends JwtRefreshAuthGuard {
       return super.canActivate(context)
     }
 
-    return true;
+    return true
   }
 }

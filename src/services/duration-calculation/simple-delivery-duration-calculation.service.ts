@@ -5,26 +5,24 @@ import { IDeliveryDurationCalculationService } from './interfaces/IDeliveryDurat
 
 @Injectable()
 export class SimpleDeliveryDurationCalculationService implements IDeliveryDurationCalculationService {
-	private readonly logger = new Logger(SimpleDeliveryDurationCalculationService.name)
+  private readonly logger = new Logger(SimpleDeliveryDurationCalculationService.name)
 
-	constructor(
-		private readonly geoCalculationService: GeoCalculationService
-	) {}
+  constructor(private readonly geoCalculationService: GeoCalculationService) {}
 
-	async calculateDeliveryDuration(input: IDeliveryDurationCalculationInput) {
-		const { pickupLocation, dropoffLocation } = input
+  async calculateDeliveryDuration(input: IDeliveryDurationCalculationInput) {
+    const { pickupLocation, dropoffLocation } = input
 
-		const distance = await this.geoCalculationService.calculateDistance({
-			fromLocation: {
-				latitude: pickupLocation.latitude,
-				longitude: pickupLocation.longitude
-			},
-			toLocation: {
-				latitude: dropoffLocation.latitude,
-				longitude: dropoffLocation.longitude
-			}
-		})
+    const distance = await this.geoCalculationService.calculateDistance({
+      fromLocation: {
+        latitude: pickupLocation.latitude,
+        longitude: pickupLocation.longitude,
+      },
+      toLocation: {
+        latitude: dropoffLocation.latitude,
+        longitude: dropoffLocation.longitude,
+      },
+    })
 
-		return Promise.resolve(distance * 2)
-	}
+    return Promise.resolve(distance * 2)
+  }
 }

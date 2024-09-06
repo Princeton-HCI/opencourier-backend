@@ -4,14 +4,14 @@ import { IGeoCalculationService } from './interfaces/IGeoCalculationService'
 
 @Injectable()
 export class GoogleMatrixAPIGeoCalculationService implements IGeoCalculationService {
-	private readonly logger = new Logger(GoogleMatrixAPIGeoCalculationService.name)
+  private readonly logger = new Logger(GoogleMatrixAPIGeoCalculationService.name)
 
-	constructor(
-	) {
-	}
+  constructor() {}
 
-	async calculateDistance(input: IGeoCalculationInput) {
-		throw new NotImplementedException("Method not implemented. Please use the Google Matrix API to calculate the distance.");
-		return Promise.resolve(0);
-	}
+  async calculateDistance(input: IGeoCalculationInput) {
+    throw new NotImplementedException(
+      'Method not implemented. Please use the Google Matrix API to calculate the distance.'
+    )
+    return Promise.resolve(0)
+  }
 }

@@ -7,12 +7,7 @@ import { DeliveryCalculationModule } from '../delivery-calculation/delivery-calc
 
 @Global()
 @Module({
-  imports: [
-    HttpModule,
-    SocketIOModule,
-    PartnerWebhookModule,
-    DeliveryCalculationModule
-  ],
+  imports: [HttpModule, SocketIOModule, PartnerWebhookModule, DeliveryCalculationModule],
   providers: [DeliveryEventService],
   exports: [DeliveryEventService],
 })

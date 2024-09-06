@@ -13,7 +13,7 @@ export class PartnerWebhookService {
   constructor(
     private readonly partnerRepository: PartnerRepository,
     private readonly deliveryRepository: DeliveryRepository,
-    private readonly httpService: HttpService,
+    private readonly httpService: HttpService
   ) {}
 
   async sendDeliveryUpdatePartnerWebhook(event: DeliveryStatusUpdateEvent) {
@@ -47,10 +47,7 @@ export class PartnerWebhookService {
     console.log(`Sending webhook to partner: "${partner.name}"`)
     console.log(webhookPayload)
 
-    const response: AxiosResponse = await this.httpService.axiosRef.post(
-      partner.webhookUrl,
-      webhookPayload,
-    )
+    const response: AxiosResponse = await this.httpService.axiosRef.post(partner.webhookUrl, webhookPayload)
 
     // const data = (await firstValueFrom(response))
 

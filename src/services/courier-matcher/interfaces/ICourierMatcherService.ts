@@ -1,6 +1,6 @@
-import { ICourierMatcherInput } from "./ICourierMatcherInput";
-import { ICourierMatcherResult } from "./ICourierMatcherResult";
+import { ICourierMatcherInput } from './ICourierMatcherInput'
+import { ICourierMatcherResult } from './ICourierMatcherResult'
 
 export interface ICourierMatcherService {
-	findCourierForDelivery(input: ICourierMatcherInput): Promise<ICourierMatcherResult | null>
+  findCourierForDelivery(input: ICourierMatcherInput): Promise<ICourierMatcherResult | null>
 }

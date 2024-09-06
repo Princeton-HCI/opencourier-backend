@@ -21,7 +21,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
     })
   }
   async validate(payload: IPhoneTokenPayload | IEmailTokenPayload) {
-    const email = (payload as IEmailTokenPayload).email;
+    const email = (payload as IEmailTokenPayload).email
     const user = await this.userRepository.findUserWithEmail(email)
 
     if (!user) {
@@ -31,6 +31,6 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
     if (!user.role.length) {
       throw new Error('User roles is not a valid value')
     }
-    return user;
+    return user
   }
 }

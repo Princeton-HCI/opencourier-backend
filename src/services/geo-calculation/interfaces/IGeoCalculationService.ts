@@ -1,5 +1,5 @@
-import { IGeoCalculationInput } from "./IGeoCalculationInput";
+import { IGeoCalculationInput } from './IGeoCalculationInput'
 
 export interface IGeoCalculationService {
-	calculateDistance(input: IGeoCalculationInput): Promise<number>;
+  calculateDistance(input: IGeoCalculationInput): Promise<number>
 }

@@ -15,7 +15,7 @@ export class UserInfoAdminDto extends UserAdminDto {
   @Type(() => UserSessionAdminDto)
   session?: UserSessionAdminDto
 
-  constructor(data: { session: UserSessionEntity; user: UserEntity; }) {
+  constructor(data: { session: UserSessionEntity; user: UserEntity }) {
     super(data.user)
     this.session = new UserSessionAdminDto(data.session)
   }

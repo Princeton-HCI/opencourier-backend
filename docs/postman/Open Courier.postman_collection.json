@@ -1,2066 +1,1675 @@
 {
-	"info": {
-		"_postman_id": "d662cc27-b18e-4342-8675-863969d42de6",
-		"name": "Open Courier",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "4083731",
-		"_collection_link": "https://interstellar-trinity-650359.postman.co/workspace/CourslyAI~48d3c66f-b26c-494e-898b-152567bd88ff/collection/4083731-d662cc27-b18e-4342-8675-863969d42de6?action=share&source=collection_link&creator=4083731"
-	},
-	"item": [
-		{
-			"name": "V2",
-			"item": [
-				{
-					"name": "Courier",
-					"item": [
-						{
-							"name": "Auth",
-							"item": [
-								{
-									"name": "Login",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "asd",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"email\": \"opencourier-courier-jane.smith@opencourier.com\",\n    \"password\": \"password\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/auth/login",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"auth",
-												"login"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Refresh tokens",
-									"request": {
-										"auth": {
-											"type": "noauth"
-										},
-										"method": "POST",
-										"header": [
-											{
-												"key": "x-refresh-token",
-												"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHp3cnBsN3AwMDAwYzl5OWZibmQxem8yIiwiZW1haWwiOiJvcGVuY291cmllci1jb3VyaWVyLXRlc3RpbmdAb3BlbmNvdXJpZXIuY29tIiwicm9sZSI6WyJDT1VSSUVSIl0sImlhdCI6MTcyNDMzMDMxOCwiZXhwIjo0ODc3OTMwMzE4fQ.0NUOgTbXVEU2KiMjFQQKEJNk3NIEpUIbCF71OHVHcmI",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/auth/refresh-tokens",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"auth",
-												"refresh-tokens"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Register",
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"opencourier-courier-testing@opencourier.com\",\n    \"password\": \"courierUser@123\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/auth/register",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"auth",
-												"register"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get me",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"hello2@example.com\",\n    \"password\": \"Qatest12\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/auth/me",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"auth",
-												"me"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get ably token",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"hello2@example.com\",\n    \"password\": \"Qatest12\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/auth/ably-token",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"auth",
-												"ably-token"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Deliveries",
-							"item": [
-								{
-									"name": "Get my new deliveries",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/new",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"new"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get my in progress deliveries",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/in-progress",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"in-progress"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get my done deliveries",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/done",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"done"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get delivery by id",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/123123123",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"123123123"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Report issue",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
-													"type": "string"
-												}
-											]
-										},
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n\n    \"undeliverableAction\": \"NOT_WANT\",\n    \"undeliverableReason\": \"TEST\",\n    \"test\": \"test\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/123123123/report-issue",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"123123123",
-												"report-issue"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Accept delivery offer",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"courierNote\" :\"Dropped off, customer was happy\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/accept",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"cm0ccclfu000p8mhtliybyvdo",
-												"accept"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Reject delivery offer",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"courierNote\" :\"Dropped off, customer was happy\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/reject",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"cm0ccclfu000p8mhtliybyvdo",
-												"reject"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Mark as dispatched",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"note\" :\"Dropped off, customer was happy\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/mark-as-dispatched",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"cm0ccclfu000p8mhtliybyvdo",
-												"mark-as-dispatched"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Mark as Picked up",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"note\" :\"Dropped off, customer was happy\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/mark-as-picked-up",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"cm0ccclfu000p8mhtliybyvdo",
-												"mark-as-picked-up"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Mark as delivered",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"note\" :\"It was a bit heard to find the house number, for this customer go behind the bushes you will see a door\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/mark-as-delivered",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"deliveries",
-												"cm0ccclfu000p8mhtliybyvdo",
-												"mark-as-delivered"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Location notes",
-							"item": [
-								{
-									"name": "Create a location note",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"note\": \"Note about an order\",\n    \"deliveryId\": \"clzjkvy6n0001xkcji5kx737k\",\n    \"locationId\": \"clz2o5v1u0003c9r7apydufmx\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/location-notes",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"location-notes"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get location notes",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/location-notes?perPage=1",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"location-notes"
-											],
-											"query": [
-												{
-													"key": "perPage",
-													"value": "1"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get a single location note",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/location-notes?locationId=123123123",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"location-notes"
-											],
-											"query": [
-												{
-													"key": "locationId",
-													"value": "123123123"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "React to location note",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"reaction\": \"DOWNVOTE\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/location-notes/cm05315wf0001c9vhss662vb9/react",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"location-notes",
-												"cm05315wf0001c9vhss662vb9",
-												"react"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Courier settings",
-							"item": [
-								{
-									"name": "Get courier full settings",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/courier-settings",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"courier-settings"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update courier full settings",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"vehicleType\": \"BICYCLE\",\n    \"preferredAreas\": [],\n    \"shiftAvailability\": null,\n    \"orderPreferences\": [],\n    \"foodPreferences\": [],\n    \"earningGoals\": null,\n    \"deliverySpeed\": \"REGULAR\",\n    \"restaurantTypes\": [],\n    \"cuisineTypes\": [],\n    \"preferredRestaurantPartners\": [],\n    \"dietaryRestrictions\": [\"NONE\"],\n    \"payRate\": null\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/courier-settings",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"courier-settings"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Courier",
-							"item": [
-								{
-									"name": "Update location",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"latitude\": 43.65951,\n  \"longitude\": 21.16068\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/courier/location",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"courier",
-												"location"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update status",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"status\": \"ONLINE\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/courier/status",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"courier",
-												"status"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update delivery setting",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"deliverySetting\": \"AUTO_ACCEPT\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/courier/delivery-setting",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"courier",
-												"delivery-setting"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Check courier app version",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"version\": \"1.2.0\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:3000/api/courier/v1/config/app-version",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"courier",
-										"v1",
-										"config",
-										"app-version"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Admin",
-					"item": [
-						{
-							"name": "Auth",
-							"item": [
-								{
-									"name": "Login",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "asd",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"email\": \"opencourier-admin@opencourier.com\",\n    \"password\": \"adminUser@123\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/auth/login",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"auth",
-												"login"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get me",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"hello2@example.com\",\n    \"password\": \"Qatest12\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/auth/me",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"auth",
-												"me"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Deliveries",
-							"item": [
-								{
-									"name": "Get deliveries",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/deliveries",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"deliveries"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get delivery by id",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/deliveries/123123123",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"deliveries",
-												"123123123"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update delivery status",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"status\": \"CREATED\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/deliveries/clypupndz0001c91m71cf8eld/status",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"deliveries",
-												"clypupndz0001c91m71cf8eld",
-												"status"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Courier",
-							"item": [
-								{
-									"name": "Get couriers",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/courier",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"courier"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get by id",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/courier/cly5w7sl30002c9z39jev8mny",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"courier",
-												"cly5w7sl30002c9z39jev8mny"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update courier",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doe\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/courier/cly5w7sl30002c9z39jev8mny",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"courier",
-												"cly5w7sl30002c9z39jev8mny"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Courier Settings",
-							"item": [
-								{
-									"name": "Get courier full settings",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/courier-settings/cly5w7sl30002c9z39jev8mny",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"courier-settings",
-												"cly5w7sl30002c9z39jev8mny"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update courier full settings",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"vehicleType\": \"BICYCLE\",\n    \"preferredAreas\": [],\n    \"shiftAvailability\": null,\n    \"orderPreferences\": [],\n    \"foodPreferences\": [],\n    \"earningGoals\": null,\n    \"deliverySpeed\": \"REGULAR\",\n    \"restaurantTypes\": [],\n    \"cuisineTypes\": [],\n    \"preferredRestaurantPartners\": [],\n    \"dietaryRestrictions\": [],\n    \"payRate\": null\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/courier-settings/cly5w7sl30002c9z39jev8mny",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"courier-settings",
-												"cly5w7sl30002c9z39jev8mny"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Locations",
-							"item": [
-								{
-									"name": "Get all locations",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/locations",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"locations"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get a single location",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/admin/v1/locations/123123123",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"locations",
-												"123123123"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Configuration",
-							"item": [
-								{
-									"name": "Get Instance configuration",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{API_URL}}/api/admin/v1/config/instance-config",
-											"host": [
-												"{{API_URL}}"
-											],
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"config",
-												"instance-config"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Set Instance configuration",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"courierMatcherType\": \"COURIER_SENIORITY\",\n    \"quoteCalculationType\": \"SURGE\",\n    \"geoCalculationType\": \"HAVERSINE\",\n    \"deliveryDurationCalculationType\": \"SIMPLE\",\n    \"courierCompensationCalculationType\": \"SIMPLE\",\n    \"defaultDietaryRestrictions\": [\"NONE\"],\n    \"distanceUnit\": \"MILES\",\n    \"maxAssignmentDistance\": 2,\n    \"defaultCourierPayRate\": 2,\n    \"defaultMinimumCourierPay\": 3,\n    \"defaultMaxWorkingHours\": 4,\n    \"quoteExpirationMinutes\": 10,\n    \"feePercentageAmount\": 5\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{API_URL}}/api/admin/v1/config/instance-config",
-											"host": [
-												"{{API_URL}}"
-											],
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"config",
-												"instance-config"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get options for instance config",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{ADMIN_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{API_URL}}/api/admin/v1/config/instance-config-options",
-											"host": [
-												"{{API_URL}}"
-											],
-											"path": [
-												"api",
-												"admin",
-												"v1",
-												"config",
-												"instance-config-options"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						}
-					]
-				},
-				{
-					"name": "Partner",
-					"item": [
-						{
-							"name": "Auth",
-							"item": [
-								{
-									"name": "Login",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "asd",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"email\": \"opencourier-partner@opencourier.com\",\n    \"password\": \"partnerUser@123\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/partner/v1/auth/login",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"partner",
-												"v1",
-												"auth",
-												"login"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get me",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{PARTNER_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"hello2@example.com\",\n    \"password\": \"Qatest12\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/courier/v1/auth/me",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"courier",
-												"v1",
-												"auth",
-												"me"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Delivery quote",
-							"item": [
-								{
-									"name": "Create delivery quote",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{PARTNER_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"pickupAddress\": {\n    \"streetAddress\": [\"Caffe Panna\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10003\",\n    \"countryCode\": \"US\"\n  },\n  \"dropoffAddress\": {\n    \"streetAddress\": [\"200-216 E 41st St\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10003\",\n    \"countryCode\": \"US\"\n  },\n  \"pickupLatitude\": 40.737130323628044,\n  \"pickupLongitude\": -73.98677190875732,\n  \"dropoffLatitude\": 40.75007217161669,\n  \"dropoffLongitude\": -73.97454831817379, \n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"orderTotalValue\": 1000\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/partner/v1/delivery-quotes",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"partner",
-												"v1",
-												"delivery-quotes"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Delivery",
-							"item": [
-								{
-									"name": "Create delivery",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{PARTNER_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"quoteId\": \"cm0cccbuh000n8mhtxfniyst2\",\n  \"idempotencyKey\": \"1223222224\",\n  \"pickupAddress\": {\n    \"streetAddress\": [\"Caffe Panna\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10003\",\n    \"countryCode\": \"US\"\n  },\n  \"dropoffAddress\": {\n    \"streetAddress\": [\"200-216 E 41st St\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10003\",\n    \"countryCode\": \"US\"\n  },\n  \"pickupLatitude\": 40.737130323628044,\n  \"pickupLongitude\": -73.98677190875732,\n  \"dropoffLatitude\": 40.75007217161669,\n  \"dropoffLongitude\": -73.97454831817379, \n  \"pickupName\": \"Store Name\",\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffName\": \"Gordon Shumway\",\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"orderItems\": [\n    {\n      \"name\": \"Bow tie\",\n      \"quantity\": 1,\n      \"size\": \"small\",\n      \"dimensions\": {\n        \"length\": 20,\n        \"height\": 20,\n        \"depth\": 20\n      },\n      \"price\": 100,\n      \"weight\": 300,\n      \"vatPercentage\": 1250000\n    }\n  ],\n  \"pickupBusinessName\": \"Store Name\",\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"dropoffBusinessName\": \"House of Luciano\",\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffSellerNotes\": \"Fragile content - please handle the box with care during delivery.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"deliverableAction\": \"MEET_AT_DOOR\",\n  \"orderReference\": \"REF0000002\",\n  \"orderTotalValue\": 1000,  \n  \"undeliverableAction\": \"LEAVE_AT_DOOR\",\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"requiresDropoffSignature\": true,\n  \"requiresId\": false,\n  \"tip\": 500,\n  \"externalStoreId\": \"my_store_123\",\n  \"returnVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"picture\": true,\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    }\n  },\n  \"externalUserInfo\": {\n    \"merchantAccount\": {\n      \"accountCreatedAt\": \"2019-10-12T07:20:50.520Z\",\n      \"email\": \"2019-10-12T07:20:50.520Z\"\n    },\n    \"device\": {\n      \"id\": \"f2bdcb36-f86b-4197-89f8-54c72f98d24b\"\n    }\n  },\n  \"externalId\": \"1234567890\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{API_URL}}/api/partner/v1/deliveries",
-											"host": [
-												"{{API_URL}}"
-											],
-											"path": [
-												"api",
-												"partner",
-												"v1",
-												"deliveries"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update a delivery",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{PARTNER_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"orderReference\": \"REF0000002\",\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"tipByCustomer\": 500,\n  \"dropoffLatitude\": 42.636491,\n  \"dropoffLongitude\": 21.094902,\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\"\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/partner/v1/deliveries/clypupndz0001c91m71cf8eld",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"partner",
-												"v1",
-												"deliveries",
-												"clypupndz0001c91m71cf8eld"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Get a delivery",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{PARTNER_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"pickupName\": \"Store Name\",\n  \"pickupAddress\": {\n    \"street_address\": [\"100 Maiden Ln\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffName\": \"Gordon Shumway\",\n  \"dropoffAddress\": {\n    \"street_address\": [\"30 Lincoln Center Plaza\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"manifestItems\": [\n    {\n      \"name\": \"Bow tie\",\n      \"quantity\": 1,\n      \"size\": \"small\",\n      \"dimensions\": {\n        \"length\": 20,\n        \"height\": 20,\n        \"depth\": 20\n      },\n      \"price\": 100,\n      \"weight\": 300,\n      \"vat_percentage\": 1250000\n    }\n  ],\n  \"pickupBusinessName\": \"Store Name\",\n  \"pickupLatitude\": 40.7066745,\n  \"pickupLongitude\": -74.0071976,\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"dropoffBusinessName\": \"House of Luciano\",\n  \"dropoffLatitude\": 40.7727076,\n  \"dropoffLongitude\": -73.9839082,\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffSellerNotes\": \"Fragile content - please handle the box with care during delivery.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"deliverableAction\": \"MEET_AT_DOOR\",\n  \"orderReference\": \"REF0000002\",\n  \"orderTotalValue\": 1000,\n  \"quoteId\": \"clymz06dq0001c9ptvm9arfrl\",\n  \"undeliverableAction\": \"LEAVE_AT_DOOR\",\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"requiresDropoffSignature\": true,\n  \"requiresId\": false,\n  \"tip\": 500,\n  \"idempotencyKey\": \"1234567890\",\n  \"externalStoreId\": \"my_store_123\",\n  \"returnVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"picture\": true,\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    }\n  },\n  \"externalUserInfo\": {\n    \"merchantAccount\": {\n      \"accountCreatedAt\": \"2019-10-12T07:20:50.520Z\",\n      \"email\": \"2019-10-12T07:20:50.520Z\"\n    },\n    \"device\": {\n      \"id\": \"f2bdcb36-f86b-4197-89f8-54c72f98d24b\"\n    }\n  },\n  \"externalId\": \"1234567890\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/partner/v1/deliveries/cm03zriu20005c9oar7x5175c",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"partner",
-												"v1",
-												"deliveries",
-												"cm03zriu20005c9oar7x5175c"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "List deliveries",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{PARTNER_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"pickupName\": \"Store Name\",\n  \"pickupAddress\": {\n    \"street_address\": [\"100 Maiden Ln\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffName\": \"Gordon Shumway\",\n  \"dropoffAddress\": {\n    \"street_address\": [\"30 Lincoln Center Plaza\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"manifestItems\": [\n    {\n      \"name\": \"Bow tie\",\n      \"quantity\": 1,\n      \"size\": \"small\",\n      \"dimensions\": {\n        \"length\": 20,\n        \"height\": 20,\n        \"depth\": 20\n      },\n      \"price\": 100,\n      \"weight\": 300,\n      \"vat_percentage\": 1250000\n    }\n  ],\n  \"pickupBusinessName\": \"Store Name\",\n  \"pickupLatitude\": 40.7066745,\n  \"pickupLongitude\": -74.0071976,\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"dropoffBusinessName\": \"House of Luciano\",\n  \"dropoffLatitude\": 40.7727076,\n  \"dropoffLongitude\": -73.9839082,\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffSellerNotes\": \"Fragile content - please handle the box with care during delivery.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"deliverableAction\": \"MEET_AT_DOOR\",\n  \"orderReference\": \"REF0000002\",\n  \"orderTotalValue\": 1000,\n  \"quoteId\": \"clymz06dq0001c9ptvm9arfrl\",\n  \"undeliverableAction\": \"LEAVE_AT_DOOR\",\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"requiresDropoffSignature\": true,\n  \"requiresId\": false,\n  \"tip\": 500,\n  \"idempotencyKey\": \"1234567890\",\n  \"externalStoreId\": \"my_store_123\",\n  \"returnVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"picture\": true,\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    }\n  },\n  \"externalUserInfo\": {\n    \"merchantAccount\": {\n      \"accountCreatedAt\": \"2019-10-12T07:20:50.520Z\",\n      \"email\": \"2019-10-12T07:20:50.520Z\"\n    },\n    \"device\": {\n      \"id\": \"f2bdcb36-f86b-4197-89f8-54c72f98d24b\"\n    }\n  },\n  \"externalId\": \"1234567890\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/partner/v1/deliveries?perPage=10",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"partner",
-												"v1",
-												"deliveries"
-											],
-											"query": [
-												{
-													"key": "perPage",
-													"value": "10"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Cancel a delivery",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{PARTNER_AUTH_TOKEN}}",
-													"type": "string"
-												}
-											]
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"pickupName\": \"Store Name\",\n  \"pickupAddress\": {\n    \"street_address\": [\"100 Maiden Ln\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffName\": \"Gordon Shumway\",\n  \"dropoffAddress\": {\n    \"street_address\": [\"30 Lincoln Center Plaza\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"manifestItems\": [\n    {\n      \"name\": \"Bow tie\",\n      \"quantity\": 1,\n      \"size\": \"small\",\n      \"dimensions\": {\n        \"length\": 20,\n        \"height\": 20,\n        \"depth\": 20\n      },\n      \"price\": 100,\n      \"weight\": 300,\n      \"vat_percentage\": 1250000\n    }\n  ],\n  \"pickupBusinessName\": \"Store Name\",\n  \"pickupLatitude\": 40.7066745,\n  \"pickupLongitude\": -74.0071976,\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"dropoffBusinessName\": \"House of Luciano\",\n  \"dropoffLatitude\": 40.7727076,\n  \"dropoffLongitude\": -73.9839082,\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffSellerNotes\": \"Fragile content - please handle the box with care during delivery.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"deliverableAction\": \"MEET_AT_DOOR\",\n  \"orderReference\": \"REF0000002\",\n  \"orderTotalValue\": 1000,\n  \"quoteId\": \"clymz06dq0001c9ptvm9arfrl\",\n  \"undeliverableAction\": \"LEAVE_AT_DOOR\",\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"requiresDropoffSignature\": true,\n  \"requiresId\": false,\n  \"tip\": 500,\n  \"idempotencyKey\": \"1234567890\",\n  \"externalStoreId\": \"my_store_123\",\n  \"returnVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"picture\": true,\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    }\n  },\n  \"externalUserInfo\": {\n    \"merchantAccount\": {\n      \"accountCreatedAt\": \"2019-10-12T07:20:50.520Z\",\n      \"email\": \"2019-10-12T07:20:50.520Z\"\n    },\n    \"device\": {\n      \"id\": \"f2bdcb36-f86b-4197-89f8-54c72f98d24b\"\n    }\n  },\n  \"externalId\": \"1234567890\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3000/api/partner/v1/deliveries/clyo5he5j0001c95ch1cwlsxc/cancel",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3000",
-											"path": [
-												"api",
-												"partner",
-												"v1",
-												"deliveries",
-												"clyo5he5j0001c95ch1cwlsxc",
-												"cancel"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						}
-					]
-				},
-				{
-					"name": "Temporary (Test)",
-					"item": [
-						{
-							"name": "Match delivery",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{ADMIN_AUTH_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{API_URL}}/api/admin/v1/testing/match-delivery-to-courier/cm0c5d6rg00038m8gfwub3is2",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"v1",
-										"testing",
-										"match-delivery-to-courier",
-										"cm0c5d6rg00038m8gfwub3is2"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "d662cc27-b18e-4342-8675-863969d42de6",
+    "name": "Open Courier",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "4083731",
+    "_collection_link": "https://interstellar-trinity-650359.postman.co/workspace/CourslyAI~48d3c66f-b26c-494e-898b-152567bd88ff/collection/4083731-d662cc27-b18e-4342-8675-863969d42de6?action=share&source=collection_link&creator=4083731"
+  },
+  "item": [
+    {
+      "name": "V2",
+      "item": [
+        {
+          "name": "Courier",
+          "item": [
+            {
+              "name": "Auth",
+              "item": [
+                {
+                  "name": "Login",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "asd",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\": \"opencourier-courier-jane.smith@opencourier.com\",\n    \"password\": \"password\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/auth/login",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "auth", "login"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Refresh tokens",
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "x-refresh-token",
+                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHp3cnBsN3AwMDAwYzl5OWZibmQxem8yIiwiZW1haWwiOiJvcGVuY291cmllci1jb3VyaWVyLXRlc3RpbmdAb3BlbmNvdXJpZXIuY29tIiwicm9sZSI6WyJDT1VSSUVSIl0sImlhdCI6MTcyNDMzMDMxOCwiZXhwIjo0ODc3OTMwMzE4fQ.0NUOgTbXVEU2KiMjFQQKEJNk3NIEpUIbCF71OHVHcmI",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/auth/refresh-tokens",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "auth", "refresh-tokens"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Register",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"opencourier-courier-testing@opencourier.com\",\n    \"password\": \"courierUser@123\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/auth/register",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "auth", "register"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get me",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"hello2@example.com\",\n    \"password\": \"Qatest12\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/auth/me",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "auth", "me"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get ably token",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"hello2@example.com\",\n    \"password\": \"Qatest12\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/auth/ably-token",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "auth", "ably-token"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Deliveries",
+              "item": [
+                {
+                  "name": "Get my new deliveries",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/new",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "new"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get my in progress deliveries",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/in-progress",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "in-progress"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get my done deliveries",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/done",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "done"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get delivery by id",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/123123123",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "123123123"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Report issue",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n\n    \"undeliverableAction\": \"NOT_WANT\",\n    \"undeliverableReason\": \"TEST\",\n    \"test\": \"test\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/123123123/report-issue",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "123123123", "report-issue"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Accept delivery offer",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"courierNote\" :\"Dropped off, customer was happy\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/accept",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "cm0ccclfu000p8mhtliybyvdo", "accept"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Reject delivery offer",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"courierNote\" :\"Dropped off, customer was happy\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/reject",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "cm0ccclfu000p8mhtliybyvdo", "reject"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Mark as dispatched",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"note\" :\"Dropped off, customer was happy\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/mark-as-dispatched",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "cm0ccclfu000p8mhtliybyvdo", "mark-as-dispatched"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Mark as Picked up",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"note\" :\"Dropped off, customer was happy\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/mark-as-picked-up",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "cm0ccclfu000p8mhtliybyvdo", "mark-as-picked-up"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Mark as delivered",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"note\" :\"It was a bit heard to find the house number, for this customer go behind the bushes you will see a door\",\n    \"imageData\": \"test\",\n    \"imageName\": \"test.png\",\n    \"imageType\": \"image/png\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/deliveries/cm0ccclfu000p8mhtliybyvdo/mark-as-delivered",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "deliveries", "cm0ccclfu000p8mhtliybyvdo", "mark-as-delivered"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Location notes",
+              "item": [
+                {
+                  "name": "Create a location note",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"note\": \"Note about an order\",\n    \"deliveryId\": \"clzjkvy6n0001xkcji5kx737k\",\n    \"locationId\": \"clz2o5v1u0003c9r7apydufmx\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/location-notes",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "location-notes"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get location notes",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/location-notes?perPage=1",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "location-notes"],
+                      "query": [
+                        {
+                          "key": "perPage",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get a single location note",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbHk1dXJoa2kwMDAwYzk4YXU1bnVrZ29zIiwiZW1haWwiOiJoZWxsb0BleGFtcGxlLmNvbSIsInJvbGUiOlsiQ09VUklFUiJdLCJpYXQiOjE3MjAwMTU3MzIsImV4cCI6MTcyMzE2OTMzMn0.8z50K4PLWF5A2v9tMqP2WfJTn-oFVkP_NZnK3h08DBw",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/location-notes?locationId=123123123",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "location-notes"],
+                      "query": [
+                        {
+                          "key": "locationId",
+                          "value": "123123123"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "React to location note",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"reaction\": \"DOWNVOTE\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/location-notes/cm05315wf0001c9vhss662vb9/react",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "location-notes", "cm05315wf0001c9vhss662vb9", "react"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Courier settings",
+              "item": [
+                {
+                  "name": "Get courier full settings",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/courier-settings",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "courier-settings"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update courier full settings",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"vehicleType\": \"BICYCLE\",\n    \"preferredAreas\": [],\n    \"shiftAvailability\": null,\n    \"orderPreferences\": [],\n    \"foodPreferences\": [],\n    \"earningGoals\": null,\n    \"deliverySpeed\": \"REGULAR\",\n    \"restaurantTypes\": [],\n    \"cuisineTypes\": [],\n    \"preferredRestaurantPartners\": [],\n    \"dietaryRestrictions\": [\"NONE\"],\n    \"payRate\": null\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/courier-settings",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "courier-settings"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Courier",
+              "item": [
+                {
+                  "name": "Update location",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"latitude\": 43.65951,\n  \"longitude\": 21.16068\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/courier/location",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "courier", "location"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update status",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"status\": \"ONLINE\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/courier/status",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "courier", "status"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update delivery setting",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"deliverySetting\": \"AUTO_ACCEPT\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/courier/delivery-setting",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "courier", "delivery-setting"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Check courier app version",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"version\": \"1.2.0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/courier/v1/config/app-version",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "3000",
+                  "path": ["api", "courier", "v1", "config", "app-version"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Auth",
+              "item": [
+                {
+                  "name": "Login",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "asd",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\": \"opencourier-admin@opencourier.com\",\n    \"password\": \"adminUser@123\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/auth/login",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "auth", "login"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get me",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"hello2@example.com\",\n    \"password\": \"Qatest12\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/auth/me",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "auth", "me"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Deliveries",
+              "item": [
+                {
+                  "name": "Get deliveries",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/deliveries",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "deliveries"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get delivery by id",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/deliveries/123123123",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "deliveries", "123123123"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update delivery status",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"status\": \"CREATED\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/deliveries/clypupndz0001c91m71cf8eld/status",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "deliveries", "clypupndz0001c91m71cf8eld", "status"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Courier",
+              "item": [
+                {
+                  "name": "Get couriers",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/courier",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "courier"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get by id",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/courier/cly5w7sl30002c9z39jev8mny",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "courier", "cly5w7sl30002c9z39jev8mny"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update courier",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doe\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/courier/cly5w7sl30002c9z39jev8mny",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "courier", "cly5w7sl30002c9z39jev8mny"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Courier Settings",
+              "item": [
+                {
+                  "name": "Get courier full settings",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/courier-settings/cly5w7sl30002c9z39jev8mny",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "courier-settings", "cly5w7sl30002c9z39jev8mny"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update courier full settings",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"vehicleType\": \"BICYCLE\",\n    \"preferredAreas\": [],\n    \"shiftAvailability\": null,\n    \"orderPreferences\": [],\n    \"foodPreferences\": [],\n    \"earningGoals\": null,\n    \"deliverySpeed\": \"REGULAR\",\n    \"restaurantTypes\": [],\n    \"cuisineTypes\": [],\n    \"preferredRestaurantPartners\": [],\n    \"dietaryRestrictions\": [],\n    \"payRate\": null\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/courier-settings/cly5w7sl30002c9z39jev8mny",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "courier-settings", "cly5w7sl30002c9z39jev8mny"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Locations",
+              "item": [
+                {
+                  "name": "Get all locations",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/locations",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "locations"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get a single location",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/admin/v1/locations/123123123",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "admin", "v1", "locations", "123123123"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Configuration",
+              "item": [
+                {
+                  "name": "Get Instance configuration",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{API_URL}}/api/admin/v1/config/instance-config",
+                      "host": ["{{API_URL}}"],
+                      "path": ["api", "admin", "v1", "config", "instance-config"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Set Instance configuration",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"courierMatcherType\": \"COURIER_SENIORITY\",\n    \"quoteCalculationType\": \"SURGE\",\n    \"geoCalculationType\": \"HAVERSINE\",\n    \"deliveryDurationCalculationType\": \"SIMPLE\",\n    \"courierCompensationCalculationType\": \"SIMPLE\",\n    \"defaultDietaryRestrictions\": [\"NONE\"],\n    \"distanceUnit\": \"MILES\",\n    \"maxAssignmentDistance\": 2,\n    \"defaultCourierPayRate\": 2,\n    \"defaultMinimumCourierPay\": 3,\n    \"defaultMaxWorkingHours\": 4,\n    \"quoteExpirationMinutes\": 10,\n    \"feePercentageAmount\": 5\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{API_URL}}/api/admin/v1/config/instance-config",
+                      "host": ["{{API_URL}}"],
+                      "path": ["api", "admin", "v1", "config", "instance-config"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get options for instance config",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{ADMIN_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{API_URL}}/api/admin/v1/config/instance-config-options",
+                      "host": ["{{API_URL}}"],
+                      "path": ["api", "admin", "v1", "config", "instance-config-options"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Partner",
+          "item": [
+            {
+              "name": "Auth",
+              "item": [
+                {
+                  "name": "Login",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "asd",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\": \"opencourier-partner@opencourier.com\",\n    \"password\": \"partnerUser@123\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/partner/v1/auth/login",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "partner", "v1", "auth", "login"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get me",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{PARTNER_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Doey\",\n    \"email\": \"hello2@example.com\",\n    \"password\": \"Qatest12\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/courier/v1/auth/me",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "courier", "v1", "auth", "me"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Delivery quote",
+              "item": [
+                {
+                  "name": "Create delivery quote",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{PARTNER_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"pickupAddress\": {\n    \"streetAddress\": [\"Caffe Panna\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10003\",\n    \"countryCode\": \"US\"\n  },\n  \"dropoffAddress\": {\n    \"streetAddress\": [\"200-216 E 41st St\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10003\",\n    \"countryCode\": \"US\"\n  },\n  \"pickupLatitude\": 40.737130323628044,\n  \"pickupLongitude\": -73.98677190875732,\n  \"dropoffLatitude\": 40.75007217161669,\n  \"dropoffLongitude\": -73.97454831817379, \n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"orderTotalValue\": 1000\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/partner/v1/delivery-quotes",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "partner", "v1", "delivery-quotes"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Delivery",
+              "item": [
+                {
+                  "name": "Create delivery",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{PARTNER_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"quoteId\": \"cm0cccbuh000n8mhtxfniyst2\",\n  \"idempotencyKey\": \"1223222224\",\n  \"pickupAddress\": {\n    \"streetAddress\": [\"Caffe Panna\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10003\",\n    \"countryCode\": \"US\"\n  },\n  \"dropoffAddress\": {\n    \"streetAddress\": [\"200-216 E 41st St\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10003\",\n    \"countryCode\": \"US\"\n  },\n  \"pickupLatitude\": 40.737130323628044,\n  \"pickupLongitude\": -73.98677190875732,\n  \"dropoffLatitude\": 40.75007217161669,\n  \"dropoffLongitude\": -73.97454831817379, \n  \"pickupName\": \"Store Name\",\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffName\": \"Gordon Shumway\",\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"orderItems\": [\n    {\n      \"name\": \"Bow tie\",\n      \"quantity\": 1,\n      \"size\": \"small\",\n      \"dimensions\": {\n        \"length\": 20,\n        \"height\": 20,\n        \"depth\": 20\n      },\n      \"price\": 100,\n      \"weight\": 300,\n      \"vatPercentage\": 1250000\n    }\n  ],\n  \"pickupBusinessName\": \"Store Name\",\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"dropoffBusinessName\": \"House of Luciano\",\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffSellerNotes\": \"Fragile content - please handle the box with care during delivery.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"deliverableAction\": \"MEET_AT_DOOR\",\n  \"orderReference\": \"REF0000002\",\n  \"orderTotalValue\": 1000,  \n  \"undeliverableAction\": \"LEAVE_AT_DOOR\",\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"requiresDropoffSignature\": true,\n  \"requiresId\": false,\n  \"tip\": 500,\n  \"externalStoreId\": \"my_store_123\",\n  \"returnVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"picture\": true,\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    }\n  },\n  \"externalUserInfo\": {\n    \"merchantAccount\": {\n      \"accountCreatedAt\": \"2019-10-12T07:20:50.520Z\",\n      \"email\": \"2019-10-12T07:20:50.520Z\"\n    },\n    \"device\": {\n      \"id\": \"f2bdcb36-f86b-4197-89f8-54c72f98d24b\"\n    }\n  },\n  \"externalId\": \"1234567890\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{API_URL}}/api/partner/v1/deliveries",
+                      "host": ["{{API_URL}}"],
+                      "path": ["api", "partner", "v1", "deliveries"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Update a delivery",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{PARTNER_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"orderReference\": \"REF0000002\",\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"tipByCustomer\": 500,\n  \"dropoffLatitude\": 42.636491,\n  \"dropoffLongitude\": 21.094902,\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\"\n}\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/partner/v1/deliveries/clypupndz0001c91m71cf8eld",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "partner", "v1", "deliveries", "clypupndz0001c91m71cf8eld"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get a delivery",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{PARTNER_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"pickupName\": \"Store Name\",\n  \"pickupAddress\": {\n    \"street_address\": [\"100 Maiden Ln\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffName\": \"Gordon Shumway\",\n  \"dropoffAddress\": {\n    \"street_address\": [\"30 Lincoln Center Plaza\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"manifestItems\": [\n    {\n      \"name\": \"Bow tie\",\n      \"quantity\": 1,\n      \"size\": \"small\",\n      \"dimensions\": {\n        \"length\": 20,\n        \"height\": 20,\n        \"depth\": 20\n      },\n      \"price\": 100,\n      \"weight\": 300,\n      \"vat_percentage\": 1250000\n    }\n  ],\n  \"pickupBusinessName\": \"Store Name\",\n  \"pickupLatitude\": 40.7066745,\n  \"pickupLongitude\": -74.0071976,\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"dropoffBusinessName\": \"House of Luciano\",\n  \"dropoffLatitude\": 40.7727076,\n  \"dropoffLongitude\": -73.9839082,\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffSellerNotes\": \"Fragile content - please handle the box with care during delivery.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"deliverableAction\": \"MEET_AT_DOOR\",\n  \"orderReference\": \"REF0000002\",\n  \"orderTotalValue\": 1000,\n  \"quoteId\": \"clymz06dq0001c9ptvm9arfrl\",\n  \"undeliverableAction\": \"LEAVE_AT_DOOR\",\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"requiresDropoffSignature\": true,\n  \"requiresId\": false,\n  \"tip\": 500,\n  \"idempotencyKey\": \"1234567890\",\n  \"externalStoreId\": \"my_store_123\",\n  \"returnVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"picture\": true,\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    }\n  },\n  \"externalUserInfo\": {\n    \"merchantAccount\": {\n      \"accountCreatedAt\": \"2019-10-12T07:20:50.520Z\",\n      \"email\": \"2019-10-12T07:20:50.520Z\"\n    },\n    \"device\": {\n      \"id\": \"f2bdcb36-f86b-4197-89f8-54c72f98d24b\"\n    }\n  },\n  \"externalId\": \"1234567890\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/partner/v1/deliveries/cm03zriu20005c9oar7x5175c",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "partner", "v1", "deliveries", "cm03zriu20005c9oar7x5175c"]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "List deliveries",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{PARTNER_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"pickupName\": \"Store Name\",\n  \"pickupAddress\": {\n    \"street_address\": [\"100 Maiden Ln\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffName\": \"Gordon Shumway\",\n  \"dropoffAddress\": {\n    \"street_address\": [\"30 Lincoln Center Plaza\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"manifestItems\": [\n    {\n      \"name\": \"Bow tie\",\n      \"quantity\": 1,\n      \"size\": \"small\",\n      \"dimensions\": {\n        \"length\": 20,\n        \"height\": 20,\n        \"depth\": 20\n      },\n      \"price\": 100,\n      \"weight\": 300,\n      \"vat_percentage\": 1250000\n    }\n  ],\n  \"pickupBusinessName\": \"Store Name\",\n  \"pickupLatitude\": 40.7066745,\n  \"pickupLongitude\": -74.0071976,\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"dropoffBusinessName\": \"House of Luciano\",\n  \"dropoffLatitude\": 40.7727076,\n  \"dropoffLongitude\": -73.9839082,\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffSellerNotes\": \"Fragile content - please handle the box with care during delivery.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"deliverableAction\": \"MEET_AT_DOOR\",\n  \"orderReference\": \"REF0000002\",\n  \"orderTotalValue\": 1000,\n  \"quoteId\": \"clymz06dq0001c9ptvm9arfrl\",\n  \"undeliverableAction\": \"LEAVE_AT_DOOR\",\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"requiresDropoffSignature\": true,\n  \"requiresId\": false,\n  \"tip\": 500,\n  \"idempotencyKey\": \"1234567890\",\n  \"externalStoreId\": \"my_store_123\",\n  \"returnVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"picture\": true,\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    }\n  },\n  \"externalUserInfo\": {\n    \"merchantAccount\": {\n      \"accountCreatedAt\": \"2019-10-12T07:20:50.520Z\",\n      \"email\": \"2019-10-12T07:20:50.520Z\"\n    },\n    \"device\": {\n      \"id\": \"f2bdcb36-f86b-4197-89f8-54c72f98d24b\"\n    }\n  },\n  \"externalId\": \"1234567890\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/partner/v1/deliveries?perPage=10",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "partner", "v1", "deliveries"],
+                      "query": [
+                        {
+                          "key": "perPage",
+                          "value": "10"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Cancel a delivery",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{PARTNER_AUTH_TOKEN}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"pickupName\": \"Store Name\",\n  \"pickupAddress\": {\n    \"street_address\": [\"100 Maiden Ln\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"pickupPhoneNumber\": \"+15555555555\",\n  \"dropoffName\": \"Gordon Shumway\",\n  \"dropoffAddress\": {\n    \"street_address\": [\"30 Lincoln Center Plaza\"],\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zip_code\": \"10023\",\n    \"country\": \"US\"\n  },\n  \"dropoffPhoneNumber\": \"+15555555555\",\n  \"manifestItems\": [\n    {\n      \"name\": \"Bow tie\",\n      \"quantity\": 1,\n      \"size\": \"small\",\n      \"dimensions\": {\n        \"length\": 20,\n        \"height\": 20,\n        \"depth\": 20\n      },\n      \"price\": 100,\n      \"weight\": 300,\n      \"vat_percentage\": 1250000\n    }\n  ],\n  \"pickupBusinessName\": \"Store Name\",\n  \"pickupLatitude\": 40.7066745,\n  \"pickupLongitude\": -74.0071976,\n  \"pickupNotes\": \"Follow big green 'Pickup' signs in the parking lot\",\n  \"pickupVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"dropoffBusinessName\": \"House of Luciano\",\n  \"dropoffLatitude\": 40.7727076,\n  \"dropoffLongitude\": -73.9839082,\n  \"dropoffNotes\": \"Second floor, black door to the right.\",\n  \"dropoffSellerNotes\": \"Fragile content - please handle the box with care during delivery.\",\n  \"dropoffVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    },\n    \"identification\": {\n      \"minAge\": 21,\n      \"noSobrietyCheck\": true\n    },\n    \"picture\": true\n  },\n  \"deliverableAction\": \"MEET_AT_DOOR\",\n  \"orderReference\": \"REF0000002\",\n  \"orderTotalValue\": 1000,\n  \"quoteId\": \"clymz06dq0001c9ptvm9arfrl\",\n  \"undeliverableAction\": \"LEAVE_AT_DOOR\",\n  \"pickupReadyAt\": \"2024-12-12T14:00:00.000Z\",\n  \"pickupDeadlineAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffReadyAt\": \"2024-12-12T14:30:00.000Z\",\n  \"dropoffDeadlineAt\": \"2024-12-12T16:00:00.000Z\",\n  \"requiresDropoffSignature\": true,\n  \"requiresId\": false,\n  \"tip\": 500,\n  \"idempotencyKey\": \"1234567890\",\n  \"externalStoreId\": \"my_store_123\",\n  \"returnVerification\": {\n    \"signature\": true,\n    \"signatureRequirement\": {\n      \"enabled\": true,\n      \"collectSignerName\": true,\n      \"collectSignerRelationship\": true\n    },\n    \"barcodes\": [\n      {\n        \"value\": \"string\",\n        \"type\": \"CODE39\"\n      }\n    ],\n    \"picture\": true,\n    \"pincode\": {\n      \"enabled\": true,\n      \"type\": \"merchant_provided\",\n      \"value\": \"string\"\n    }\n  },\n  \"externalUserInfo\": {\n    \"merchantAccount\": {\n      \"accountCreatedAt\": \"2019-10-12T07:20:50.520Z\",\n      \"email\": \"2019-10-12T07:20:50.520Z\"\n    },\n    \"device\": {\n      \"id\": \"f2bdcb36-f86b-4197-89f8-54c72f98d24b\"\n    }\n  },\n  \"externalId\": \"1234567890\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:3000/api/partner/v1/deliveries/clyo5he5j0001c95ch1cwlsxc/cancel",
+                      "protocol": "http",
+                      "host": ["localhost"],
+                      "port": "3000",
+                      "path": ["api", "partner", "v1", "deliveries", "clyo5he5j0001c95ch1cwlsxc", "cancel"]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Temporary (Test)",
+          "item": [
+            {
+              "name": "Match delivery",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{ADMIN_AUTH_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{API_URL}}/api/admin/v1/testing/match-delivery-to-courier/cm0c5d6rg00038m8gfwub3is2",
+                  "host": ["{{API_URL}}"],
+                  "path": ["api", "admin", "v1", "testing", "match-delivery-to-courier", "cm0c5d6rg00038m8gfwub3is2"]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

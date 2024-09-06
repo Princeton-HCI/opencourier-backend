@@ -12,7 +12,7 @@ import { CourierCompensationModule } from '../courier-compensation/courier-compe
     QuoteCalculationModule.forRoot(),
     GeoCalculationModule.forRoot(),
     CourierCompensationModule.forRoot(),
-    DeliveryDurationCalculationModule.forRoot()
+    DeliveryDurationCalculationModule.forRoot(),
   ],
   providers: [DeliveryCalculationService],
   exports: [DeliveryCalculationService],

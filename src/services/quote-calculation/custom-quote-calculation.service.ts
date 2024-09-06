@@ -7,25 +7,25 @@ import { IQuoteCalculationService } from './interfaces/IQuoteCalculationService'
 
 @Injectable()
 export class CustomQuoteCalculationService implements IQuoteCalculationService {
-	private readonly logger = new Logger(CustomQuoteCalculationService.name)
-	private quotePerMile: number;
+  private readonly logger = new Logger(CustomQuoteCalculationService.name)
+  private quotePerMile: number
 
-	constructor(
-		private readonly configService: ConfigService,
-		private readonly geoCalculationService: GeoCalculationService
-	) {
-		if (!this.configService.get(DELIVERY_QUOTE_PER_MILE)) {
-			throw new Error('DELIVERY_QUOTE_PER_MILE env variable is required')
-		}
-		this.quotePerMile = Number(this.configService.get(DELIVERY_QUOTE_PER_MILE));
-	}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly geoCalculationService: GeoCalculationService
+  ) {
+    if (!this.configService.get(DELIVERY_QUOTE_PER_MILE)) {
+      throw new Error('DELIVERY_QUOTE_PER_MILE env variable is required')
+    }
+    this.quotePerMile = Number(this.configService.get(DELIVERY_QUOTE_PER_MILE))
+  }
 
-	calculateDeliveryQuote(input: IQuoteCalculationInput) {
-		const quote = Math.random() * this.quotePerMile * 100.3;
+  calculateDeliveryQuote(input: IQuoteCalculationInput) {
+    const quote = Math.random() * this.quotePerMile * 100.3
 
-		return Promise.resolve({
-			quoteRangeFrom: quote,
-			quoteRangeTo: quote
-		});
-	}
+    return Promise.resolve({
+      quoteRangeFrom: quote,
+      quoteRangeTo: quote,
+    })
+  }
 }

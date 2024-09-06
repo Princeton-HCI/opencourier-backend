@@ -1,3 +1,1 @@
-
-export class IUserUpdate {
-}
+export class IUserUpdate {}

@@ -15,7 +15,7 @@ import { SocketIOModule } from '../socketio/socketio.module'
     LocationDomainModule,
     CourierMatcherModule.forRoot(),
     SocketIOModule,
-    CacheModule
+    CacheModule,
   ],
   providers: [DeliveryMatchingService],
   exports: [DeliveryMatchingService],

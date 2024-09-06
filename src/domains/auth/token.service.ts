@@ -8,10 +8,7 @@ import { JWT_REFRESH_EXPIRATION, JWT_REFRESH_SECRET_KEY } from 'src/constants'
 
 @Injectable()
 export class TokenService {
-  constructor(
-    protected readonly jwtService: JwtService,
-    protected readonly configService: ConfigService
-  ) {}
+  constructor(protected readonly jwtService: JwtService, protected readonly configService: ConfigService) {}
 
   async createPhoneAuthSession(payload: IPhoneTokenPayload) {
     if (!payload.cellPhone) {
@@ -24,7 +21,7 @@ export class TokenService {
     const refreshExpiresIn = parseInt(this.configService.get(JWT_REFRESH_EXPIRATION) || '') || 0
     const refreshToken = await this.jwtService.signAsync(payload, {
       secret: this.configService.get(JWT_REFRESH_SECRET_KEY) || '',
-      expiresIn: refreshExpiresIn
+      expiresIn: refreshExpiresIn,
     })
 
     return new UserSessionEntity(accessToken, refreshToken, 'Bearer', expiresIn, refreshExpiresIn)
@@ -43,9 +40,9 @@ export class TokenService {
     const refreshToken = await this.jwtService.signAsync(payload, {
       // eslint-disable-next-line turbo/no-undeclared-env-vars
       secret: process.env.JWT_REFRESH_SECRET_KEY || '',
-      expiresIn: refreshExpiresIn
+      expiresIn: refreshExpiresIn,
     })
-    
+
     return new UserSessionEntity(accessToken, refreshToken, 'Bearer', expiresIn, refreshExpiresIn)
   }
 
@@ -56,7 +53,7 @@ export class TokenService {
   decodeToken(bearer: string): IEmailTokenPayload | IPhoneTokenPayload {
     return this.jwtService.verify(bearer, { secret: process.env.JWT_SECRET_KEY || '' })
   }
-  
+
   decodeRefreshToken(bearer: string): IEmailTokenPayload | IPhoneTokenPayload {
     // eslint-disable-next-line turbo/no-undeclared-env-vars
     return this.jwtService.verify(bearer, { secret: process.env.JWT_REFRESH_SECRET_KEY || '' })

@@ -9,7 +9,7 @@ export class UserSessionAdminDto {
   })
   @IsString()
   accessToken!: string
-  
+
   @ApiProperty({
     required: true,
     type: String,

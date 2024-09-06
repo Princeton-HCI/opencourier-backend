@@ -25,6 +25,6 @@ function userFactory(ctx: ExecutionContext): PartnerEntity {
   }
 }
 
-export const CurrentUserPartner = createParamDecorator<undefined, ExecutionContext, PartnerEntity>((_, ctx: ExecutionContext) =>
-  userFactory(ctx)
+export const CurrentUserPartner = createParamDecorator<undefined, ExecutionContext, PartnerEntity>(
+  (_, ctx: ExecutionContext) => userFactory(ctx)
 )

@@ -3,11 +3,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { WebsocketDispatcher } from '../../services/websocket/models/WebsocketDispatcher'
 import { AblyService } from './ably.service'
 import { DeliveryCourierDto } from 'src/rest-api/delivery/courier/dtos/delivery.courier.dto'
-import {
-  EnumDeliveryStatus,
-  NotificationEventType,
-  courierNotificationChannel,
-} from 'src/shared-types/index'
+import { EnumDeliveryStatus, NotificationEventType, courierNotificationChannel } from 'src/shared-types/index'
 
 @Injectable()
 export class AblyDispatcher extends WebsocketDispatcher {
@@ -22,21 +18,15 @@ export class AblyDispatcher extends WebsocketDispatcher {
       delivery,
     }
 
-    this.logger.log(
-      `emitting event to courier: ${JSON.stringify(data)}, channel: COURIER:${userId}`,
-    )
+    this.logger.log(`emitting event to courier: ${JSON.stringify(data)}, channel: COURIER:${userId}`)
 
-    await this.publishMessage(
-      courierNotificationChannel(userId),
-      NotificationEventType.NEW_DELIVERY_OFFER,
-      data,
-    )
+    await this.publishMessage(courierNotificationChannel(userId), NotificationEventType.NEW_DELIVERY_OFFER, data)
   }
   async dispatchDeliveryStatusUpdated(
     userId: string,
     oldStatus: EnumDeliveryStatus,
     newStatus: EnumDeliveryStatus,
-    delivery: DeliveryCourierDto,
+    delivery: DeliveryCourierDto
   ) {
     const data = {
       delivery,
@@ -46,15 +36,11 @@ export class AblyDispatcher extends WebsocketDispatcher {
 
     this.logger.log(
       `emitting ${NotificationEventType.DELIVERY_STATUS_UPDATED} event to courier: ${JSON.stringify(
-        data,
-      )}, channel: COURIER:${userId}`,
+        data
+      )}, channel: COURIER:${userId}`
     )
 
-    await this.publishMessage(
-      courierNotificationChannel(userId),
-      NotificationEventType.DELIVERY_STATUS_UPDATED,
-      data,
-    )
+    await this.publishMessage(courierNotificationChannel(userId), NotificationEventType.DELIVERY_STATUS_UPDATED, data)
   }
 
   private async publishMessage(channelName: string, messageName: string, message: any) {
@@ -62,14 +48,11 @@ export class AblyDispatcher extends WebsocketDispatcher {
       await this.ablyService
         .getChannel(channelName)
         .publish(messageName, message)
-        .catch(error => {
+        .catch((error) => {
           console.log('error sending message:', error)
         })
     } catch (error) {
-      this.logger.error(
-        `There was a problem trying to publish a message to ably channel ${channelName}.`,
-        error,
-      )
+      this.logger.error(`There was a problem trying to publish a message to ably channel ${channelName}.`, error)
     }
   }
 }

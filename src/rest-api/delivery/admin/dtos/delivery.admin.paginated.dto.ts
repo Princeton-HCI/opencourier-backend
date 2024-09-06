@@ -6,27 +6,27 @@ import { DeliveryAdminDto } from './delivery.admin.dto'
 import { DeliveryEntity } from 'src/domains/delivery/entities/delivery.entity'
 
 export class DeliveryAdminPaginatedDto {
-	@ApiProperty({
-		required: true,
-		type: () => [DeliveryAdminDto],
-	})
-	@ValidateNested({ each: true })
-	@Type(() => DeliveryAdminDto)
-	@Expose()
-	data: DeliveryAdminDto[]
+  @ApiProperty({
+    required: true,
+    type: () => [DeliveryAdminDto],
+  })
+  @ValidateNested({ each: true })
+  @Type(() => DeliveryAdminDto)
+  @Expose()
+  data: DeliveryAdminDto[]
 
-	@ApiProperty({
-		required: false,
-		type: () => PaginationDto,
-	})
-	@ValidateNested()
-	@Type(() => PaginationDto)
-	@IsOptional()
-	@Expose()
-	pagination?: PaginationDto
+  @ApiProperty({
+    required: false,
+    type: () => PaginationDto,
+  })
+  @ValidateNested()
+  @Type(() => PaginationDto)
+  @IsOptional()
+  @Expose()
+  pagination?: PaginationDto
 
-	constructor(data: { data: DeliveryEntity[]; pagination?: PaginationDto }) {
-		this.data = data.data.map((delivery) => new DeliveryAdminDto(delivery))
-		this.pagination = data.pagination
-	}
+  constructor(data: { data: DeliveryEntity[]; pagination?: PaginationDto }) {
+    this.data = data.data.map((delivery) => new DeliveryAdminDto(delivery))
+    this.pagination = data.pagination
+  }
 }

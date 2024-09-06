@@ -9,10 +9,7 @@ export class ConfigDomainService {
   private readonly logger = new Logger(ConfigDomainService.name)
   readonly instanceConfig: InstanceConfigDomainService
 
-  constructor(
-    private readonly configRepository: ConfigRepository,
-    instanceConfig: InstanceConfigDomainService,
-  ) {
+  constructor(private readonly configRepository: ConfigRepository, instanceConfig: InstanceConfigDomainService) {
     this.instanceConfig = instanceConfig
   }
 

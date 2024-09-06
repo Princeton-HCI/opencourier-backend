@@ -1,3 +1,1 @@
-
-export class PayoutCreateCourierInput {
-}
+export class PayoutCreateCourierInput {}

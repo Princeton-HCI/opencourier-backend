@@ -1,6 +1,4 @@
-import {
-  centuryFromNow,
-} from './time'
+import { centuryFromNow } from './time'
 
 describe('TimeUtils', () => {
   describe('centuryFromNow', () => {

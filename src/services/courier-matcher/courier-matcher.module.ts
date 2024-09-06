@@ -13,13 +13,7 @@ import { CourierSeniorityMatcherService } from './courier-seniority-matcher.serv
 
 @Global()
 @Module({
-  imports: [
-    DeliveryDomainModule,
-    PartnerDomainModule,
-    CourierDomainModule,
-    LocationDomainModule,
-    ConfigDomainModule,
-  ],
+  imports: [DeliveryDomainModule, PartnerDomainModule, CourierDomainModule, LocationDomainModule, ConfigDomainModule],
 })
 export class CourierMatcherModule {
   static forRoot(): DynamicModule {

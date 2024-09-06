@@ -13,7 +13,7 @@ export enum ErrorCode {
   BAD_REQUEST = 'BAD_REQUEST',
   UNKNOWN = 'UNKNOWN',
   NOT_ALLOWED = 'NOT_ALLOWED',
-  
+
   // Data not found
   DELIVERY_NOT_FOUND = 'DELIVERY_NOT_FOUND',
   COURIER_NOT_FOUND = 'COURIER_NOT_FOUND',
@@ -22,7 +22,7 @@ export enum ErrorCode {
   DELIVERY_FOR_QUOTE_EXISTS = 'DELIVERY_FOR_QUOTE_EXISTS',
   QUOTE_HAS_EXPIRED = 'QUOTE_HAS_EXPIRED',
   DELIVERY_LOCATION_DOESNT_MATCH_QUOTE = 'DELIVERY_LOCATION_DOESNT_MATCH_QUOTE',
-  
+
   // Delivery
   DELIVERY_EXISTS = 'DELIVERY_EXISTS',
   DELIVERY_ALREADY_MATCHED = 'DELIVERY_ALREADY_MATCHED',
@@ -389,7 +389,6 @@ export class BlockchainTransactionError extends ApiException {
     super(ErrorCode.BLOCKCHAIN_TRANSACTION_ERROR, message, 409, options)
   }
 }
-
 
 /**
  * Delivery state errors.

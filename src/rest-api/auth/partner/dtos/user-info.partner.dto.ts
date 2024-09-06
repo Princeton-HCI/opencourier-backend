@@ -15,7 +15,7 @@ export class UserInfoPartnerDto extends UserPartnerDto {
   @Type(() => UserSessionPartnerDto)
   session?: UserSessionPartnerDto
 
-  constructor(data: { session: UserSessionEntity; user: UserEntity; }) {
+  constructor(data: { session: UserSessionEntity; user: UserEntity }) {
     super(data.user)
     this.session = new UserSessionPartnerDto(data.session)
   }

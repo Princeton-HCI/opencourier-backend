@@ -24,7 +24,7 @@ import { LocationNoteReactionRepository } from './repositories/location-note-rea
     DeliveryQuoteRepository,
     PartnerRepository,
     DeliveryEventRepository,
-    LocationNoteReactionRepository
+    LocationNoteReactionRepository,
   ],
   exports: [
     ConfigRepository,
@@ -37,7 +37,7 @@ import { LocationNoteReactionRepository } from './repositories/location-note-rea
     DeliveryQuoteRepository,
     PartnerRepository,
     DeliveryEventRepository,
-    LocationNoteReactionRepository
+    LocationNoteReactionRepository,
   ],
 })
 export class PersistenceModule {}

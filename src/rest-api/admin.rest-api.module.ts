@@ -13,7 +13,7 @@ import { ConfigAdminRestApiModule } from './config/admin/config.admin.rest-api.m
     CourierSettingAdminRestApiModule,
     DeliveryAdminRestApiModule,
     LocationAdminRestApiModule,
-    ConfigAdminRestApiModule
+    ConfigAdminRestApiModule,
   ],
 })
 export class AdminRestApiModule {}

@@ -4,19 +4,17 @@ import { PartnerRepository } from 'src/persistence/repositories/partner.reposito
 @Injectable()
 export class PartnerDomainService {
   private readonly logger = new Logger(PartnerDomainService.name)
-  constructor(
-		private partnerRepository: PartnerRepository
-	) {}
+  constructor(private partnerRepository: PartnerRepository) {}
 
-	async getById(id: string) {
-		const partner = await this.partnerRepository.findById(id)
+  async getById(id: string) {
+    const partner = await this.partnerRepository.findById(id)
 
-		return partner
-	}
+    return partner
+  }
 
-	async getByUserId(userId: string) {
-		const partner = await this.partnerRepository.findByUserIdOrThrow(userId)
+  async getByUserId(userId: string) {
+    const partner = await this.partnerRepository.findByUserIdOrThrow(userId)
 
-		return partner
-	}
+    return partner
+  }
 }

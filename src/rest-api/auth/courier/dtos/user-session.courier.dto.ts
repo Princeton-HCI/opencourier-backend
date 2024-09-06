@@ -9,7 +9,7 @@ export class UserSessionCourierDto {
   })
   @IsString()
   accessToken!: string
-  
+
   @ApiProperty({
     required: true,
     type: String,

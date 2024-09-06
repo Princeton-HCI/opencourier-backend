@@ -1,6 +1,5 @@
-
 export interface ICourierCreate {
   userId: string
-	firstName: string
-	lastName: string
+  firstName: string
+  lastName: string
 }

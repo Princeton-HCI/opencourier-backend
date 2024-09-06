@@ -1,5 +1,5 @@
-import { IDeliveryDurationCalculationInput } from "./IDeliveryDurationCalculationInput";
+import { IDeliveryDurationCalculationInput } from './IDeliveryDurationCalculationInput'
 
 export interface IDeliveryDurationCalculationService {
-	calculateDeliveryDuration(input: IDeliveryDurationCalculationInput): Promise<number>;
+  calculateDeliveryDuration(input: IDeliveryDurationCalculationInput): Promise<number>
 }

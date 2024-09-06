@@ -71,21 +71,17 @@ const DOMAIN_MODULES: ModuleMetadata['imports'] = [
   DeliveryQuoteDomainModule,
   PartnerDomainModule,
   DeliveryEventDomainModule,
-  PayoutDomainModule
+  PayoutDomainModule,
 ]
 
 const REST_API_MODULES: ModuleMetadata['imports'] = [
   AdminRestApiModule,
   CourierRestApiModule,
   PartnerRestApiModule,
-  TestingRestApiModule
+  TestingRestApiModule,
 ]
 
-const INFRASTRUCTURE_MODULES: ModuleMetadata['imports'] = [
-  EventBusModule,
-  TaskBusModule,
-  StorageModule,
-]
+const INFRASTRUCTURE_MODULES: ModuleMetadata['imports'] = [EventBusModule, TaskBusModule, StorageModule]
 
 const INTEGRATION_MODULES: ModuleMetadata['imports'] = [
   BullMQModule,
@@ -150,7 +146,7 @@ if (process.env.NODE_ENV === 'development') {
   providers: [
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard
+      useClass: ThrottlerGuard,
     },
     {
       provide: APP_GUARD,
@@ -183,8 +179,6 @@ export class AppModule implements NestModule {
       .apply(QueryMiddleware)
       .forRoutes('*')
       .apply(NgrokMiddleware)
-      .forRoutes(
-        { path: '/stripe/webhooks*', method: RequestMethod.POST }
-      )
+      .forRoutes({ path: '/stripe/webhooks*', method: RequestMethod.POST })
   }
 }

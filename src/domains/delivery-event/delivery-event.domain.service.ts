@@ -3,9 +3,6 @@ import { DeliveryEventRepository } from 'src/persistence/repositories/delivery-e
 
 @Injectable()
 export class DeliveryEventDomainService {
-	private readonly logger = new Logger(DeliveryEventDomainService.name)
-  constructor(
-		private deliveryEventRepository: DeliveryEventRepository
-	) {}
-
+  private readonly logger = new Logger(DeliveryEventDomainService.name)
+  constructor(private deliveryEventRepository: DeliveryEventRepository) {}
 }

@@ -10,23 +10,18 @@ import { DeliveryQuoteAmountResult } from './types/delivery-quote-amount-result.
 export class QuoteCalculationService implements IQuoteCalculationService {
   private readonly logger = new Logger(QuoteCalculationService.name)
 
-  constructor(
-    private readonly moduleRef: ModuleRef,
-    private configDomainService: ConfigDomainService,
-  ) {}
+  constructor(private readonly moduleRef: ModuleRef, private configDomainService: ConfigDomainService) {}
 
   async calculateDeliveryQuote(
     input: IQuoteCalculationInput,
-    quoteCalculationType?: EnumQuoteCalculationType,
+    quoteCalculationType?: EnumQuoteCalculationType
   ): Promise<DeliveryQuoteAmountResult> {
     const implementation = await this.resolveClass(quoteCalculationType)
 
     return implementation.calculateDeliveryQuote(input)
   }
 
-  private async resolveClass(
-    quoteCalculationType?: EnumQuoteCalculationType,
-  ): Promise<IQuoteCalculationService> {
+  private async resolveClass(quoteCalculationType?: EnumQuoteCalculationType): Promise<IQuoteCalculationService> {
     if (!quoteCalculationType) {
       quoteCalculationType = await this.getCalculationTypeFromDB()
     }
@@ -41,22 +36,19 @@ export class QuoteCalculationService implements IQuoteCalculationService {
 
       // check if the implementation implements IQuoteCalculationService
       if (!implementation.calculateDeliveryQuote) {
-        throw new Error(
-          `Calculation type ${quoteCalculationType} does not implement IQuoteCalculationService`,
-        )
+        throw new Error(`Calculation type ${quoteCalculationType} does not implement IQuoteCalculationService`)
       }
 
       return implementation
     } catch (error) {
       throw new Error(
-        `Calculation type not found for ${quoteCalculationType}. Please check QuoteCalculationModule providers`,
+        `Calculation type not found for ${quoteCalculationType}. Please check QuoteCalculationModule providers`
       )
     }
   }
 
   async getCalculationTypeFromDB(): Promise<EnumQuoteCalculationType> {
-    const quoteCalculationType =
-      await this.configDomainService.instanceConfig.getQuoteCalculationTypeSetting()
+    const quoteCalculationType = await this.configDomainService.instanceConfig.getQuoteCalculationTypeSetting()
     if (Object.values(EnumQuoteCalculationType).indexOf(quoteCalculationType) < 0) {
       throw new Error(`Invalid default quote calculation type: ${quoteCalculationType}`)
     }

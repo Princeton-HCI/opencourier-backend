@@ -37,10 +37,7 @@ import { InstanceConfigSettingsInput } from 'src/rest-api/config/admin/queries/i
 export class InstanceConfigDomainService {
   private readonly logger = new Logger(InstanceConfigDomainService.name)
 
-  constructor(
-    private configRepository: ConfigRepository,
-    private fileConfigService: ConfigService,
-  ) {}
+  constructor(private configRepository: ConfigRepository, private fileConfigService: ConfigService) {}
 
   async getInstanceConfigSettings(): Promise<InstanceConfigSettings> {
     // Instance settings
@@ -94,17 +91,12 @@ export class InstanceConfigDomainService {
     }
   }
 
-  async setInstanceConfigSettings(
-    data: InstanceConfigSettingsInput,
-  ): Promise<InstanceConfigSettings> {
+  async setInstanceConfigSettings(data: InstanceConfigSettingsInput): Promise<InstanceConfigSettings> {
     if (data.courierMatcherType) {
       await this.configRepository.saveByKey(ConfigKey.COURIER_MATCHER_TYPE, data.courierMatcherType)
     }
     if (data.quoteCalculationType) {
-      await this.configRepository.saveByKey(
-        ConfigKey.QUOTE_CALCULATION_TYPE,
-        data.quoteCalculationType,
-      )
+      await this.configRepository.saveByKey(ConfigKey.QUOTE_CALCULATION_TYPE, data.quoteCalculationType)
     }
     if (data.geoCalculationType) {
       await this.configRepository.saveByKey(ConfigKey.GEO_CALCULATION_TYPE, data.geoCalculationType)
@@ -112,57 +104,36 @@ export class InstanceConfigDomainService {
     if (data.deliveryDurationCalculationType) {
       await this.configRepository.saveByKey(
         ConfigKey.DELIVERY_DURATION_CALCULATION_TYPE,
-        data.deliveryDurationCalculationType,
+        data.deliveryDurationCalculationType
       )
     }
     if (data.courierCompensationCalculationType) {
       await this.configRepository.saveByKey(
         ConfigKey.COURIER_COMPENSATION_CALCULATION_TYPE,
-        data.courierCompensationCalculationType,
+        data.courierCompensationCalculationType
       )
     }
     if (data.maxAssignmentDistance) {
-      await this.configRepository.saveByKey(
-        ConfigKey.MAX_ASSIGNMENT_DISTANCE,
-        data.maxAssignmentDistance,
-      )
+      await this.configRepository.saveByKey(ConfigKey.MAX_ASSIGNMENT_DISTANCE, data.maxAssignmentDistance)
     }
     if (data.quoteExpirationMinutes) {
-      await this.configRepository.saveByKey(
-        ConfigKey.QUOTE_EXPIRATION_MINUTES,
-        data.quoteExpirationMinutes,
-      )
+      await this.configRepository.saveByKey(ConfigKey.QUOTE_EXPIRATION_MINUTES, data.quoteExpirationMinutes)
     }
     if (data.feePercentageAmount) {
-      await this.configRepository.saveByKey(
-        ConfigKey.FEE_PERCENTAGE_AMOUNT,
-        data.feePercentageAmount,
-      )
+      await this.configRepository.saveByKey(ConfigKey.FEE_PERCENTAGE_AMOUNT, data.feePercentageAmount)
     }
 
     if (data.defaultCourierPayRate) {
-      await this.configRepository.saveByKey(
-        ConfigKey.DEFAULT_COURIER_PAY_RATE,
-        data.defaultCourierPayRate,
-      )
+      await this.configRepository.saveByKey(ConfigKey.DEFAULT_COURIER_PAY_RATE, data.defaultCourierPayRate)
     }
     if (data.defaultMinimumCourierPay) {
-      await this.configRepository.saveByKey(
-        ConfigKey.DEFAULT_MINIMUM_COURIER_PAY,
-        data.defaultMinimumCourierPay,
-      )
+      await this.configRepository.saveByKey(ConfigKey.DEFAULT_MINIMUM_COURIER_PAY, data.defaultMinimumCourierPay)
     }
     if (data.defaultMaxWorkingHours) {
-      await this.configRepository.saveByKey(
-        ConfigKey.DEFAULT_MAX_WORKING_HOURS,
-        data.defaultMaxWorkingHours,
-      )
+      await this.configRepository.saveByKey(ConfigKey.DEFAULT_MAX_WORKING_HOURS, data.defaultMaxWorkingHours)
     }
     if (data.defaultDietaryRestrictions) {
-      await this.configRepository.saveByKey(
-        ConfigKey.DEFAULT_DIETARY_RESTRICTIONS,
-        data.defaultDietaryRestrictions,
-      )
+      await this.configRepository.saveByKey(ConfigKey.DEFAULT_DIETARY_RESTRICTIONS, data.defaultDietaryRestrictions)
     }
     if (data.distanceUnit) {
       await this.configRepository.saveByKey(ConfigKey.DISTANCE_UNIT, data.distanceUnit)
@@ -178,18 +149,16 @@ export class InstanceConfigDomainService {
   }
 
   async getCourierMatcherTypeSetting(): Promise<EnumCourierMatcherType> {
-    const courierMatcherType = await this.getConfigValueOrDefault(
-      ConfigKey.COURIER_MATCHER_TYPE,
-      () => this.fileConfigService.get(DEFAULT_COURIER_MATCHER_TYPE).toString(),
+    const courierMatcherType = await this.getConfigValueOrDefault(ConfigKey.COURIER_MATCHER_TYPE, () =>
+      this.fileConfigService.get(DEFAULT_COURIER_MATCHER_TYPE).toString()
     )
 
     return courierMatcherType.value as EnumCourierMatcherType
   }
 
   async getQuoteCalculationTypeSetting(): Promise<EnumQuoteCalculationType> {
-    const quoteCalculationType = await this.getConfigValueOrDefault(
-      ConfigKey.QUOTE_CALCULATION_TYPE,
-      () => this.fileConfigService.get(DEFAULT_QUOTE_CALCULATION_TYPE).toString(),
+    const quoteCalculationType = await this.getConfigValueOrDefault(ConfigKey.QUOTE_CALCULATION_TYPE, () =>
+      this.fileConfigService.get(DEFAULT_QUOTE_CALCULATION_TYPE).toString()
     )
 
     return quoteCalculationType.value as EnumQuoteCalculationType
@@ -198,7 +167,7 @@ export class InstanceConfigDomainService {
   async getQuoteToDeliveryConversionTypeSetting(): Promise<EnumQuoteToDeliveryConversionServiceType> {
     const quoteToDeliveryConversionType = await this.getConfigValueOrDefault(
       ConfigKey.QUOTE_TO_DELIVERY_CONVERSION_TYPE,
-      () => this.fileConfigService.get(DEFAULT_QUOTE_TO_DELIVERY_CONVERSION_TYPE).toString(),
+      () => this.fileConfigService.get(DEFAULT_QUOTE_TO_DELIVERY_CONVERSION_TYPE).toString()
     )
 
     return quoteToDeliveryConversionType.value as EnumQuoteToDeliveryConversionServiceType
@@ -207,16 +176,15 @@ export class InstanceConfigDomainService {
   async getDeliveryDurationCalculationTypeSetting(): Promise<EnumDeliveryDurationCalculationType> {
     const deliveryDurationCalculationType = await this.getConfigValueOrDefault(
       ConfigKey.DELIVERY_DURATION_CALCULATION_TYPE,
-      () => this.fileConfigService.get(DEFAULT_DELIVERY_DURATION_CALCULATION_TYPE).toString(),
+      () => this.fileConfigService.get(DEFAULT_DELIVERY_DURATION_CALCULATION_TYPE).toString()
     )
 
     return deliveryDurationCalculationType.value as EnumDeliveryDurationCalculationType
   }
 
   async getGeoCalculationTypeSetting(): Promise<EnumGeoCalculationType> {
-    const quoteCalculationType = await this.getConfigValueOrDefault(
-      ConfigKey.GEO_CALCULATION_TYPE,
-      () => this.fileConfigService.get(DEFAULT_GEO_CALCULATION_TYPE).toString(),
+    const quoteCalculationType = await this.getConfigValueOrDefault(ConfigKey.GEO_CALCULATION_TYPE, () =>
+      this.fileConfigService.get(DEFAULT_GEO_CALCULATION_TYPE).toString()
     )
 
     return quoteCalculationType.value as EnumGeoCalculationType
@@ -224,7 +192,7 @@ export class InstanceConfigDomainService {
 
   async getDistanceUnit(): Promise<EnumDistanceUnit> {
     const distanceUnit = await this.getConfigValueOrDefault(ConfigKey.DISTANCE_UNIT, () =>
-      this.fileConfigService.get(DEFAULT_DISTANCE_UNIT).toString(),
+      this.fileConfigService.get(DEFAULT_DISTANCE_UNIT).toString()
     )
 
     return distanceUnit.value as EnumDistanceUnit
@@ -232,7 +200,7 @@ export class InstanceConfigDomainService {
 
   async getCurrency(): Promise<EnumCurrency> {
     const currency = await this.getConfigValueOrDefault(ConfigKey.CURRENCY, () =>
-      this.fileConfigService.get(DEFAULT_CURRENCY).toString(),
+      this.fileConfigService.get(DEFAULT_CURRENCY).toString()
     )
 
     return currency.value as EnumCurrency
@@ -241,16 +209,15 @@ export class InstanceConfigDomainService {
   async getCourierCompensationTypeSetting(): Promise<EnumCourierCompensationCalculationType> {
     const quoteCalculationType = await this.getConfigValueOrDefault(
       ConfigKey.COURIER_COMPENSATION_CALCULATION_TYPE,
-      () => this.fileConfigService.get(DEFAULT_COURIER_COMPENSATION_CALCULATION_TYPE).toString(),
+      () => this.fileConfigService.get(DEFAULT_COURIER_COMPENSATION_CALCULATION_TYPE).toString()
     )
 
     return quoteCalculationType.value as EnumCourierCompensationCalculationType
   }
 
   async getFeePercentageAmount(): Promise<number> {
-    const feePercentageAmount = await this.getConfigValueOrDefault(
-      ConfigKey.FEE_PERCENTAGE_AMOUNT,
-      () => this.fileConfigService.get(DEFAULT_FEE_PERCENTAGE_AMOUNT).toString(),
+    const feePercentageAmount = await this.getConfigValueOrDefault(ConfigKey.FEE_PERCENTAGE_AMOUNT, () =>
+      this.fileConfigService.get(DEFAULT_FEE_PERCENTAGE_AMOUNT).toString()
     )
 
     return typeof feePercentageAmount.value === 'string'
@@ -261,7 +228,7 @@ export class InstanceConfigDomainService {
   async getMaxAssignmentDistance(): Promise<number | null> {
     const maxAssignmentDistance = await this.getConfigValueOrDefault(
       ConfigKey.MAX_ASSIGNMENT_DISTANCE,
-      this.fileConfigService.get(DEFAULT_MAX_ASSIGNMENT_DISTANCE).toString(),
+      this.fileConfigService.get(DEFAULT_MAX_ASSIGNMENT_DISTANCE).toString()
     )
 
     return typeof maxAssignmentDistance.value === 'string'
@@ -271,7 +238,7 @@ export class InstanceConfigDomainService {
 
   async getMaxDriftDistance(): Promise<number | null> {
     const maxDriftDistance = await this.getConfigValueOrDefault(ConfigKey.MAX_DRIFT_DISTANCE, () =>
-      this.fileConfigService.get(DEFAULT_QUOTE_TO_DELIVERY_MAX_DISTANCE_DRIFT).toString(),
+      this.fileConfigService.get(DEFAULT_QUOTE_TO_DELIVERY_MAX_DISTANCE_DRIFT).toString()
     )
 
     return typeof maxDriftDistance.value === 'string'
@@ -294,10 +261,7 @@ export class InstanceConfigDomainService {
   }
 
   async getDefaultCourierPayRate(): Promise<number | null> {
-    const defaultCourierPayRate = await this.getConfigValueOrDefault(
-      ConfigKey.DEFAULT_COURIER_PAY_RATE,
-      null,
-    )
+    const defaultCourierPayRate = await this.getConfigValueOrDefault(ConfigKey.DEFAULT_COURIER_PAY_RATE, null)
 
     return typeof defaultCourierPayRate.value === 'string'
       ? parseInt(defaultCourierPayRate.value)
@@ -305,10 +269,7 @@ export class InstanceConfigDomainService {
   }
 
   async getDefaultMinimumCourierPay(): Promise<number | null> {
-    const defaultMinimumCourierPay = await this.getConfigValueOrDefault(
-      ConfigKey.DEFAULT_MINIMUM_COURIER_PAY,
-      null,
-    )
+    const defaultMinimumCourierPay = await this.getConfigValueOrDefault(ConfigKey.DEFAULT_MINIMUM_COURIER_PAY, null)
 
     return typeof defaultMinimumCourierPay.value === 'string'
       ? parseInt(defaultMinimumCourierPay.value)
@@ -316,10 +277,7 @@ export class InstanceConfigDomainService {
   }
 
   async getDefaultMaxWorkingHours(): Promise<number | null> {
-    const defaultMaxWorkingHours = await this.getConfigValueOrDefault(
-      ConfigKey.DEFAULT_MAX_WORKING_HOURS,
-      null,
-    )
+    const defaultMaxWorkingHours = await this.getConfigValueOrDefault(ConfigKey.DEFAULT_MAX_WORKING_HOURS, null)
 
     return typeof defaultMaxWorkingHours.value === 'string'
       ? parseInt(defaultMaxWorkingHours.value)
@@ -329,7 +287,7 @@ export class InstanceConfigDomainService {
   async getQuoteExpirationMinutes(): Promise<number> {
     const quoteExpirationMinutes = await this.getConfigValueOrDefault(
       ConfigKey.QUOTE_EXPIRATION_MINUTES,
-      this.fileConfigService.get(DELIVERY_QUOTE_EXPIRATION_MINUTES),
+      this.fileConfigService.get(DELIVERY_QUOTE_EXPIRATION_MINUTES)
     )
 
     return typeof quoteExpirationMinutes.value === 'string'
@@ -338,17 +296,14 @@ export class InstanceConfigDomainService {
   }
 
   async getDefaultDietaryRestrictions(): Promise<EnumCourierDietaryRestrictions | null> {
-    const defaultDietaryRestrictions = await this.getConfigValueOrDefault(
-      ConfigKey.DEFAULT_DIETARY_RESTRICTIONS,
-      null,
-    )
+    const defaultDietaryRestrictions = await this.getConfigValueOrDefault(ConfigKey.DEFAULT_DIETARY_RESTRICTIONS, null)
 
     return defaultDietaryRestrictions.value as EnumCourierDietaryRestrictions
   }
 
   async getConfigValueOrDefault(
     key: ConfigKey,
-    fallback: any,
+    fallback: any
   ): Promise<{
     value: string | number | boolean | null
   }> {

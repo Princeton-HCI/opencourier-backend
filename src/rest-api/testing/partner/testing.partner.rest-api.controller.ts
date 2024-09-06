@@ -7,7 +7,5 @@ import { DeliveryMatchingService } from 'src/services/delivery-matching/delivery
 @swagger.ApiTags('testing')
 @common.Controller(`${PARTNER_API_V1_PREFIX}/testing`)
 export class TestingPartnerRestApiController {
-  constructor(
-    private readonly deliveryMatchingService: DeliveryMatchingService
-  ) {}
+  constructor(private readonly deliveryMatchingService: DeliveryMatchingService) {}
 }

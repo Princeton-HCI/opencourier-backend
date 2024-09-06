@@ -1,4 +1,4 @@
 export interface IPartnerWebhookPayload {
-	eventType: string
-	partnerId: string
+  eventType: string
+  partnerId: string
 }

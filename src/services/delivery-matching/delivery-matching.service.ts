@@ -16,7 +16,7 @@ export class DeliveryMatchingService {
     private readonly courierMatcherService: CourierMatcherService,
     private readonly deliveryRepository: DeliveryRepository,
     private readonly cacheService: CacheService
-  ) {} 
+  ) {}
 
   async matchDeliveryToCourier(deliveryId: string) {
     this.logger.log(`Matching Delivery ${deliveryId} to courier`)
@@ -29,7 +29,9 @@ export class DeliveryMatchingService {
 
     if (delivery.courierId) {
       this.logger.log(`Delivery ${deliveryId} already matched to courier ${delivery.courierId}`)
-      throw new DeliveryOfferAlreadyMatchedException(`Delivery ${deliveryId} already matched to courier ${delivery.courierId}`)
+      throw new DeliveryOfferAlreadyMatchedException(
+        `Delivery ${deliveryId} already matched to courier ${delivery.courierId}`
+      )
     }
 
     const matchedCourierId = delivery.matchedCourierId
@@ -52,7 +54,7 @@ export class DeliveryMatchingService {
         latitude: dropoffLocation.latitude,
         longitude: dropoffLocation.longitude,
       },
-      rejectedCourierIds: await this.getRejectedCourierIds(delivery.id)
+      rejectedCourierIds: await this.getRejectedCourierIds(delivery.id),
     })
 
     if (!result) {
@@ -70,12 +72,12 @@ export class DeliveryMatchingService {
 
     return {
       courier,
-      delivery: updatedDelivery
+      delivery: updatedDelivery,
     }
   }
 
   async getRejectedCourierIds(deliveryId: string) {
-    const cacheKey = CacheHelpers.getDeliveryRejectedCouriersKey(deliveryId);
+    const cacheKey = CacheHelpers.getDeliveryRejectedCouriersKey(deliveryId)
     const rejectedCourierIds = await this.cacheService.getOrDefault<Array<string>>(cacheKey, [])
 
     return rejectedCourierIds

@@ -7,30 +7,29 @@ import { EnvVarMissingException } from 'src/errors'
 
 @Injectable()
 export class SimpleQuoteToDeliveryConversionService implements IQuoteToDeliveryConversionService {
-	private readonly logger = new Logger(SimpleQuoteToDeliveryConversionService.name)
+  private readonly logger = new Logger(SimpleQuoteToDeliveryConversionService.name)
 
-	constructor(
-		private readonly configDomainService: ConfigDomainService,
-		private readonly geoCalculationService: GeoCalculationService
-	) {
-	}
+  constructor(
+    private readonly configDomainService: ConfigDomainService,
+    private readonly geoCalculationService: GeoCalculationService
+  ) {}
 
-	async isValidDeliveryLocationDrift(input: IDeliveryAddressDriftCalculationInput) {
-		const maxDriftDistance = await this.configDomainService.instanceConfig.getMaxDriftDistance();
-		
-		if (maxDriftDistance === null) {
-			throw new EnvVarMissingException('maxDriftDistance env variable is required')
-		}
+  async isValidDeliveryLocationDrift(input: IDeliveryAddressDriftCalculationInput) {
+    const maxDriftDistance = await this.configDomainService.instanceConfig.getMaxDriftDistance()
 
-		const { fromLocation, toLocation } = input
+    if (maxDriftDistance === null) {
+      throw new EnvVarMissingException('maxDriftDistance env variable is required')
+    }
 
-		// check if there is too much drift between the quote and the delivery pickup and dropoff locations
-		// allow a maxDistance drift
-		const distance = await this.geoCalculationService.calculateDistance({
-			fromLocation,
-			toLocation
-		})
+    const { fromLocation, toLocation } = input
 
-		return Promise.resolve(distance <= maxDriftDistance);
-	}
+    // check if there is too much drift between the quote and the delivery pickup and dropoff locations
+    // allow a maxDistance drift
+    const distance = await this.geoCalculationService.calculateDistance({
+      fromLocation,
+      toLocation,
+    })
+
+    return Promise.resolve(distance <= maxDriftDistance)
+  }
 }

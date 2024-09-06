@@ -1,3 +1,1 @@
-
-export abstract class NotificationDispatcher {
-}
+export abstract class NotificationDispatcher {}

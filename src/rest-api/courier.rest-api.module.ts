@@ -15,7 +15,7 @@ import { CourierSettingCourierRestApiModule } from './courier-setting/courier/co
     LocationNoteCourierRestApiModule,
     CourierCourierRestApiModule,
     CourierSettingCourierRestApiModule,
-    PayoutCourierRestApiModule
+    PayoutCourierRestApiModule,
   ],
 })
 export class CourierRestApiModule {}

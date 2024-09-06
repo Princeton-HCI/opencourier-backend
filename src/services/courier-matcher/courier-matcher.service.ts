@@ -12,23 +12,18 @@ export class CourierMatcherService implements ICourierMatcherService {
 
   private static staticMatcherType: EnumCourierMatcherType | null = null
 
-  constructor(
-    private readonly moduleRef: ModuleRef,
-    private readonly configDomainService: ConfigDomainService,
-  ) {}
+  constructor(private readonly moduleRef: ModuleRef, private readonly configDomainService: ConfigDomainService) {}
 
   async findCourierForDelivery(
     input: ICourierMatcherInput,
-    courierMatcherType?: EnumCourierMatcherType,
+    courierMatcherType?: EnumCourierMatcherType
   ): Promise<ICourierMatcherResult | null> {
     const matcher = await this.resolveMatcher(courierMatcherType)
 
     return matcher.findCourierForDelivery(input)
   }
 
-  private async resolveMatcher(
-    courierMatcherType?: EnumCourierMatcherType,
-  ): Promise<ICourierMatcherService> {
+  private async resolveMatcher(courierMatcherType?: EnumCourierMatcherType): Promise<ICourierMatcherService> {
     if (!courierMatcherType) {
       courierMatcherType = await this.getMatcherType()
     }
@@ -50,22 +45,19 @@ export class CourierMatcherService implements ICourierMatcherService {
 
       return matcher
     } catch (error) {
-      throw new Error(
-        `Matcher not found for ${courierMatcherType}. Please check CourierMatcherModule providers`,
-      )
+      throw new Error(`Matcher not found for ${courierMatcherType}. Please check CourierMatcherModule providers`)
     }
   }
 
   async getMatcherType(): Promise<EnumCourierMatcherType> {
     if (CourierMatcherService.staticMatcherType) {
       this.logger.log(
-        `Using static matcher from 'CourierMatcherService.staticMatcherType': ${CourierMatcherService.staticMatcherType}`,
+        `Using static matcher from 'CourierMatcherService.staticMatcherType': ${CourierMatcherService.staticMatcherType}`
       )
       return CourierMatcherService.staticMatcherType
     }
 
-    const courierMatcherType =
-      await this.configDomainService.instanceConfig.getCourierMatcherTypeSetting()
+    const courierMatcherType = await this.configDomainService.instanceConfig.getCourierMatcherTypeSetting()
     if (Object.values(EnumCourierMatcherType).indexOf(courierMatcherType) < 0) {
       this.logger.error(`Invalid default courier matcher type: ${courierMatcherType}`)
       throw new Error(`Invalid default courier matcher type: ${courierMatcherType}`)
@@ -74,17 +66,12 @@ export class CourierMatcherService implements ICourierMatcherService {
     return courierMatcherType
   }
 
-  async temporarilySetStaticMatcher(
-    courierMatcherType: EnumCourierMatcherType,
-    callback: any,
-  ): Promise<void> {
+  async temporarilySetStaticMatcher(courierMatcherType: EnumCourierMatcherType, callback: any): Promise<void> {
     if (typeof callback !== 'function') {
       throw new Error('Callback must be a function')
     }
 
-    this.logger.log(
-      `Temporarily setting CourierMatcherType to: ${CourierMatcherService.staticMatcherType}`,
-    )
+    this.logger.log(`Temporarily setting CourierMatcherType to: ${CourierMatcherService.staticMatcherType}`)
     CourierMatcherService.staticMatcherType = courierMatcherType
 
     const result = await callback()

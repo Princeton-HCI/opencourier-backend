@@ -10,14 +10,11 @@ import { ICourierCompensationInput } from './interfaces/ICourierCompensationInpu
 export class CourierCompensationService implements ICourierCompensationService {
   private readonly logger = new Logger(CourierCompensationService.name)
 
-  constructor(
-    private readonly moduleRef: ModuleRef,
-    private configDomainService: ConfigDomainService,
-  ) {}
+  constructor(private readonly moduleRef: ModuleRef, private configDomainService: ConfigDomainService) {}
 
   async calculateCourierCompensation(
     input: ICourierCompensationInput,
-    courierCompensationType?: EnumCourierCompensationCalculationType,
+    courierCompensationType?: EnumCourierCompensationCalculationType
   ) {
     const implementation = await this.resolveClass(courierCompensationType)
 
@@ -26,7 +23,7 @@ export class CourierCompensationService implements ICourierCompensationService {
 
   async calculateCourierCompensationForDelivery(
     input: ICourierCompensationForDeliveryInput,
-    courierCompensationType?: EnumCourierCompensationCalculationType,
+    courierCompensationType?: EnumCourierCompensationCalculationType
   ) {
     const implementation = await this.resolveClass(courierCompensationType)
 
@@ -34,7 +31,7 @@ export class CourierCompensationService implements ICourierCompensationService {
   }
 
   private async resolveClass(
-    courierCompensationType?: EnumCourierCompensationCalculationType,
+    courierCompensationType?: EnumCourierCompensationCalculationType
   ): Promise<ICourierCompensationService> {
     if (!courierCompensationType) {
       courierCompensationType = await this.getTypeFromDb()
@@ -49,32 +46,24 @@ export class CourierCompensationService implements ICourierCompensationService {
       const implementation = await this.moduleRef.resolve(courierCompensationType)
 
       // check if the implementation implements ICourierCompensationService
-      if (
-        !implementation.calculateCourierCompensation ||
-        !implementation.calculateCourierCompensationForDelivery
-      ) {
+      if (!implementation.calculateCourierCompensation || !implementation.calculateCourierCompensationForDelivery) {
         throw new Error(
-          `Courier compensation calculation type ${courierCompensationType} does not implement ICourierCompensationService`,
+          `Courier compensation calculation type ${courierCompensationType} does not implement ICourierCompensationService`
         )
       }
 
       return implementation
     } catch (error) {
       throw new Error(
-        `Courier compensation calculation type not found for ${courierCompensationType}. Please check DeliveryCourierCompensationModule providers`,
+        `Courier compensation calculation type not found for ${courierCompensationType}. Please check DeliveryCourierCompensationModule providers`
       )
     }
   }
 
   async getTypeFromDb(): Promise<EnumCourierCompensationCalculationType> {
-    const courierCompensationType =
-      await this.configDomainService.instanceConfig.getCourierCompensationTypeSetting()
-    if (
-      Object.values(EnumCourierCompensationCalculationType).indexOf(courierCompensationType) < 0
-    ) {
-      throw new Error(
-        `Invalid default quote to delivery conversion type: ${courierCompensationType}`,
-      )
+    const courierCompensationType = await this.configDomainService.instanceConfig.getCourierCompensationTypeSetting()
+    if (Object.values(EnumCourierCompensationCalculationType).indexOf(courierCompensationType) < 0) {
+      throw new Error(`Invalid default quote to delivery conversion type: ${courierCompensationType}`)
     }
 
     return courierCompensationType

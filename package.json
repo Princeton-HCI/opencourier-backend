@@ -47,6 +47,7 @@
     "@nestjs/event-emitter": "^2.0.2",
     "@nestjs/graphql": "9.1.2",
     "@nestjs/jwt": "^10.0.2",
+    "@nestjs/microservices": "^10.4.1",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "9.4.3",
     "@nestjs/platform-socket.io": "^10.3.10",

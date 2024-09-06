@@ -5,11 +5,6 @@ generator client {
   output          = "./client"
 }
 
-generator types {
-  provider = "prisma-client-js"
-  output   = "./types"
-}
-
 datasource postgres {
   provider   = "postgresql"
   url        = env("DB_URL")

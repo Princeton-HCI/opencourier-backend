@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Delivery, Prisma } from '@prisma/types'
+import { Delivery, Location, Prisma } from '@prisma/types'
 
 import { PrismaService } from '../../services/prisma/prisma.service'
 import { EntityRepository } from '../EntityRepository'
@@ -10,6 +10,12 @@ import { DeliveryWhereUniqueArgs } from 'src/domains/delivery/types/delivery-whe
 import { IDeliveryUpdate } from 'src/domains/delivery/interfaces/IDeliveryUpdate'
 import { DeliveryEntity } from 'src/domains/delivery/entities/delivery.entity'
 import { IDeliveryCreate } from 'src/domains/delivery/interfaces/IDeliveryCreate'
+import { DeliveryWithLocationsEntity } from 'src/domains/delivery/entities/delivery-with-locations.entity'
+
+export type PrismaDeliveryWithLocations = Delivery & {
+  pickupLocation: Location | null,
+  dropoffLocation: Location | null
+}
 
 @Injectable()
 export class DeliveryRepository extends EntityRepository implements IDeliveryRepository {
@@ -19,7 +25,7 @@ export class DeliveryRepository extends EntityRepository implements IDeliveryRep
 
   async create(input: IDeliveryCreate) {
     const delivery = await this.prisma.delivery.create({
-      data: input,
+      data: input
     })
 
     return this.toDomain(delivery)
@@ -30,7 +36,7 @@ export class DeliveryRepository extends EntityRepository implements IDeliveryRep
       where: {
         id: deliveryId,
       },
-      data: input,
+      data: input
     })
 
     return this.toDomain(delivery)
@@ -40,8 +46,8 @@ export class DeliveryRepository extends EntityRepository implements IDeliveryRep
     const delivery = await this.prisma.delivery.findUnique({
       where: {
         id: deliveryId,
-        ...otherFilters,
-      } as DeliveryWhereUniqueArgs,
+        ...otherFilters
+      } as DeliveryWhereUniqueArgs
     })
 
     return delivery ? this.toDomain(delivery) : null
@@ -50,8 +56,8 @@ export class DeliveryRepository extends EntityRepository implements IDeliveryRep
   async findByDeliveryQuoteId(deliveryQuoteId: string) {
     const delivery = await this.prisma.delivery.findUnique({
       where: {
-        deliveryQuoteId: deliveryQuoteId,
-      },
+        deliveryQuoteId: deliveryQuoteId
+      }
     })
 
     return delivery ? this.toDomain(delivery) : null
@@ -61,8 +67,8 @@ export class DeliveryRepository extends EntityRepository implements IDeliveryRep
     const delivery = await this.prisma.delivery.findUniqueOrThrow({
       where: {
         id: deliveryId,
-        // ...otherFilters, TODO: Courier delivery by id should allow courier to fetch pending deliveries, use `matchedCourierId` prop to filter.
-      } as DeliveryWhereUniqueArgs,
+        ...otherFilters
+      } as DeliveryWhereUniqueArgs
     })
 
     return this.toDomain(delivery)
@@ -71,20 +77,19 @@ export class DeliveryRepository extends EntityRepository implements IDeliveryRep
   async findManyPaginated(args: DeliveryWhereArgs, page?: number, perPage?: number) {
     const paginator = createPaginator<Delivery, Prisma.DeliveryFindManyArgs, Prisma.DeliveryDelegate>()
 
-    const result = await paginator(
-      this.prisma.delivery,
-      {
-        where: {
-          ...args,
-        },
-        orderBy: { createdAt: 'desc' },
-      },
-      { page, perPage }
-    )
+    const result = await paginator(this.prisma.delivery, {
+      where: {
+        ...args
+      }, orderBy: { createdAt: 'desc' },
+      include: {
+        pickupLocation: true,
+        dropoffLocation: true,
+      }
+    }, { page, perPage })
 
     return {
       ...result,
-      data: this.toDomainMany(result.data),
+      data: result.data.map((d) => new DeliveryWithLocationsEntity(d as PrismaDeliveryWithLocations))
     }
   }
 

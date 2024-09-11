@@ -7,7 +7,7 @@ export class LocationNoteReactionCourierDto implements Partial<LocationNoteReact
   id!: string
 
   @ApiProperty({ enum: EnumLocationNoteReactionType })
-  reaction: EnumLocationNoteReactionType
+  reaction: EnumLocationNoteReactionType;
 
   @ApiProperty({ type: String })
   locationNoteId: string
@@ -19,11 +19,11 @@ export class LocationNoteReactionCourierDto implements Partial<LocationNoteReact
   createdAt: Date
 
   constructor(data: LocationNoteReactionEntity) {
-    this.id = data.id
-    this.reaction = data.reaction
-    this.locationNoteId = data.locationNoteId
-    this.courierId = data.courierId
+    this.id = data.id;
+    this.reaction = data.reaction;
+    this.locationNoteId = data.locationNoteId;
+    this.courierId = data.courierId;
 
-    this.createdAt = data.createdAt
+    this.createdAt = data.createdAt;
   }
 }

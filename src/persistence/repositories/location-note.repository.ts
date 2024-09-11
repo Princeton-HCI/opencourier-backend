@@ -19,7 +19,20 @@ export class LocationNoteRepository extends EntityRepository implements ILocatio
 
   async create(input: ILocationNoteCreate) {
     const locationNote = await this.prisma.locationNote.create({
-      data: input,
+      data: input
+    })
+
+    return this.toDomain(locationNote)
+  }
+
+  async update(noteId: string, note: string) {
+    const locationNote = await this.prisma.locationNote.update({
+      where: {
+        id: noteId
+      },
+      data: {
+        note: note
+      }
     })
 
     return this.toDomain(locationNote)
@@ -29,30 +42,21 @@ export class LocationNoteRepository extends EntityRepository implements ILocatio
     const locationNote = await this.prisma.locationNote.findUniqueOrThrow({
       where: {
         id: locationNoteId,
-        ...otherFilters,
-      } as LocationNoteWhereUniqueArgs,
+        ...otherFilters
+      } as LocationNoteWhereUniqueArgs
     })
 
     return this.toDomain(locationNote)
   }
 
-  async findManyPaginated(
-    args: LocationNoteWhereArgs,
-    page?: number,
-    perPage?: number
-  ): Promise<PaginatedResult<LocationNoteEntity>> {
+  async findManyPaginated(args: LocationNoteWhereArgs, page?: number, perPage?: number): Promise<PaginatedResult<LocationNoteEntity>> {
     const paginator = createPaginator<LocationNote, Prisma.LocationNoteFindManyArgs, Prisma.LocationNoteDelegate>()
 
-    const result = await paginator(
-      this.prisma.locationNote,
-      {
-        where: {
-          ...args,
-        },
-        orderBy: { createdAt: 'desc' },
-      },
-      { page, perPage }
-    )
+    const result = await paginator(this.prisma.locationNote, {
+      where: {
+        ...args
+      }, orderBy: { createdAt: 'desc' }
+    }, { page, perPage })
 
     return {
       ...result,
@@ -64,18 +68,28 @@ export class LocationNoteRepository extends EntityRepository implements ILocatio
     const locationNotes = await this.prisma.locationNote.findMany({
       where: {
         locationId: {
-          in: ids,
-        },
+          in: ids
+        }
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'desc'
       },
       include: {
-        noteReactions: true,
-      },
+        noteReactions: true
+      }
     })
 
     return this.toDomainMany(locationNotes)
+  }
+
+  async delete(locationNoteId: string) {
+    const result = await this.prisma.locationNote.delete({
+      where: {
+        id: locationNoteId
+      },
+    })
+
+    return result
   }
 
   private toDomain(data: LocationNote) {

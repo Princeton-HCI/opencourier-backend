@@ -1,4 +1,3 @@
-
 export interface IDeliveryMarkAsDelivered {
   note?: string
   imageData?: Buffer

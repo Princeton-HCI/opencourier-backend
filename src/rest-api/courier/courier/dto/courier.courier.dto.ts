@@ -26,7 +26,7 @@ export class CourierCourierDto implements Partial<CourierEntity> {
   deliverySetting: EnumCourierDeliverySetting
 
   @ApiProperty({ type: CourierLocationCourierDto, nullable: true })
-  currentLocation: CourierLocationCourierDto | null;
+  currentLocation: CourierLocationCourierDto | null
 
   @ApiProperty({ type: String })
   userId: string
@@ -42,7 +42,7 @@ export class CourierCourierDto implements Partial<CourierEntity> {
     this.phoneNumber = data.phoneNumber
     this.status = data.status
     this.deliverySetting = data.deliverySetting
-    this.currentLocation = data.currentLocation ? new CourierLocationCourierDto(data.currentLocation) : null;
+    this.currentLocation = data.currentLocation ? new CourierLocationCourierDto(data.currentLocation) : null
     this.userId = data.userId
     this.createdAt = data.createdAt
   }

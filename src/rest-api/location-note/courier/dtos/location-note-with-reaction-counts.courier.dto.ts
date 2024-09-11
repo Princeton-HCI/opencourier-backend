@@ -7,46 +7,46 @@ export class LocationNoteCourierWithReactionCountsDto implements Partial<Locatio
   @ApiProperty({ type: String })
   id!: string
 
-	@ApiProperty({ type: String, nullable: true })
-	note: string | null
-	
-	@ApiProperty({ type: String, nullable: true })
-	locationId: string | null
-	
-	@ApiProperty({ type: String, nullable: true })
-	deliveryId: string | null
+  @ApiProperty({ type: String, nullable: true })
+  note: string | null
 
-	@ApiProperty({ type: String, nullable: true })
-	courierId: string | null
+  @ApiProperty({ type: String, nullable: true })
+  locationId: string | null
 
-	@ApiProperty({ enum: EnumLocationNoteActor })
-	actor: EnumLocationNoteActor;
+  @ApiProperty({ type: String, nullable: true })
+  deliveryId: string | null
 
-	@ApiProperty({ type: Number })
-	upvotes: number;
+  @ApiProperty({ type: String, nullable: true })
+  courierId: string | null
 
-	@ApiProperty({ type: Number })
-	downvotes: number;
+  @ApiProperty({ enum: EnumLocationNoteActor })
+  actor: EnumLocationNoteActor
 
-	@ApiProperty({ enum: EnumLocationNoteReactionType, nullable: true })
-	currentCourierReaction: EnumLocationNoteReactionType | null;
+  @ApiProperty({ type: Number })
+  upvotes: number
 
-	@ApiProperty({ type: Date })
-	createdAt: Date
-	
-	constructor(data: LocationNoteWithReactionCounts) {
-		this.id = data.id;
-		this.note = data.note;
-		this.courierId = data.courierId;
-		this.actor = data.actor;
-		this.locationId = data.locationId;
-		this.deliveryId = data.deliveryId;
+  @ApiProperty({ type: Number })
+  downvotes: number
 
-		this.upvotes = data.upvotes;
-		this.downvotes = data.downvotes;
+  @ApiProperty({ enum: EnumLocationNoteReactionType, nullable: true })
+  currentCourierReaction: EnumLocationNoteReactionType | null
 
-		this.currentCourierReaction = data.currentCourierReaction;
+  @ApiProperty({ type: Date })
+  createdAt: Date
 
-		this.createdAt = data.createdAt;
+  constructor(data: LocationNoteWithReactionCounts) {
+    this.id = data.id
+    this.note = data.note
+    this.courierId = data.courierId
+    this.actor = data.actor
+    this.locationId = data.locationId
+    this.deliveryId = data.deliveryId
+
+    this.upvotes = data.upvotes
+    this.downvotes = data.downvotes
+
+    this.currentCourierReaction = data.currentCourierReaction
+
+    this.createdAt = data.createdAt
   }
 }

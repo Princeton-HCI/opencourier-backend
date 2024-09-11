@@ -11,7 +11,7 @@ export class LocationNoteDomainService {
   constructor(
     private locationNoteRepository: LocationNoteRepository,
     private locationNoteReactionRepository: LocationNoteReactionRepository
-  ) { }
+  ) {}
 
   async create(input: ILocationNoteCreate) {
     const locationNote = await this.locationNoteRepository.create(input)
@@ -32,7 +32,7 @@ export class LocationNoteDomainService {
   }
 
   async addOrRemoveReaction(locationNoteId: string, courierId: string, reactionType: EnumLocationNoteReactionType) {
-    const reactionByCourier = await this.locationNoteReactionRepository.getNoteFromCourier(locationNoteId, courierId);
+    const reactionByCourier = await this.locationNoteReactionRepository.getNoteFromCourier(locationNoteId, courierId)
 
     if (reactionByCourier) {
       if (reactionByCourier.reaction === reactionType) {
@@ -40,16 +40,16 @@ export class LocationNoteDomainService {
       }
 
       const updatedReaction = await this.locationNoteReactionRepository.update(reactionByCourier.id, {
-        reaction: reactionType
+        reaction: reactionType,
       })
 
-      return updatedReaction;
+      return updatedReaction
     }
 
     const locationNote = await this.locationNoteReactionRepository.create({
       locationNoteId,
       courierId,
-      reaction: reactionType
+      reaction: reactionType,
     })
 
     return locationNote

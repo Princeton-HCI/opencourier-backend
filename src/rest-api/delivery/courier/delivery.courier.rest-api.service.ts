@@ -12,15 +12,14 @@ import { LocationNoteWithReactionCounts } from './types/location-note-with-react
 import { InProgressDeliveryCourier } from './types/in-progress-delivery.courier.type'
 import { NewDeliveryCourier } from './types/new-delivery.courier.type'
 
-
 @Injectable()
 export class DeliveryRestApiCourierService {
   private readonly logger = new Logger(DeliveryRestApiCourierService.name)
   constructor(
     private deliveryDomainService: DeliveryDomainService,
     private locationNoteDomainService: LocationNoteDomainService,
-    private locationNoteReactionDomainService: LocationNoteReactionDomainService,
-  ) { }
+    private locationNoteReactionDomainService: LocationNoteReactionDomainService
+  ) {}
 
   async getById(deliveryId: string, otherFilters?: DeliveryWhereArgs) {
     const delivery = await this.deliveryDomainService.getById(deliveryId, otherFilters)
@@ -37,15 +36,14 @@ export class DeliveryRestApiCourierService {
   async getMyNewDeliveries(courierId: string, page?: number, perPage?: number) {
     const args: DeliveryWhereArgs = {
       matchedCourierId: courierId,
-      status: EnumDeliveryStatus.ASSIGNING_COURIER
+      status: EnumDeliveryStatus.ASSIGNING_COURIER,
     }
 
     const deliveries = await this.deliveryDomainService.getMany(args, page, perPage)
 
-
     return {
       data: deliveries.data as NewDeliveryCourier[],
-      pagination: deliveries.pagination
+      pagination: deliveries.pagination,
     }
   }
 
@@ -53,30 +51,30 @@ export class DeliveryRestApiCourierService {
     const args: DeliveryWhereArgs = {
       courierId,
       status: {
-        in: [
-          EnumDeliveryStatus.ACCEPTED,
-          EnumDeliveryStatus.DISPATCHED,
-          EnumDeliveryStatus.PICKED_UP
-        ]
-      }
+        in: [EnumDeliveryStatus.ACCEPTED, EnumDeliveryStatus.DISPATCHED, EnumDeliveryStatus.PICKED_UP],
+      },
     }
 
     const deliveries = await this.deliveryDomainService.getMany(args, page, perPage)
 
-    const deliveryDropoffLocationIds = deliveries.data.map(delivery => delivery.dropoffLocationId)
-    const deliveryPickupLocationIds = deliveries.data.map(delivery => delivery.pickupLocationId)
+    const deliveryDropoffLocationIds = deliveries.data.map((delivery) => delivery.dropoffLocationId)
+    const deliveryPickupLocationIds = deliveries.data.map((delivery) => delivery.pickupLocationId)
 
     const locationNotes = await this.locationNoteDomainService.getManyByLocationIds([
       ...deliveryDropoffLocationIds,
-      ...deliveryPickupLocationIds
+      ...deliveryPickupLocationIds,
     ])
 
-    const noteReactionCountsById = await this.locationNoteReactionDomainService.getCountsByNoteIds(locationNotes.map(note => note.id))
-    const courierReactionsToNotes = await this.locationNoteReactionDomainService.getReactionByCourierOnNoteIds(locationNotes.map(note => note.id), courierId)
+    const noteReactionCountsById = await this.locationNoteReactionDomainService.getCountsByNoteIds(
+      locationNotes.map((note) => note.id)
+    )
+    const courierReactionsToNotes = await this.locationNoteReactionDomainService.getReactionByCourierOnNoteIds(
+      locationNotes.map((note) => note.id),
+      courierId
+    )
 
-    const locationNotesWithReactions = locationNotes.map(note => {
-      const reactionCounts = noteReactionCountsById[note.id] ||
-        { upvotes: 0, downvotes: 0 }
+    const locationNotesWithReactions = locationNotes.map((note) => {
+      const reactionCounts = noteReactionCountsById[note.id] || { upvotes: 0, downvotes: 0 }
 
       return new LocationNoteWithReactionCounts(
         note,
@@ -86,20 +84,24 @@ export class DeliveryRestApiCourierService {
       )
     })
 
-    const deliveriesWithNotes = deliveries.data.map(delivery => {
-      const dropoffLocationNotes = locationNotesWithReactions.filter(note => note.locationId === delivery.dropoffLocationId)
-      const pickupLocationNotes = locationNotesWithReactions.filter(note => note.locationId === delivery.pickupLocationId)
+    const deliveriesWithNotes = deliveries.data.map((delivery) => {
+      const dropoffLocationNotes = locationNotesWithReactions.filter(
+        (note) => note.locationId === delivery.dropoffLocationId
+      )
+      const pickupLocationNotes = locationNotesWithReactions.filter(
+        (note) => note.locationId === delivery.pickupLocationId
+      )
 
       return {
         ...delivery,
         dropoffLocationNotes,
-        pickupLocationNotes
+        pickupLocationNotes,
       } as InProgressDeliveryCourier
     })
 
     return {
       data: deliveriesWithNotes,
-      pagination: deliveries.pagination
+      pagination: deliveries.pagination,
     }
   }
 
@@ -111,9 +113,9 @@ export class DeliveryRestApiCourierService {
           EnumDeliveryStatus.ASSIGNING_COURIER,
           EnumDeliveryStatus.ACCEPTED,
           EnumDeliveryStatus.DISPATCHED,
-          EnumDeliveryStatus.PICKED_UP
-        ]
-      }
+          EnumDeliveryStatus.PICKED_UP,
+        ],
+      },
     }
 
     const deliveries = await this.deliveryDomainService.getMany(args, page, perPage)
@@ -160,7 +162,7 @@ export class DeliveryRestApiCourierService {
       throw new CantUpdateDeliveryStatusError('Delivery can not be cancelled')
     }
 
-    const updatedDelivery = await this.deliveryDomainService.cancelDelivery(deliveryId);
+    const updatedDelivery = await this.deliveryDomainService.cancelDelivery(deliveryId)
 
     return updatedDelivery
   }
@@ -205,7 +207,7 @@ export class DeliveryRestApiCourierService {
         deliveryId,
         courierId,
         actor: EnumLocationNoteActor.COURIER,
-        locationId: delivery.pickupLocationId
+        locationId: delivery.pickupLocationId,
       })
     }
 
@@ -234,9 +236,9 @@ export class DeliveryRestApiCourierService {
     const deliveredData: any = {}
 
     if (input.imageData) {
-      deliveredData.imageData = input.imageData;
-      deliveredData.imageName = input.imageName;
-      deliveredData.imageType = input.imageType;
+      deliveredData.imageData = input.imageData
+      deliveredData.imageName = input.imageName
+      deliveredData.imageType = input.imageType
     }
 
     const updatedDelivery = await this.deliveryDomainService.markAsDelivered(deliveryId, deliveredData)
@@ -248,7 +250,7 @@ export class DeliveryRestApiCourierService {
         deliveryId,
         courierId,
         actor: EnumLocationNoteActor.COURIER,
-        locationId: delivery.dropoffLocationId
+        locationId: delivery.dropoffLocationId,
       })
     }
 

@@ -19,7 +19,7 @@ import { LocationNoteUpdateCourierInput } from './queries/location-note-update.c
 @swagger.ApiTags('location-notes')
 @common.Controller(`${COURIER_API_V1_PREFIX}/location-notes`)
 export class LocationNoteCourierRestApiController {
-  constructor(private readonly locationNoteRestApiCourierService: LocationNoteRestApiCourierService) { }
+  constructor(private readonly locationNoteRestApiCourierService: LocationNoteRestApiCourierService) {}
 
   @common.Post('')
   @swagger.ApiBody({
@@ -40,7 +40,7 @@ export class LocationNoteCourierRestApiController {
     const locationNote = await this.locationNoteRestApiCourierService.create({
       ...data,
       courierId: courier.id,
-      actor: EnumLocationNoteActor.COURIER
+      actor: EnumLocationNoteActor.COURIER,
     })
 
     return new LocationNoteCourierDto(locationNote)
@@ -63,11 +63,7 @@ export class LocationNoteCourierRestApiController {
     @common.Param('locationNoteId') locationNoteId: string,
     @CurrentUserCourier() courier: CourierEntity
   ): Promise<LocationNoteCourierDto> {
-    const locationNote = await this.locationNoteRestApiCourierService.update(
-      locationNoteId,
-      data.note,
-      courier.id
-    )
+    const locationNote = await this.locationNoteRestApiCourierService.update(locationNoteId, data.note, courier.id)
 
     return new LocationNoteCourierDto(locationNote)
   }
@@ -110,10 +106,14 @@ export class LocationNoteCourierRestApiController {
     @common.Query() args: LocationNoteFindManyCourierArgs,
     @CurrentUserCourier() courier: CourierEntity
   ): Promise<LocationNoteCourierPaginatedDto> {
-    const orders = await this.locationNoteRestApiCourierService.getMany({
-      courierId: courier.id,
-      locationId: args.locationId
-    }, args.page, args.perPage)
+    const orders = await this.locationNoteRestApiCourierService.getMany(
+      {
+        courierId: courier.id,
+        locationId: args.locationId,
+      },
+      args.page,
+      args.perPage
+    )
 
     const dto = new LocationNoteCourierPaginatedDto(orders)
     return dto
@@ -136,7 +136,6 @@ export class LocationNoteCourierRestApiController {
     const dto = new LocationNoteCourierDto(orders)
     return dto
   }
-
 
   @common.Delete(':locationNoteId')
   @swagger.ApiResponse({ status: 204 })

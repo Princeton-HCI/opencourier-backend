@@ -6,27 +6,27 @@ import { InProgressDeliveryCourierDto } from './in-progress-delivery.courier.dto
 import { InProgressDeliveryCourier } from '../types/in-progress-delivery.courier.type'
 
 export class InProgressDeliveriesCourierPaginatedDto {
-	@ApiProperty({
-		required: true,
-		type: () => [InProgressDeliveryCourierDto],
-	})
-	@ValidateNested({ each: true })
-	@Type(() => InProgressDeliveryCourierDto)
-	@Expose()
-	data: InProgressDeliveryCourierDto[]
+  @ApiProperty({
+    required: true,
+    type: () => [InProgressDeliveryCourierDto],
+  })
+  @ValidateNested({ each: true })
+  @Type(() => InProgressDeliveryCourierDto)
+  @Expose()
+  data: InProgressDeliveryCourierDto[]
 
-	@ApiProperty({
-		required: false,
-		type: () => PaginationDto,
-	})
-	@ValidateNested()
-	@Type(() => PaginationDto)
-	@IsOptional()
-	@Expose()
-	pagination?: PaginationDto
+  @ApiProperty({
+    required: false,
+    type: () => PaginationDto,
+  })
+  @ValidateNested()
+  @Type(() => PaginationDto)
+  @IsOptional()
+  @Expose()
+  pagination?: PaginationDto
 
-	constructor(data: { data: InProgressDeliveryCourier[]; pagination?: PaginationDto }) {
-		this.data = data.data.map((order) => new InProgressDeliveryCourierDto(order))
-		this.pagination = data.pagination
-	}
+  constructor(data: { data: InProgressDeliveryCourier[]; pagination?: PaginationDto }) {
+    this.data = data.data.map((order) => new InProgressDeliveryCourierDto(order))
+    this.pagination = data.pagination
+  }
 }

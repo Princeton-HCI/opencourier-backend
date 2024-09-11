@@ -5,25 +5,29 @@ import { InProgressDeliveryCourier } from '../types/in-progress-delivery.courier
 import { LocationCourierDto } from 'src/rest-api/location/courier/dto/location.courier.dto'
 
 export class InProgressDeliveryCourierDto extends DeliveryCourierDto {
-	@ApiProperty({ type: LocationCourierDto })
-	pickupLocation: LocationCourierDto
+  @ApiProperty({ type: LocationCourierDto })
+  pickupLocation: LocationCourierDto
 
-	@ApiProperty({ type: LocationCourierDto })
-	dropoffLocation: LocationCourierDto
+  @ApiProperty({ type: LocationCourierDto })
+  dropoffLocation: LocationCourierDto
 
-	@ApiProperty({ type: LocationNoteCourierWithReactionCountsDto, isArray: true })
-	pickupLocationNotes: LocationNoteCourierWithReactionCountsDto[]
+  @ApiProperty({ type: LocationNoteCourierWithReactionCountsDto, isArray: true })
+  pickupLocationNotes: LocationNoteCourierWithReactionCountsDto[]
 
-	@ApiProperty({ type: LocationNoteCourierWithReactionCountsDto, isArray: true })
-	dropOffLocationNotes: LocationNoteCourierWithReactionCountsDto[]
-	
-	constructor(data: InProgressDeliveryCourier) {
-		super(data)
+  @ApiProperty({ type: LocationNoteCourierWithReactionCountsDto, isArray: true })
+  dropOffLocationNotes: LocationNoteCourierWithReactionCountsDto[]
 
-		this.pickupLocation = new LocationCourierDto(data.pickupLocation);
-		this.dropoffLocation = new LocationCourierDto(data.dropoffLocation);
+  constructor(data: InProgressDeliveryCourier) {
+    super(data)
 
-		this.pickupLocationNotes = data.pickupLocationNotes.map((note) => new LocationNoteCourierWithReactionCountsDto(note))
-		this.dropOffLocationNotes = data.dropoffLocationNotes.map((note) => new LocationNoteCourierWithReactionCountsDto(note))
+    this.pickupLocation = new LocationCourierDto(data.pickupLocation)
+    this.dropoffLocation = new LocationCourierDto(data.dropoffLocation)
+
+    this.pickupLocationNotes = data.pickupLocationNotes.map(
+      (note) => new LocationNoteCourierWithReactionCountsDto(note)
+    )
+    this.dropOffLocationNotes = data.dropoffLocationNotes.map(
+      (note) => new LocationNoteCourierWithReactionCountsDto(note)
+    )
   }
 }

@@ -20,7 +20,7 @@ import { InProgressDeliveriesCourierPaginatedDto } from './dtos/in-progress-deli
 @swagger.ApiTags('deliveries')
 @common.Controller(`${COURIER_API_V1_PREFIX}/deliveries`)
 export class DeliveryCourierRestApiController {
-  constructor(private readonly deliveryRestApiCourierService: DeliveryRestApiCourierService) { }
+  constructor(private readonly deliveryRestApiCourierService: DeliveryRestApiCourierService) {}
 
   @common.Get('new')
   @swagger.ApiResponse({ type: NewDeliveriesCourierPaginatedDto })
@@ -52,7 +52,11 @@ export class DeliveryCourierRestApiController {
     @common.Query() args: DeliveryFindManyCourierArgs,
     @CurrentUserCourier() courier: CourierEntity
   ): Promise<InProgressDeliveriesCourierPaginatedDto> {
-    const deliveries = await this.deliveryRestApiCourierService.getMyInProgressDeliveriesWithNotes(courier.id, args.page, args.perPage)
+    const deliveries = await this.deliveryRestApiCourierService.getMyInProgressDeliveriesWithNotes(
+      courier.id,
+      args.page,
+      args.perPage
+    )
 
     const dto = new InProgressDeliveriesCourierPaginatedDto(deliveries)
     return dto
@@ -111,7 +115,11 @@ export class DeliveryCourierRestApiController {
     @common.Body() input: ReportDeliveryIssueCourierInput,
     @CurrentUserCourier() courier: CourierEntity
   ): Promise<DeliveryCourierDto> {
-    const deliveries = await this.deliveryRestApiCourierService.reportIssueWithTheDelivery(deliveryId, courier.id, input)
+    const deliveries = await this.deliveryRestApiCourierService.reportIssueWithTheDelivery(
+      deliveryId,
+      courier.id,
+      input
+    )
 
     const dto = new DeliveryCourierDto(deliveries)
     return dto
@@ -256,7 +264,7 @@ export class DeliveryCourierRestApiController {
     const dto = new DeliveryCourierDto(deliveries)
     return dto
   }
-  
+
   @common.Post(':deliveryId/mark-as-on-the-way')
   @swagger.ApiCreatedResponse({
     type: DeliveryCourierDto,

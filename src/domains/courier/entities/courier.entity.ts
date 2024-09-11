@@ -14,13 +14,13 @@ export class CourierEntity implements Courier {
   stripeAccountId: string | null
   stripeAccountStatus: EnumStripeAccountStatus
 
-  currentLocation?: GeoPosition | null;
+  currentLocation?: GeoPosition | null
 
   userId: string
   createdAt: Date
   updatedAt: Date
 
-  constructor(data: Courier & { currentLocation?: GeoPosition | null; }) {
+  constructor(data: Courier & { currentLocation?: GeoPosition | null }) {
     this.id = data.id
     this.node_uri = data.node_uri
     this.firstName = data.firstName

@@ -33,7 +33,7 @@ export const STATE_MACHINE: Record<
       [EnumDeliveryEventType.PICKED_UP]: EnumDeliveryStatus.PICKED_UP,
       [EnumDeliveryEventType.CANCELED]: EnumDeliveryStatus.CANCELED,
       [EnumDeliveryEventType.FAILED]: EnumDeliveryStatus.FAILED,
-      [EnumDeliveryEventType.ARRIVED_AT_PICKUP_LOCATION]: EnumDeliveryStatus.COURIER_ARRIVED_AT_PICKUP_LOCATION
+      [EnumDeliveryEventType.ARRIVED_AT_PICKUP_LOCATION]: EnumDeliveryStatus.COURIER_ARRIVED_AT_PICKUP_LOCATION,
     },
   },
   [EnumDeliveryStatus.COURIER_ARRIVED_AT_PICKUP_LOCATION]: {
@@ -41,14 +41,14 @@ export const STATE_MACHINE: Record<
       [EnumDeliveryEventType.PICKED_UP]: EnumDeliveryStatus.PICKED_UP,
       [EnumDeliveryEventType.CANCELED]: EnumDeliveryStatus.CANCELED,
       [EnumDeliveryEventType.FAILED]: EnumDeliveryStatus.FAILED,
-    }
+    },
   },
   [EnumDeliveryStatus.PICKED_UP]: {
     on: {
       [EnumDeliveryEventType.ON_THE_WAY]: EnumDeliveryStatus.ON_THE_WAY,
       [EnumDeliveryEventType.CANCELED]: EnumDeliveryStatus.CANCELED,
       [EnumDeliveryEventType.FAILED]: EnumDeliveryStatus.FAILED,
-      [EnumDeliveryEventType.ARRIVED_AT_DROPOFF_LOCATION]: EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION
+      [EnumDeliveryEventType.ARRIVED_AT_DROPOFF_LOCATION]: EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION,
     },
   },
   [EnumDeliveryStatus.ON_THE_WAY]: {
@@ -56,7 +56,7 @@ export const STATE_MACHINE: Record<
       [EnumDeliveryEventType.DROPPED_OFF]: EnumDeliveryStatus.DROPPED_OFF,
       [EnumDeliveryEventType.CANCELED]: EnumDeliveryStatus.CANCELED,
       [EnumDeliveryEventType.FAILED]: EnumDeliveryStatus.FAILED,
-      [EnumDeliveryEventType.ARRIVED_AT_DROPOFF_LOCATION]: EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION
+      [EnumDeliveryEventType.ARRIVED_AT_DROPOFF_LOCATION]: EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION,
     },
   },
   [EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION]: {
@@ -64,7 +64,7 @@ export const STATE_MACHINE: Record<
       [EnumDeliveryEventType.DROPPED_OFF]: EnumDeliveryStatus.DROPPED_OFF,
       [EnumDeliveryEventType.CANCELED]: EnumDeliveryStatus.CANCELED,
       [EnumDeliveryEventType.FAILED]: EnumDeliveryStatus.FAILED,
-    }
+    },
   },
   [EnumDeliveryStatus.DROPPED_OFF]: { on: {} },
   [EnumDeliveryStatus.CANCELED]: {

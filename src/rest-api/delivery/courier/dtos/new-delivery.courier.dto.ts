@@ -4,16 +4,16 @@ import { LocationCourierDto } from 'src/rest-api/location/courier/dto/location.c
 import { NewDeliveryCourier } from '../types/new-delivery.courier.type'
 
 export class NewDeliveryCourierDto extends DeliveryCourierDto {
-	@ApiProperty({ type: LocationCourierDto })
-	pickupLocation: LocationCourierDto
+  @ApiProperty({ type: LocationCourierDto })
+  pickupLocation: LocationCourierDto
 
-	@ApiProperty({ type: LocationCourierDto })
-	dropoffLocation: LocationCourierDto
+  @ApiProperty({ type: LocationCourierDto })
+  dropoffLocation: LocationCourierDto
 
-	constructor(data: NewDeliveryCourier) {
-		super(data)
+  constructor(data: NewDeliveryCourier) {
+    super(data)
 
-		this.pickupLocation = new LocationCourierDto(data.pickupLocation);
-		this.dropoffLocation = new LocationCourierDto(data.dropoffLocation);
+    this.pickupLocation = new LocationCourierDto(data.pickupLocation)
+    this.dropoffLocation = new LocationCourierDto(data.dropoffLocation)
   }
 }

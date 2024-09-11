@@ -9,12 +9,12 @@ export class LocationNoteReactionEntity implements LocationNoteReaction {
   courierId: string
 
   constructor(data: LocationNoteReaction) {
-    this.id = data.id;
-    this.reaction = data.reaction;
-    this.locationNoteId = data.locationNoteId;
-    this.courierId = data.courierId;
+    this.id = data.id
+    this.reaction = data.reaction
+    this.locationNoteId = data.locationNoteId
+    this.courierId = data.courierId
 
-    this.createdAt = data.createdAt;
-    this.updatedAt = data.updatedAt;
+    this.createdAt = data.createdAt
+    this.updatedAt = data.updatedAt
   }
 }

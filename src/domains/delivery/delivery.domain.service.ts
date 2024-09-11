@@ -170,7 +170,7 @@ export class DeliveryDomainService {
   }
 
   async courierArrivedAtDropOff(deliveryId: string) {
-    const delivery = await this.deliveryRepository.findByIdOrThrow(deliveryId);
+    const delivery = await this.deliveryRepository.findByIdOrThrow(deliveryId)
 
     // if (delivery.status !== EnumDeliveryStatus.PICKED_UP) {
     //   throw new CantUpdateDeliveryStatusError(`Delivery ${deliveryId} can not be marked as arrived at dropoff location, delivery hasn't been picked up. On status ${delivery.status}`)
@@ -233,7 +233,7 @@ export class DeliveryDomainService {
   }
 
   async courierArrivedAtPickup(deliveryId: string) {
-    const delivery = await this.deliveryRepository.findByIdOrThrow(deliveryId);
+    const delivery = await this.deliveryRepository.findByIdOrThrow(deliveryId)
 
     // if (delivery.status !== EnumDeliveryStatus.DISPATCHED) {
     //   throw new CantUpdateDeliveryStatusError(`Delivery ${deliveryId} can not be marked as arrived at pickup location, delivery isn't on dispatched status. On status ${delivery.status}`)

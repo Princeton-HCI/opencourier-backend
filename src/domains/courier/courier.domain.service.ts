@@ -10,9 +10,7 @@ import { EnumCourierDeliverySetting, EnumCourierStatus } from '@prisma/types'
 @Injectable()
 export class CourierDomainService {
   private readonly logger = new Logger(CourierDomainService.name)
-  constructor(
-    private courierRepository: CourierRepository
-  ) { }
+  constructor(private courierRepository: CourierRepository) {}
 
   async create(input: ICourierCreate) {
     const { userId, firstName, lastName } = input
@@ -20,7 +18,7 @@ export class CourierDomainService {
     const courier = await this.courierRepository.create({
       userId,
       firstName,
-      lastName
+      lastName,
     })
 
     return courier
@@ -29,7 +27,7 @@ export class CourierDomainService {
   async update(id: string, input: ICourierUpdate) {
     const courier = await this.courierRepository.updateById(id, input)
 
-    return courier;
+    return courier
   }
 
   async getNearestAvailableCourier(args: ICourierFindNearestArgs) {

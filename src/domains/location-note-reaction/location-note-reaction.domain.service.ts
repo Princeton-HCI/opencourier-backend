@@ -3,21 +3,18 @@ import { LocationNoteReactionRepository } from 'src/persistence/repositories/loc
 
 @Injectable()
 export class LocationNoteReactionDomainService {
-	private readonly logger = new Logger(LocationNoteReactionDomainService.name)
-  constructor(
-		private locationNoteReactionRepository: LocationNoteReactionRepository
-	) {}
+  private readonly logger = new Logger(LocationNoteReactionDomainService.name)
+  constructor(private locationNoteReactionRepository: LocationNoteReactionRepository) {}
 
+  async getCountsByNoteIds(noteIds: string[]) {
+    const locationNotes = await this.locationNoteReactionRepository.findReactionCountsGrouppedByNoteIds(noteIds)
 
-	async getCountsByNoteIds(noteIds: string[]) {
-		const locationNotes = await this.locationNoteReactionRepository.findReactionCountsGrouppedByNoteIds(noteIds)
+    return locationNotes
+  }
 
-		return locationNotes
-	}
+  async getReactionByCourierOnNoteIds(noteIds: string[], courierId: string) {
+    const locationNotes = await this.locationNoteReactionRepository.findReactionByCourierOnNoteIds(noteIds, courierId)
 
-	async getReactionByCourierOnNoteIds(noteIds: string[], courierId: string) {
-		const locationNotes = await this.locationNoteReactionRepository.findReactionByCourierOnNoteIds(noteIds, courierId)
-
-		return locationNotes
-	}
+    return locationNotes
+  }
 }

@@ -1,5 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Courier, CourierSetting, EnumCourierDeliverySetting, EnumCourierStatus, EnumDeliveryStatus, Prisma } from '@prisma/types'
+import {
+  Courier,
+  CourierSetting,
+  EnumCourierDeliverySetting,
+  EnumCourierStatus,
+  EnumDeliveryStatus,
+  Prisma,
+} from '@prisma/types'
 
 import { PrismaService } from '../../services/prisma/prisma.service'
 import { EntityRepository } from '../EntityRepository'
@@ -14,7 +21,6 @@ import { ICourierUpdateLocation } from 'src/domains/courier/interfaces/ICourierU
 import { ICourierFindNearestArgs } from 'src/domains/courier/interfaces/ICourierFindNearestArgs'
 import { ICourierFindBySeniorityArgs } from 'src/domains/courier/interfaces/ICourierFindBySeniorityArgs'
 import { GeoPosition } from 'src/shared-types'
-
 
 @Injectable()
 export class CourierRepository extends EntityRepository implements ICourierRepository {
@@ -52,20 +58,20 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
   async updateCurrentLocationById(courierId: string, data: ICourierUpdateLocation) {
     const courier = await this.prisma.courier.findUniqueOrThrow({
       where: {
-        id: courierId
-      }
+        id: courierId,
+      },
     })
 
-    const { latitude, longitude } = data;
+    const { latitude, longitude } = data
 
-    const coord = `POINT(${longitude} ${latitude})`;
+    const coord = `POINT(${longitude} ${latitude})`
     const queryRaw = Prisma.sql`
       UPDATE "Courier"
       SET "currentLocation" = ST_GeomFromText(${coord}, 4326)
       WHERE "id" = ${courier.id}
-    `;
+    `
 
-    await this.prisma.$queryRaw(queryRaw);
+    await this.prisma.$queryRaw(queryRaw)
   }
 
   async getCurrentLocation(courierId: string) {
@@ -74,17 +80,17 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       FROM "Courier"
       WHERE "id" = ${courierId}
       LIMIT 1
-    `;
+    `
 
-    const results = await this.prisma.$queryRaw<Array<{ currentLocation: string }>>(queryRaw);
+    const results = await this.prisma.$queryRaw<Array<{ currentLocation: string }>>(queryRaw)
 
     if (results.length === 0 || !results[0]) {
-      return null;
+      return null
     }
 
     try {
-      const courierLocation = JSON.parse(results[0].currentLocation);
-      const coordinates = courierLocation.coordinates;
+      const courierLocation = JSON.parse(results[0].currentLocation)
+      const coordinates = courierLocation.coordinates
 
       return {
         latitude: coordinates[1],
@@ -92,16 +98,16 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       }
     } catch (e) {
       console.log(e)
-      this.logger.error(`Error parsing courier location: ${e}`);
-      return null;
+      this.logger.error(`Error parsing courier location: ${e}`)
+      return null
     }
   }
 
   async updateStatus(courierId: string, status: EnumCourierStatus) {
     const courier = await this.prisma.courier.findUniqueOrThrow({
       where: {
-        id: courierId
-      }
+        id: courierId,
+      },
     })
 
     if (courier.status === status) {
@@ -121,8 +127,8 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
   async updateDeliverySetting(courierId: string, deliverySetting: EnumCourierDeliverySetting) {
     const courier = await this.prisma.courier.findUniqueOrThrow({
       where: {
-        id: courierId
-      }
+        id: courierId,
+      },
     })
 
     if (courier.deliverySetting === deliverySetting) {
@@ -145,19 +151,16 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
     const deliveryOngoingStatuses = [
       EnumDeliveryStatus.CREATED,
       EnumDeliveryStatus.DISPATCHED,
-      EnumDeliveryStatus.PICKED_UP
+      EnumDeliveryStatus.PICKED_UP,
     ]
-    const courierActiveStatuses = [
-      EnumCourierStatus.ONLINE,
-      EnumCourierStatus.LAST_CALL
-    ]
+    const courierActiveStatuses = [EnumCourierStatus.ONLINE, EnumCourierStatus.LAST_CALL]
 
     const ongoingDeliveryRawSubQuery = Prisma.sql`
       SELECT 1
       FROM "Delivery"
       WHERE "Delivery"."courierId" = "Courier"."id"
       AND "Delivery"."status"::text IN (${Prisma.join(deliveryOngoingStatuses, ',')})
-    `;
+    `
 
     const locationGeographyPointSql = Prisma.sql`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography`
 
@@ -181,19 +184,27 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       AND NOT EXISTS (${ongoingDeliveryRawSubQuery})
 
       -- Exclude courier ids
-      ${excludeCourierIds && excludeCourierIds.length > 0 ? Prisma.sql`AND "id" NOT IN(${Prisma.join(excludeCourierIds, ',')})` : Prisma.empty}
+      ${
+        excludeCourierIds && excludeCourierIds.length > 0
+          ? Prisma.sql`AND "id" NOT IN(${Prisma.join(excludeCourierIds, ',')})`
+          : Prisma.empty
+      }
 
       -- Max distance condition
       ${maxDistanceInMeters ? Prisma.sql`AND ${distanceRawSubQuery} <= ${maxDistanceInMeters}` : Prisma.empty}
 
       -- Add bounding box for performance
-      ${maxDistanceInMeters ? Prisma.sql`AND "currentLocation" && _ST_Expand(${locationGeographyPointSql}, ${maxDistanceInMeters})` : Prisma.empty}
+      ${
+        maxDistanceInMeters
+          ? Prisma.sql`AND "currentLocation" && _ST_Expand(${locationGeographyPointSql}, ${maxDistanceInMeters})`
+          : Prisma.empty
+      }
 
       ORDER BY distance
       LIMIT 1
-    `;
+    `
 
-    const result = await this.prisma.$queryRaw<Array<{ id: string, distance: number, currentLocation: string }>>(query);
+    const result = await this.prisma.$queryRaw<Array<{ id: string; distance: number; currentLocation: string }>>(query)
 
     if (result.length === 0 || !result[0]) {
       return null
@@ -219,7 +230,7 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       pickupLocation: {
         latitude: location.latitude,
         longitude: location.longitude,
-      }
+      },
     }
   }
 
@@ -229,19 +240,16 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
     const deliveryOngoingStatuses = [
       EnumDeliveryStatus.CREATED,
       EnumDeliveryStatus.DISPATCHED,
-      EnumDeliveryStatus.PICKED_UP
+      EnumDeliveryStatus.PICKED_UP,
     ]
-    const courierActiveStatuses = [
-      EnumCourierStatus.ONLINE,
-      EnumCourierStatus.LAST_CALL
-    ]
+    const courierActiveStatuses = [EnumCourierStatus.ONLINE, EnumCourierStatus.LAST_CALL]
 
     const ongoingDeliveryRawSubQuery = Prisma.sql`
       SELECT 1
       FROM "Delivery"
       WHERE "Delivery"."courierId" = "Courier"."id"
       AND "Delivery"."status"::text IN (${Prisma.join(deliveryOngoingStatuses, ',')})
-    `;
+    `
 
     const locationGeographyPointSql = Prisma.sql`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography`
 
@@ -268,21 +276,29 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       AND NOT EXISTS (${ongoingDeliveryRawSubQuery})
 
       -- Exclude courier ids
-      ${excludeCourierIds && excludeCourierIds.length > 0 ? Prisma.sql`AND "id" NOT IN(${Prisma.join(excludeCourierIds, ',')})` : Prisma.empty}
+      ${
+        excludeCourierIds && excludeCourierIds.length > 0
+          ? Prisma.sql`AND "id" NOT IN(${Prisma.join(excludeCourierIds, ',')})`
+          : Prisma.empty
+      }
       
       -- Max distance condition
       ${maxDistanceInMeters ? Prisma.sql`AND ${distanceRawSubQuery} <= ${maxDistanceInMeters}` : Prisma.empty}
 
       -- Add bounding box for performance
-      ${maxDistanceInMeters ? Prisma.sql`AND "currentLocation" && _ST_Expand(${locationGeographyPointSql}, ${maxDistanceInMeters})` : Prisma.empty}
+      ${
+        maxDistanceInMeters
+          ? Prisma.sql`AND "currentLocation" && _ST_Expand(${locationGeographyPointSql}, ${maxDistanceInMeters})`
+          : Prisma.empty
+      }
 
       -- Order by seniority
       ORDER BY seniority ASC
 
       LIMIT 1
-    `;
+    `
 
-    const result = await this.prisma.$queryRaw<Array<{ id: string, distance: number, currentLocation: string }>>(query);
+    const result = await this.prisma.$queryRaw<Array<{ id: string; distance: number; currentLocation: string }>>(query)
 
     if (result.length === 0 || !result[0]) {
       return null
@@ -308,7 +324,7 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       pickupLocation: {
         latitude: location.latitude,
         longitude: location.longitude,
-      }
+      },
     }
   }
 
@@ -349,19 +365,19 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       },
       include: {
         settings: true,
-      }
+      },
     })
 
     return {
       courier: this.toDomain(result),
-      courierSettings: new CourierSettingEntity(result.settings as CourierSetting)
+      courierSettings: new CourierSettingEntity(result.settings as CourierSetting),
     }
   }
 
   async findByUserId(userId: string) {
     const result = await this.prisma.courier.findUniqueOrThrow({
       where: {
-        userId
+        userId,
       },
     })
 
@@ -369,7 +385,7 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
 
     return this.toDomain({
       ...result,
-      currentLocation: courierLocation
+      currentLocation: courierLocation,
     })
   }
 

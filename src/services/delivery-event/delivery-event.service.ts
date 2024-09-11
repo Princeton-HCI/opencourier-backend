@@ -168,7 +168,9 @@ export class DeliveryEventService {
           break
         }
         case EnumDeliveryStatus.COURIER_ARRIVED_AT_PICKUP_LOCATION:
-          this.logger.log(`Delivery ${deliveryEvent.deliveryId}, courier has arrived at pickup location: ${deliveryEvent.actor}`)
+          this.logger.log(
+            `Delivery ${deliveryEvent.deliveryId}, courier has arrived at pickup location: ${deliveryEvent.actor}`
+          )
 
           await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
           break
@@ -178,7 +180,9 @@ export class DeliveryEventService {
           await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
           break
         case EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION:
-          this.logger.log(`Delivery ${deliveryEvent.deliveryId}, courier has arrived at dropoff location: ${deliveryEvent.actor}`)
+          this.logger.log(
+            `Delivery ${deliveryEvent.deliveryId}, courier has arrived at dropoff location: ${deliveryEvent.actor}`
+          )
 
           await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
           break

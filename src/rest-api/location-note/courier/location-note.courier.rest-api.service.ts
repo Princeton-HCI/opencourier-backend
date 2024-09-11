@@ -13,12 +13,12 @@ export class LocationNoteRestApiCourierService {
   constructor(
     private locationNoteDomainService: LocationNoteDomainService,
     private deliveryDomainService: DeliveryDomainService,
-    private locationDomainService: LocationDomainService,
-  ) { }
+    private locationDomainService: LocationDomainService
+  ) {}
 
   async create(input: ILocationNoteCreate) {
     if (input.deliveryId) {
-      const delivery = await this.deliveryDomainService.getById(input.deliveryId);
+      const delivery = await this.deliveryDomainService.getById(input.deliveryId)
 
       if (!delivery) {
         throw new errors.DeliveryNotFoundException('Delivery not found')
@@ -26,7 +26,7 @@ export class LocationNoteRestApiCourierService {
     }
 
     if (input.locationId) {
-      const location = await this.locationDomainService.getById(input.locationId);
+      const location = await this.locationDomainService.getById(input.locationId)
 
       if (!location) {
         throw new errors.LocationNotFoundException('Location not found')
@@ -51,7 +51,11 @@ export class LocationNoteRestApiCourierService {
   }
 
   async addOrRemoveReaction(locationNoteId: string, courierId: string, reactionType: EnumLocationNoteReactionType) {
-    const locationNote = await this.locationNoteDomainService.addOrRemoveReaction(locationNoteId, courierId, reactionType)
+    const locationNote = await this.locationNoteDomainService.addOrRemoveReaction(
+      locationNoteId,
+      courierId,
+      reactionType
+    )
 
     return locationNote
   }
@@ -60,7 +64,7 @@ export class LocationNoteRestApiCourierService {
     const locationNote = await this.locationNoteDomainService.getById(deliveryId)
 
     if (locationNote.courierId !== courierId) {
-      throw new errors.NotFoundException('Location note not found');
+      throw new errors.NotFoundException('Location note not found')
     }
 
     return locationNote

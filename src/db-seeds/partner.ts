@@ -50,10 +50,10 @@ export async function seedPartnerUser(prisma: PrismaClient) {
 const createOnDb = async (prisma: PrismaClient, userId: string) => {
   return await prisma.partner.create({
     data: {
-      name: 'Example Partner',
+      name: 'Nosh',
       logo: 'http://localhost:1231/assets/partner-logo.png',
       phoneNumber: `+${Math.floor(Math.random() * 10000000000)}`,
-      webhookUrl: 'http://localhost:1231',
+      webhookUrl: 'http://localhost:3000/v1/courier/webhooks',
       userId: userId,
     },
   })

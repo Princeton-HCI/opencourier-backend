@@ -92,7 +92,9 @@ export class DeliveryCourierRestApiController {
     @common.Param('deliveryId') deliveryId: string,
     @CurrentUserCourier() courier: CourierEntity
   ): Promise<DeliveryCourierDto> {
-    const deliveries = await this.deliveryRestApiCourierService.getByIdOrThrow(deliveryId, { courierId: courier.id })
+    const deliveries = await this.deliveryRestApiCourierService.getByIdOrThrow(deliveryId, {
+      OR: [{ courierId: courier.id }, { matchedCourierId: courier.id }],
+    })
 
     const dto = new DeliveryCourierDto(deliveries)
     return dto

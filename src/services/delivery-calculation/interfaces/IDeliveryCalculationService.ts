@@ -9,7 +9,7 @@ export interface IDeliveryCalculationService {
   calculateDeliveryQuoteExpiration(input: IDeliveryCalculationsInput): Promise<Date>
   calculateDeliveryQuoteDeliveryDuration(input: IDeliveryCalculationsInput): Promise<number>
   calculateDeliveryQuoteDeliveryPickupDuration(input: IDeliveryCalculationsInput): Promise<number>
-  calculateDropoffEta(input: IDeliveryCalculationsInput): Promise<Date>
+  calculateDropoffEta(input: IDeliveryCalculationsInput): Promise<Date | null>
   calculateDeliveryAmountsForMatchedCourier(
     input: IDeliveryAmountsCalculationsInput
   ): Promise<IDeliveryAmountsCalculationsResult>

@@ -134,7 +134,8 @@ export class DeliveryCalculationService implements IDeliveryCalculationService {
     const { pickupReadyAt, duration } = input
 
     if (!pickupReadyAt || !duration) {
-      throw new BadRequestException('pickupReadyAt and duration are required to calculate dropoff')
+      this.logger.warn('pickupReadyAt and duration are required to calculate dropoff')
+      return null
     }
 
     const dropoffEta = new Date(new Date(pickupReadyAt).getTime() + duration * 60000)

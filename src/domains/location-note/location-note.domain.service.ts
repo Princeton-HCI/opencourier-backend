@@ -19,6 +19,18 @@ export class LocationNoteDomainService {
     return locationNote
   }
 
+  async update(noteId: string, note: string) {
+    const locationNote = await this.locationNoteRepository.update(noteId, note)
+
+    return locationNote
+  }
+
+  async findByIdOrThrow(noteId: string) {
+    const locationNote = await this.locationNoteRepository.findByIdOrThrow(noteId)
+
+    return locationNote
+  }
+
   async addOrRemoveReaction(locationNoteId: string, courierId: string, reactionType: EnumLocationNoteReactionType) {
     const reactionByCourier = await this.locationNoteReactionRepository.getNoteFromCourier(locationNoteId, courierId)
 
@@ -59,5 +71,11 @@ export class LocationNoteDomainService {
     const locationNotes = await this.locationNoteRepository.findManyByLocationIds(locationIds)
 
     return locationNotes
+  }
+
+  async delete(locationNoteId: string) {
+    const result = await this.locationNoteRepository.delete(locationNoteId)
+
+    return result
   }
 }

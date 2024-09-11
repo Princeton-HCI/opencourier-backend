@@ -1,34 +1,38 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 import { IDeliveryUpdate } from 'src/domains/delivery/interfaces/IDeliveryUpdate'
 
 export class MarkDeliveryAsDeliveredCourierInput implements Partial<IDeliveryUpdate> {
   @ApiProperty({
-    required: true,
+    required: false,
     type: String,
   })
   @IsString()
-  note: string
+  @IsOptional()
+  note?: string
 
   @ApiProperty({
-    required: true,
+    required: false,
     type: String,
   })
   @Transform(({ value }) => Buffer.from(value))
-  imageData: Buffer
+  @IsOptional()
+  imageData?: Buffer
 
   @ApiProperty({
-    required: true,
+    required: false,
     type: String,
   })
   @IsString()
-  imageName: string
+  @IsOptional()
+  imageName?: string
 
   @ApiProperty({
-    required: true,
+    required: false,
     type: String,
   })
   @IsString()
-  imageType: string
+  @IsOptional()
+  imageType?: string
 }

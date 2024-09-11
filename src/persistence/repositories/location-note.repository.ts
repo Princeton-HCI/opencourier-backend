@@ -25,6 +25,19 @@ export class LocationNoteRepository extends EntityRepository implements ILocatio
     return this.toDomain(locationNote)
   }
 
+  async update(noteId: string, note: string) {
+    const locationNote = await this.prisma.locationNote.update({
+      where: {
+        id: noteId,
+      },
+      data: {
+        note: note,
+      },
+    })
+
+    return this.toDomain(locationNote)
+  }
+
   async findByIdOrThrow(locationNoteId: string, otherFilters?: LocationNoteWhereArgs) {
     const locationNote = await this.prisma.locationNote.findUniqueOrThrow({
       where: {
@@ -76,6 +89,16 @@ export class LocationNoteRepository extends EntityRepository implements ILocatio
     })
 
     return this.toDomainMany(locationNotes)
+  }
+
+  async delete(locationNoteId: string) {
+    const result = await this.prisma.locationNote.delete({
+      where: {
+        id: locationNoteId,
+      },
+    })
+
+    return result
   }
 
   private toDomain(data: LocationNote) {

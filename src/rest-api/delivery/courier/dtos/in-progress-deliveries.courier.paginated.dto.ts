@@ -2,18 +2,18 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsOptional, ValidateNested } from 'class-validator'
 import { Expose, Type } from 'class-transformer'
 import { PaginationDto } from '../../../../core/dtos/PaginationDto'
-import { DeliveryWithNotesCourierDto } from './delivery-with-notes.courier.dto'
-import { DeliveryWithNotesEntity } from '../delivery.courier.rest-api.service'
+import { InProgressDeliveryCourierDto } from './in-progress-delivery.courier.dto'
+import { InProgressDeliveryCourier } from '../types/in-progress-delivery.courier.type'
 
-export class DeliveryWithNotesCourierPaginatedDto {
+export class InProgressDeliveriesCourierPaginatedDto {
   @ApiProperty({
     required: true,
-    type: () => [DeliveryWithNotesCourierDto],
+    type: () => [InProgressDeliveryCourierDto],
   })
   @ValidateNested({ each: true })
-  @Type(() => DeliveryWithNotesCourierDto)
+  @Type(() => InProgressDeliveryCourierDto)
   @Expose()
-  data: DeliveryWithNotesCourierDto[]
+  data: InProgressDeliveryCourierDto[]
 
   @ApiProperty({
     required: false,
@@ -25,8 +25,8 @@ export class DeliveryWithNotesCourierPaginatedDto {
   @Expose()
   pagination?: PaginationDto
 
-  constructor(data: { data: DeliveryWithNotesEntity[]; pagination?: PaginationDto }) {
-    this.data = data.data.map((order) => new DeliveryWithNotesCourierDto(order))
+  constructor(data: { data: InProgressDeliveryCourier[]; pagination?: PaginationDto }) {
+    this.data = data.data.map((order) => new InProgressDeliveryCourierDto(order))
     this.pagination = data.pagination
   }
 }

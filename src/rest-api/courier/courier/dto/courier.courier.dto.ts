@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { EnumCourierDeliverySetting, EnumCourierStatus } from '@prisma/types'
 import { CourierEntity } from 'src/domains/courier/entities/courier.entity'
+import { CourierLocationCourierDto } from './courier-location.courier.dto'
 
 export class CourierCourierDto implements Partial<CourierEntity> {
   @ApiProperty({ type: String })
@@ -24,6 +25,9 @@ export class CourierCourierDto implements Partial<CourierEntity> {
   @ApiProperty({ type: String, enum: EnumCourierDeliverySetting })
   deliverySetting: EnumCourierDeliverySetting
 
+  @ApiProperty({ type: CourierLocationCourierDto, nullable: true })
+  currentLocation: CourierLocationCourierDto | null
+
   @ApiProperty({ type: String })
   userId: string
 
@@ -38,6 +42,7 @@ export class CourierCourierDto implements Partial<CourierEntity> {
     this.phoneNumber = data.phoneNumber
     this.status = data.status
     this.deliverySetting = data.deliverySetting
+    this.currentLocation = data.currentLocation ? new CourierLocationCourierDto(data.currentLocation) : null
     this.userId = data.userId
     this.createdAt = data.createdAt
   }

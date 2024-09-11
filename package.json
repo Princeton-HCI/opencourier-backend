@@ -6,7 +6,7 @@
     "clean": "shx rm -rf dist",
     "start": "yarn clean && nest start",
     "start:chain-watcher": "nest start --config ./nest-cli.chain-watcher.json",
-    "start:watch": "yarn clean && nest start --watch",
+    "start:watch": "yarn clean && nest start --watch --webpack",
     "start:debug": "yarn clean && nest start --debug --watch --webpack",
     "build": "yarn clean && nest build",
     "dev": "run-s docker:db prisma:generate start:debug",

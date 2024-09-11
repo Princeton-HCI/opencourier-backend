@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 
 export class MarkDeliveryAsPickedUpCourierInput {
   @ApiProperty({
-    required: true,
+    required: false,
     type: String,
   })
   @IsString()
-  note: string
+  @IsOptional()
+  note?: string
 }

@@ -60,6 +60,7 @@ import { AuthApiKeyGuard } from './guards/auth-api-key.guard'
 import { AuthHttpGuard } from './guards/auth-http.guard'
 import { AuthRefreshHttpGuard } from './guards/auth-refresh-http.guard'
 import { RolesGuard } from './guards/roles.guard'
+import { LocationNoteReactionDomainModule } from './domains/location-note-reaction/location-note-reaction.domain.module'
 
 const DOMAIN_MODULES: ModuleMetadata['imports'] = [
   AuthDomainModule,
@@ -69,6 +70,7 @@ const DOMAIN_MODULES: ModuleMetadata['imports'] = [
   CourierSettingDomainModule,
   DeliveryDomainModule,
   LocationNoteDomainModule,
+  LocationNoteReactionDomainModule,
   DeliveryQuoteDomainModule,
   PartnerDomainModule,
   DeliveryEventDomainModule,

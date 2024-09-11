@@ -72,6 +72,12 @@ export class CourierDomainService {
     return courier
   }
 
+  async getCurrentLocation(id: string) {
+    const courier = await this.courierRepository.getCurrentLocation(id)
+
+    return courier
+  }
+
   async updateStatus(id: string, status: EnumCourierStatus) {
     const result = await this.courierRepository.updateStatus(id, status)
 

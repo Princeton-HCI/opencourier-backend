@@ -7,20 +7,18 @@ import { IDeliveryReportIssue } from 'src/domains/delivery/interfaces/IDeliveryR
 import { IDeliveryMarkAsDelivered } from 'src/domains/delivery/interfaces/IDeliveryMarkAsDelivered'
 import { LocationNoteDomainService } from 'src/domains/location-note/location-note.domain.service'
 import { IDeliveryMarkAsPickedUp } from 'src/domains/delivery/interfaces/IDeliveryMarkAsPickedUp'
-import { DeliveryEntity } from 'src/domains/delivery/entities/delivery.entity'
-import { LocationNoteEntity } from 'src/domains/location-note/entities/location-note.entity'
-
-export type DeliveryWithNotesEntity = DeliveryEntity & {
-  dropoffLocationNotes: LocationNoteEntity[]
-  pickupLocationNotes: LocationNoteEntity[]
-}
+import { LocationNoteReactionDomainService } from 'src/domains/location-note-reaction/location-note-reaction.domain.service'
+import { LocationNoteWithReactionCounts } from './types/location-note-with-reaction-counts.type'
+import { InProgressDeliveryCourier } from './types/in-progress-delivery.courier.type'
+import { NewDeliveryCourier } from './types/new-delivery.courier.type'
 
 @Injectable()
 export class DeliveryRestApiCourierService {
   private readonly logger = new Logger(DeliveryRestApiCourierService.name)
   constructor(
     private deliveryDomainService: DeliveryDomainService,
-    private locationNoteDomainService: LocationNoteDomainService
+    private locationNoteDomainService: LocationNoteDomainService,
+    private locationNoteReactionDomainService: LocationNoteReactionDomainService
   ) {}
 
   async getById(deliveryId: string, otherFilters?: DeliveryWhereArgs) {
@@ -43,7 +41,10 @@ export class DeliveryRestApiCourierService {
 
     const deliveries = await this.deliveryDomainService.getMany(args, page, perPage)
 
-    return deliveries
+    return {
+      data: deliveries.data as NewDeliveryCourier[],
+      pagination: deliveries.pagination,
+    }
   }
 
   async getMyInProgressDeliveriesWithNotes(courierId: string, page?: number, perPage?: number) {
@@ -64,15 +65,38 @@ export class DeliveryRestApiCourierService {
       ...deliveryPickupLocationIds,
     ])
 
+    const noteReactionCountsById = await this.locationNoteReactionDomainService.getCountsByNoteIds(
+      locationNotes.map((note) => note.id)
+    )
+    const courierReactionsToNotes = await this.locationNoteReactionDomainService.getReactionByCourierOnNoteIds(
+      locationNotes.map((note) => note.id),
+      courierId
+    )
+
+    const locationNotesWithReactions = locationNotes.map((note) => {
+      const reactionCounts = noteReactionCountsById[note.id] || { upvotes: 0, downvotes: 0 }
+
+      return new LocationNoteWithReactionCounts(
+        note,
+        reactionCounts.upvotes,
+        reactionCounts.downvotes,
+        courierReactionsToNotes[note.id] || null
+      )
+    })
+
     const deliveriesWithNotes = deliveries.data.map((delivery) => {
-      const dropoffLocationNotes = locationNotes.filter((note) => note.locationId === delivery.dropoffLocationId)
-      const pickupLocationNotes = locationNotes.filter((note) => note.locationId === delivery.pickupLocationId)
+      const dropoffLocationNotes = locationNotesWithReactions.filter(
+        (note) => note.locationId === delivery.dropoffLocationId
+      )
+      const pickupLocationNotes = locationNotesWithReactions.filter(
+        (note) => note.locationId === delivery.pickupLocationId
+      )
 
       return {
         ...delivery,
         dropoffLocationNotes,
         pickupLocationNotes,
-      } as DeliveryWithNotesEntity
+      } as InProgressDeliveryCourier
     })
 
     return {
@@ -143,31 +167,6 @@ export class DeliveryRestApiCourierService {
     return updatedDelivery
   }
 
-  async markAsDelivered(deliveryId: string, courierId: string, input: IDeliveryMarkAsDelivered) {
-    const delivery = await this.deliveryDomainService.getById(deliveryId, { courierId })
-
-    if (!delivery) {
-      throw new DeliveryNotFoundException('Delivery not found')
-    }
-
-    const updatedDelivery = await this.deliveryDomainService.markAsDelivered(deliveryId, {
-      imageData: input.imageData,
-      imageName: input.imageName,
-      imageType: input.imageType,
-    })
-
-    // Add the location note for the delivery
-    await this.locationNoteDomainService.create({
-      note: input.note,
-      deliveryId,
-      courierId,
-      actor: EnumLocationNoteActor.COURIER,
-      locationId: delivery.dropoffLocationId,
-    })
-
-    return updatedDelivery
-  }
-
   async markAsDispatched(deliveryId: string, courierId: string) {
     const delivery = await this.deliveryDomainService.getById(deliveryId, { courierId })
 
@@ -176,6 +175,18 @@ export class DeliveryRestApiCourierService {
     }
 
     const updatedDelivery = await this.deliveryDomainService.markAsDispatched(deliveryId)
+
+    return updatedDelivery
+  }
+
+  async courierArrivedAtPickup(deliveryId: string, courierId: string) {
+    const delivery = await this.deliveryDomainService.getById(deliveryId, { courierId })
+
+    if (!delivery) {
+      throw new DeliveryNotFoundException('Delivery not found')
+    }
+
+    const updatedDelivery = await this.deliveryDomainService.courierArrivedAtPickup(deliveryId)
 
     return updatedDelivery
   }
@@ -189,14 +200,59 @@ export class DeliveryRestApiCourierService {
 
     const updatedDelivery = await this.deliveryDomainService.markAsPickedUp(deliveryId)
 
-    // Add the location note for the delivery
-    await this.locationNoteDomainService.create({
-      note: input.note,
-      deliveryId,
-      courierId,
-      actor: EnumLocationNoteActor.COURIER,
-      locationId: delivery.pickupLocationId,
-    })
+    if (input.note) {
+      // Add the location note for the delivery
+      await this.locationNoteDomainService.create({
+        note: input.note,
+        deliveryId,
+        courierId,
+        actor: EnumLocationNoteActor.COURIER,
+        locationId: delivery.pickupLocationId,
+      })
+    }
+
+    return updatedDelivery
+  }
+
+  async courierArrivedAtDropOff(deliveryId: string, courierId: string) {
+    const delivery = await this.deliveryDomainService.getById(deliveryId, { courierId })
+
+    if (!delivery) {
+      throw new DeliveryNotFoundException('Delivery not found')
+    }
+
+    const updatedDelivery = await this.deliveryDomainService.courierArrivedAtDropOff(deliveryId)
+
+    return updatedDelivery
+  }
+
+  async markAsDelivered(deliveryId: string, courierId: string, input: IDeliveryMarkAsDelivered) {
+    const delivery = await this.deliveryDomainService.getById(deliveryId, { courierId })
+
+    if (!delivery) {
+      throw new DeliveryNotFoundException('Delivery not found')
+    }
+
+    const deliveredData: any = {}
+
+    if (input.imageData) {
+      deliveredData.imageData = input.imageData
+      deliveredData.imageName = input.imageName
+      deliveredData.imageType = input.imageType
+    }
+
+    const updatedDelivery = await this.deliveryDomainService.markAsDelivered(deliveryId, deliveredData)
+
+    if (input.note) {
+      // Add the location note for the delivery
+      await this.locationNoteDomainService.create({
+        note: input.note,
+        deliveryId,
+        courierId,
+        actor: EnumLocationNoteActor.COURIER,
+        locationId: delivery.dropoffLocationId,
+      })
+    }
 
     return updatedDelivery
   }

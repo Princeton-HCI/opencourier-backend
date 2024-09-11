@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import {
   Courier,
   CourierSetting,
@@ -20,9 +20,12 @@ import { CourierSettingEntity } from 'src/domains/courier-setting/entities/couri
 import { ICourierUpdateLocation } from 'src/domains/courier/interfaces/ICourierUpdateLocation'
 import { ICourierFindNearestArgs } from 'src/domains/courier/interfaces/ICourierFindNearestArgs'
 import { ICourierFindBySeniorityArgs } from 'src/domains/courier/interfaces/ICourierFindBySeniorityArgs'
+import { GeoPosition } from 'src/shared-types'
 
 @Injectable()
 export class CourierRepository extends EntityRepository implements ICourierRepository {
+  private readonly logger = new Logger(CourierRepository.name)
+
   constructor(prisma: PrismaService) {
     super(prisma)
   }
@@ -69,6 +72,35 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
     `
 
     await this.prisma.$queryRaw(queryRaw)
+  }
+
+  async getCurrentLocation(courierId: string) {
+    const queryRaw = Prisma.sql`
+      SELECT ST_AsGeoJSON("currentLocation") AS "currentLocation"
+      FROM "Courier"
+      WHERE "id" = ${courierId}
+      LIMIT 1
+    `
+
+    const results = await this.prisma.$queryRaw<Array<{ currentLocation: string }>>(queryRaw)
+
+    if (results.length === 0 || !results[0]) {
+      return null
+    }
+
+    try {
+      const courierLocation = JSON.parse(results[0].currentLocation)
+      const coordinates = courierLocation.coordinates
+
+      return {
+        latitude: coordinates[1],
+        longitude: coordinates[0],
+      }
+    } catch (e) {
+      console.log(e)
+      this.logger.error(`Error parsing courier location: ${e}`)
+      return null
+    }
   }
 
   async updateStatus(courierId: string, status: EnumCourierStatus) {
@@ -349,10 +381,15 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       },
     })
 
-    return this.toDomain(result)
+    const courierLocation = await this.getCurrentLocation(result.id)
+
+    return this.toDomain({
+      ...result,
+      currentLocation: courierLocation,
+    })
   }
 
-  private toDomain(data: Courier) {
+  private toDomain(data: Courier & { currentLocation?: GeoPosition | null }) {
     return new CourierEntity(data)
   }
 

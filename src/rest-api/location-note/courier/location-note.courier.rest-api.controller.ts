@@ -13,6 +13,7 @@ import { LocationNoteCreateCourierInput } from './queries/location-note-create.c
 import { LocationNoteRestApiCourierService } from './location-note.courier.rest-api.service'
 import { LocationNoteReactCourierInput } from './queries/location-note-react.courier.input'
 import { LocationNoteReactionCourierDto } from './dtos/location-note-reaction.courier.dto'
+import { LocationNoteUpdateCourierInput } from './queries/location-note-update.courier.input'
 
 @swagger.ApiBearerAuth()
 @swagger.ApiTags('location-notes')
@@ -41,6 +42,28 @@ export class LocationNoteCourierRestApiController {
       courierId: courier.id,
       actor: EnumLocationNoteActor.COURIER,
     })
+
+    return new LocationNoteCourierDto(locationNote)
+  }
+
+  @common.Patch(':locationNoteId')
+  @swagger.ApiBody({
+    type: LocationNoteUpdateCourierInput,
+  })
+  @swagger.ApiCreatedResponse({
+    type: LocationNoteCourierDto,
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  @swagger.ApiOperation({ summary: 'Update a location note' })
+  @Roles(EnumUserRole.COURIER)
+  async updateNote(
+    @common.Body() data: LocationNoteUpdateCourierInput,
+    @common.Param('locationNoteId') locationNoteId: string,
+    @CurrentUserCourier() courier: CourierEntity
+  ): Promise<LocationNoteCourierDto> {
+    const locationNote = await this.locationNoteRestApiCourierService.update(locationNoteId, data.note, courier.id)
 
     return new LocationNoteCourierDto(locationNote)
   }
@@ -104,10 +127,28 @@ export class LocationNoteCourierRestApiController {
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @swagger.ApiOperation({ summary: 'Get location note by id' })
   @Roles(EnumUserRole.COURIER)
-  async getMyOrderById(@common.Param('locationNoteId') locationNoteId: string): Promise<LocationNoteCourierDto> {
-    const orders = await this.locationNoteRestApiCourierService.getById(locationNoteId)
+  async getLocationNoteById(
+    @common.Param('locationNoteId') locationNoteId: string,
+    @CurrentUserCourier() courier: CourierEntity
+  ): Promise<LocationNoteCourierDto> {
+    const orders = await this.locationNoteRestApiCourierService.getById(locationNoteId, courier.id)
 
     const dto = new LocationNoteCourierDto(orders)
     return dto
+  }
+
+  @common.Delete(':locationNoteId')
+  @swagger.ApiResponse({ status: 204 })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @swagger.ApiOperation({ summary: 'Delete a location note' })
+  @Roles(EnumUserRole.COURIER)
+  async deleteLocationNote(
+    @common.Param('locationNoteId') locationNoteId: string,
+    @CurrentUserCourier() courier: CourierEntity
+  ): Promise<void> {
+    await this.locationNoteRestApiCourierService.delete(locationNoteId, courier.id)
   }
 }

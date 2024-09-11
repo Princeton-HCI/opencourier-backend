@@ -169,6 +169,25 @@ export class DeliveryDomainService {
     return delivery
   }
 
+  async courierArrivedAtDropOff(deliveryId: string) {
+    const delivery = await this.deliveryRepository.findByIdOrThrow(deliveryId)
+
+    // if (delivery.status !== EnumDeliveryStatus.PICKED_UP) {
+    //   throw new CantUpdateDeliveryStatusError(`Delivery ${deliveryId} can not be marked as arrived at dropoff location, delivery hasn't been picked up. On status ${delivery.status}`)
+    // }
+
+    await this.deliveryEventService.processDeliveryEvent({
+      deliveryId: delivery.id,
+      type: EnumDeliveryEventType.ARRIVED_AT_DROPOFF_LOCATION,
+      actor: EnumEventActor.COURIER,
+      courierId: delivery.courierId,
+      source: EnumDeliveryEventSource.OPENCOURIER,
+      message: `Delivery ${delivery.id} was status changed: courier arrived at dropoff location: ${delivery.courierId}`,
+    })
+
+    return delivery
+  }
+
   async markAsDelivered(deliveryId: string, deliveredData: any) {
     const delivery = await this.deliveryRepository.findByIdOrThrow(deliveryId)
 
@@ -208,6 +227,25 @@ export class DeliveryDomainService {
       courierId: delivery.courierId,
       source: EnumDeliveryEventSource.OPENCOURIER,
       message: `Delivery ${delivery.id} was marked as dispatched by courier ${delivery.courierId}`,
+    })
+
+    return delivery
+  }
+
+  async courierArrivedAtPickup(deliveryId: string) {
+    const delivery = await this.deliveryRepository.findByIdOrThrow(deliveryId)
+
+    // if (delivery.status !== EnumDeliveryStatus.DISPATCHED) {
+    //   throw new CantUpdateDeliveryStatusError(`Delivery ${deliveryId} can not be marked as arrived at pickup location, delivery isn't on dispatched status. On status ${delivery.status}`)
+    // }
+
+    await this.deliveryEventService.processDeliveryEvent({
+      deliveryId: delivery.id,
+      type: EnumDeliveryEventType.ARRIVED_AT_PICKUP_LOCATION,
+      actor: EnumEventActor.COURIER,
+      courierId: delivery.courierId,
+      source: EnumDeliveryEventSource.OPENCOURIER,
+      message: `Delivery ${delivery.id} was status changed: courier arrived at pickup location: ${delivery.courierId}`,
     })
 
     return delivery

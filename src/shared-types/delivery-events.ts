@@ -39,10 +39,17 @@ export interface DeliveryDispatchedEvent extends BaseDeliveryEvent {
   type: typeof EnumDeliveryEventType.DISPATCHED
 }
 
+export interface DeliveryCourierArrivedAtPickUpLocationEvent extends BaseDeliveryEvent {
+  type: typeof EnumDeliveryEventType.ARRIVED_AT_PICKUP_LOCATION
+}
+
 export interface DeliveryPickedUpEvent extends BaseDeliveryEvent {
   type: typeof EnumDeliveryEventType.PICKED_UP
 }
 
+export interface DeliveryCourierArrivedAtDropOffLocationEvent extends BaseDeliveryEvent {
+  type: typeof EnumDeliveryEventType.ARRIVED_AT_DROPOFF_LOCATION
+}
 export interface DeliveryOnTheWayEvent extends BaseDeliveryEvent {
   type: typeof EnumDeliveryEventType.ON_THE_WAY
 }
@@ -63,8 +70,10 @@ export type DeliveryEvent =
   | DeliveryRejectedEvent
   | DeliveryConfirmedEvent
   | DeliveryFulfilledEvent
+  | DeliveryCourierArrivedAtPickUpLocationEvent
   | DeliveryPickedUpEvent
   | DeliveryOnTheWayEvent
+  | DeliveryCourierArrivedAtDropOffLocationEvent
   | DeliveryDroppedOffEvent
   | DeliveryCanceledEvent
   | DeliveryFailedEvent

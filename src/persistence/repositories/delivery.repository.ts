@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Delivery, Prisma } from '@prisma/types'
+import { Delivery, Location, Prisma } from '@prisma/types'
 
 import { PrismaService } from '../../services/prisma/prisma.service'
 import { EntityRepository } from '../EntityRepository'
@@ -10,6 +10,12 @@ import { DeliveryWhereUniqueArgs } from 'src/domains/delivery/types/delivery-whe
 import { IDeliveryUpdate } from 'src/domains/delivery/interfaces/IDeliveryUpdate'
 import { DeliveryEntity } from 'src/domains/delivery/entities/delivery.entity'
 import { IDeliveryCreate } from 'src/domains/delivery/interfaces/IDeliveryCreate'
+import { DeliveryWithLocationsEntity } from 'src/domains/delivery/entities/delivery-with-locations.entity'
+
+export type PrismaDeliveryWithLocations = Delivery & {
+  pickupLocation: Location | null
+  dropoffLocation: Location | null
+}
 
 @Injectable()
 export class DeliveryRepository extends EntityRepository implements IDeliveryRepository {
@@ -61,7 +67,7 @@ export class DeliveryRepository extends EntityRepository implements IDeliveryRep
     const delivery = await this.prisma.delivery.findUniqueOrThrow({
       where: {
         id: deliveryId,
-        // ...otherFilters, TODO: Courier delivery by id should allow courier to fetch pending deliveries, use `matchedCourierId` prop to filter.
+        ...otherFilters,
       } as DeliveryWhereUniqueArgs,
     })
 
@@ -78,13 +84,17 @@ export class DeliveryRepository extends EntityRepository implements IDeliveryRep
           ...args,
         },
         orderBy: { createdAt: 'desc' },
+        include: {
+          pickupLocation: true,
+          dropoffLocation: true,
+        },
       },
       { page, perPage }
     )
 
     return {
       ...result,
-      data: this.toDomainMany(result.data),
+      data: result.data.map((d) => new DeliveryWithLocationsEntity(d as PrismaDeliveryWithLocations)),
     }
   }
 

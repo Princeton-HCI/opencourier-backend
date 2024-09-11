@@ -71,7 +71,7 @@ export class CourierMatcherService implements ICourierMatcherService {
       throw new Error('Callback must be a function')
     }
 
-    this.logger.log(`Temporarily setting CourierMatcherType to: ${CourierMatcherService.staticMatcherType}`)
+    this.logger.log(`Temporarily setting CourierMatcherType to: ${courierMatcherType}`)
     CourierMatcherService.staticMatcherType = courierMatcherType
 
     const result = await callback()

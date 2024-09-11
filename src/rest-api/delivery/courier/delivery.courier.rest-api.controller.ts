@@ -13,7 +13,8 @@ import { DeliveryRestApiCourierService } from './delivery.courier.rest-api.servi
 import { ReportDeliveryIssueCourierInput } from './queries/report-delivery-issue.courier.input'
 import { MarkDeliveryAsDeliveredCourierInput } from './queries/mark-delivery-as-delivered.courier.input'
 import { MarkDeliveryAsPickedUpCourierInput } from './queries/mark-delivery-as-picked-up.courier.input'
-import { DeliveryWithNotesCourierPaginatedDto } from './dtos/delivery-with-notes.courier.paginated.dto'
+import { NewDeliveriesCourierPaginatedDto } from './dtos/new-deliveries.courier.paginated.dto'
+import { InProgressDeliveriesCourierPaginatedDto } from './dtos/in-progress-deliveries.courier.paginated.dto'
 
 @swagger.ApiBearerAuth()
 @swagger.ApiTags('deliveries')
@@ -22,7 +23,7 @@ export class DeliveryCourierRestApiController {
   constructor(private readonly deliveryRestApiCourierService: DeliveryRestApiCourierService) {}
 
   @common.Get('new')
-  @swagger.ApiResponse({ type: DeliveryCourierPaginatedDto })
+  @swagger.ApiResponse({ type: NewDeliveriesCourierPaginatedDto })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
@@ -32,15 +33,15 @@ export class DeliveryCourierRestApiController {
   async getMyNewDeliveries(
     @common.Query() args: DeliveryFindManyCourierArgs,
     @CurrentUserCourier() courier: CourierEntity
-  ): Promise<DeliveryCourierPaginatedDto> {
+  ): Promise<NewDeliveriesCourierPaginatedDto> {
     const deliveries = await this.deliveryRestApiCourierService.getMyNewDeliveries(courier.id, args.page, args.perPage)
 
-    const dto = new DeliveryCourierPaginatedDto(deliveries)
+    const dto = new NewDeliveriesCourierPaginatedDto(deliveries)
     return dto
   }
 
   @common.Get('in-progress')
-  @swagger.ApiResponse({ type: DeliveryWithNotesCourierPaginatedDto })
+  @swagger.ApiResponse({ type: InProgressDeliveriesCourierPaginatedDto })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
@@ -50,14 +51,14 @@ export class DeliveryCourierRestApiController {
   async getMyInProgressDeliveries(
     @common.Query() args: DeliveryFindManyCourierArgs,
     @CurrentUserCourier() courier: CourierEntity
-  ): Promise<DeliveryWithNotesCourierPaginatedDto> {
+  ): Promise<InProgressDeliveriesCourierPaginatedDto> {
     const deliveries = await this.deliveryRestApiCourierService.getMyInProgressDeliveriesWithNotes(
       courier.id,
       args.page,
       args.perPage
     )
 
-    const dto = new DeliveryWithNotesCourierPaginatedDto(deliveries)
+    const dto = new InProgressDeliveriesCourierPaginatedDto(deliveries)
     return dto
   }
 
@@ -181,29 +182,6 @@ export class DeliveryCourierRestApiController {
     return dto
   }
 
-  @common.Post(':deliveryId/mark-as-delivered')
-  @swagger.ApiBody({
-    type: MarkDeliveryAsDeliveredCourierInput,
-  })
-  @swagger.ApiCreatedResponse({
-    type: DeliveryCourierDto,
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
-  @swagger.ApiOperation({ summary: 'Mark as delivered' })
-  @Roles(EnumUserRole.COURIER)
-  async markAsDelivered(
-    @common.Param('deliveryId') deliveryId: string,
-    @common.Body() input: MarkDeliveryAsDeliveredCourierInput,
-    @CurrentUserCourier() courier: CourierEntity
-  ): Promise<DeliveryCourierDto> {
-    const deliveries = await this.deliveryRestApiCourierService.markAsDelivered(deliveryId, courier.id, input)
-
-    const dto = new DeliveryCourierDto(deliveries)
-    return dto
-  }
-
   @common.Post(':deliveryId/mark-as-dispatched')
   @swagger.ApiCreatedResponse({
     type: DeliveryCourierDto,
@@ -218,6 +196,25 @@ export class DeliveryCourierRestApiController {
     @CurrentUserCourier() courier: CourierEntity
   ): Promise<DeliveryCourierDto> {
     const deliveries = await this.deliveryRestApiCourierService.markAsDispatched(deliveryId, courier.id)
+
+    const dto = new DeliveryCourierDto(deliveries)
+    return dto
+  }
+
+  @common.Post(':deliveryId/arrived-at-pickup')
+  @swagger.ApiCreatedResponse({
+    type: DeliveryCourierDto,
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  @swagger.ApiOperation({ summary: 'Courier arrived at pickup' })
+  @Roles(EnumUserRole.COURIER)
+  async courierArrivedAtPickup(
+    @common.Param('deliveryId') deliveryId: string,
+    @CurrentUserCourier() courier: CourierEntity
+  ): Promise<DeliveryCourierDto> {
+    const deliveries = await this.deliveryRestApiCourierService.courierArrivedAtPickup(deliveryId, courier.id)
 
     const dto = new DeliveryCourierDto(deliveries)
     return dto
@@ -240,6 +237,29 @@ export class DeliveryCourierRestApiController {
     const deliveries = await this.deliveryRestApiCourierService.markAsPickedUp(deliveryId, courier.id, {
       note: input.note,
     })
+
+    const dto = new DeliveryCourierDto(deliveries)
+    return dto
+  }
+
+  @common.Post(':deliveryId/mark-as-delivered')
+  @swagger.ApiBody({
+    type: MarkDeliveryAsDeliveredCourierInput,
+  })
+  @swagger.ApiCreatedResponse({
+    type: DeliveryCourierDto,
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  @swagger.ApiOperation({ summary: 'Mark as delivered' })
+  @Roles(EnumUserRole.COURIER)
+  async markAsDelivered(
+    @common.Param('deliveryId') deliveryId: string,
+    @common.Body() input: MarkDeliveryAsDeliveredCourierInput,
+    @CurrentUserCourier() courier: CourierEntity
+  ): Promise<DeliveryCourierDto> {
+    const deliveries = await this.deliveryRestApiCourierService.markAsDelivered(deliveryId, courier.id, input)
 
     const dto = new DeliveryCourierDto(deliveries)
     return dto

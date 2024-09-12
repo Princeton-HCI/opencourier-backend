@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "shx rm -rf dist",
-    "start": "yarn clean && nest start",
+    "start": "yarn clean && nest start --webpack",
     "start:chain-watcher": "nest start --config ./nest-cli.chain-watcher.json",
     "start:watch": "yarn clean && nest start --watch --webpack",
     "start:debug": "yarn clean && nest start --debug --watch --webpack",

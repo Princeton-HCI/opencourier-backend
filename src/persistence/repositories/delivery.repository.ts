@@ -74,6 +74,21 @@ export class DeliveryRepository extends EntityRepository implements IDeliveryRep
     return this.toDomain(delivery)
   }
 
+  async findByIdOrThrowWithLocations(deliveryId: string, otherFilters?: DeliveryWhereArgs) {
+    const delivery = await this.prisma.delivery.findUniqueOrThrow({
+      where: {
+        id: deliveryId,
+        ...otherFilters,
+      } as DeliveryWhereUniqueArgs,
+      include: {
+        pickupLocation: true,
+        dropoffLocation: true,
+      },
+    })
+
+    return new DeliveryWithLocationsEntity(delivery)
+  }
+
   async findManyPaginated(args: DeliveryWhereArgs, page?: number, perPage?: number) {
     const paginator = createPaginator<Delivery, Prisma.DeliveryFindManyArgs, Prisma.DeliveryDelegate>()
 

@@ -15,12 +15,16 @@ import { MarkDeliveryAsDeliveredCourierInput } from './queries/mark-delivery-as-
 import { MarkDeliveryAsPickedUpCourierInput } from './queries/mark-delivery-as-picked-up.courier.input'
 import { NewDeliveriesCourierPaginatedDto } from './dtos/new-deliveries.courier.paginated.dto'
 import { InProgressDeliveriesCourierPaginatedDto } from './dtos/in-progress-deliveries.courier.paginated.dto'
+import { DeliveryDomainService } from 'src/domains/delivery/delivery.domain.service'
 
 @swagger.ApiBearerAuth()
 @swagger.ApiTags('deliveries')
 @common.Controller(`${COURIER_API_V1_PREFIX}/deliveries`)
 export class DeliveryCourierRestApiController {
-  constructor(private readonly deliveryRestApiCourierService: DeliveryRestApiCourierService) {}
+  constructor(
+    private readonly deliveryRestApiCourierService: DeliveryRestApiCourierService,
+    private readonly deliveryDomainService: DeliveryDomainService
+  ) {}
 
   @common.Get('new')
   @swagger.ApiResponse({ type: NewDeliveriesCourierPaginatedDto })
@@ -92,11 +96,11 @@ export class DeliveryCourierRestApiController {
     @common.Param('deliveryId') deliveryId: string,
     @CurrentUserCourier() courier: CourierEntity
   ): Promise<DeliveryCourierDto> {
-    const deliveries = await this.deliveryRestApiCourierService.getByIdOrThrow(deliveryId, {
+    const delivery = await this.deliveryDomainService.getByIdOrThrowWithLocation(deliveryId, {
       OR: [{ courierId: courier.id }, { matchedCourierId: courier.id }],
     })
 
-    const dto = new DeliveryCourierDto(deliveries)
+    const dto = new DeliveryCourierDto(delivery)
     return dto
   }
 

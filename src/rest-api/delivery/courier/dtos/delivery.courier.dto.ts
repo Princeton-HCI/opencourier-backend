@@ -1,6 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { EnumDeliverableAction, EnumDeliveryStatus, EnumUndeliverableAction, Prisma } from '@prisma/types'
+import { DeliveryWithLocationsEntity } from 'src/domains/delivery/entities/delivery-with-locations.entity'
 import { DeliveryEntity } from 'src/domains/delivery/entities/delivery.entity'
+import { LocationEntity } from 'src/domains/location/entities/location.entity'
+
+const formatAddress = (address: LocationEntity) => {
+  const { addressLine1, city, state } = address
+  let formattedAddress = ''
+  if (addressLine1) formattedAddress += `${addressLine1}, `
+  if (city) formattedAddress += `${city}, `
+  if (state) formattedAddress += state
+  return formattedAddress
+}
 
 export class DeliveryCourierDto implements Partial<DeliveryEntity> {
   @ApiProperty({ type: String })
@@ -156,7 +167,13 @@ export class DeliveryCourierDto implements Partial<DeliveryEntity> {
   @ApiProperty({ type: Date })
   createdAt: Date
 
-  constructor(data: DeliveryEntity) {
+  @ApiProperty({ type: String, nullable: true })
+  dropoffLocationFormattedAddress: string | null
+
+  @ApiProperty({ type: String, nullable: true })
+  pickupLocationFormattedAddress: string | null
+
+  constructor(data: DeliveryEntity | DeliveryWithLocationsEntity) {
     this.id = data.id
     this.pickupName = data.pickupName
     this.pickupPhoneNumber = data.pickupPhoneNumber
@@ -209,5 +226,13 @@ export class DeliveryCourierDto implements Partial<DeliveryEntity> {
     this.deliveryQuoteId = data.deliveryQuoteId
 
     this.createdAt = data.createdAt
+
+    if ('pickupLocation' in data && data.pickupLocation) {
+      this.pickupLocationFormattedAddress = formatAddress(data.pickupLocation)
+    }
+
+    if ('dropoffLocation' in data && data.dropoffLocation) {
+      this.dropoffLocationFormattedAddress = formatAddress(data.dropoffLocation)
+    }
   }
 }

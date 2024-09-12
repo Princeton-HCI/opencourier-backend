@@ -47,6 +47,12 @@ export class DeliveryDomainService {
     return delivery
   }
 
+  async getByIdOrThrowWithLocation(deliveryId: string, otherFilters?: DeliveryWhereArgs) {
+    const delivery = await this.deliveryRepository.findByIdOrThrowWithLocations(deliveryId, otherFilters)
+
+    return delivery
+  }
+
   async getByDeliveryQuoteId(deliveryQuoteId: string) {
     const delivery = await this.deliveryRepository.findByDeliveryQuoteId(deliveryQuoteId)
 

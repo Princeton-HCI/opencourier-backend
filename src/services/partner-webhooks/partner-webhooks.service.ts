@@ -6,6 +6,7 @@ import { HttpService } from '@nestjs/axios'
 import { AxiosResponse } from 'axios'
 import { DeliveryRepository } from 'src/persistence/repositories/delivery.repository'
 import { PartnerRepository } from 'src/persistence/repositories/partner.repository'
+import { CourierRepository } from 'src/persistence/repositories/courier.repository'
 
 @Injectable()
 export class PartnerWebhookService {
@@ -13,6 +14,7 @@ export class PartnerWebhookService {
   constructor(
     private readonly partnerRepository: PartnerRepository,
     private readonly deliveryRepository: DeliveryRepository,
+    private readonly courierRepository: CourierRepository,
     private readonly httpService: HttpService
   ) {}
 
@@ -22,6 +24,8 @@ export class PartnerWebhookService {
       this.logger.error(`Delivery ${delivery.id} has no partner`)
       return
     }
+
+    const courier = delivery.courierId ? await this.courierRepository.findByIdOrThrow(delivery.courierId) : null
 
     const partner = await this.partnerRepository.findById(delivery.partnerId)
 
@@ -37,10 +41,13 @@ export class PartnerWebhookService {
 
     const webhookPayload: DeliveryStatusChangedEventPayload = {
       eventType: PartnerWebhookEventType.DELIVERY_STATUS_CHANGED,
+      event: event.event.type,
       deliveryId: delivery.id,
       partnerId: partner.id,
       oldStatus: event.oldStatus,
       newStatus: event.status,
+      delivery,
+      courier,
     }
 
     // Send webhook request to partner

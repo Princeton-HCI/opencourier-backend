@@ -5,11 +5,6 @@ export interface Coordinates {
   longitude: number
 }
 
-export enum EnumDeliveryServiceProvider {
-  NOSH = 'NOSH',
-  SHIPDAY = 'SHIPDAY',
-}
-
 export interface CartModifierWithoutAvailability {
   id: string
   quantity: number

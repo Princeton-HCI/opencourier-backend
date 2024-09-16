@@ -160,7 +160,7 @@ model DeliveryQuote {
   dropoffEta        DateTime?
   dropoffDeadlineAt DateTime?
 
-  orderTotalValue Float
+  orderTotalValue Float?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

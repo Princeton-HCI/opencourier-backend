@@ -17,8 +17,8 @@ export class DeliveryQuotePartnerDto implements Partial<DeliveryQuoteEntity> {
   @ApiProperty({ type: Number })
   duration: number
 
-  @ApiProperty({ type: Number })
-  orderTotalValue: number
+  @ApiProperty({ type: Number, nullable: true })
+  orderTotalValue?: number | null
 
   @ApiProperty({ type: Date, nullable: true })
   expiresAt: Date | null

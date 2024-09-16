@@ -79,23 +79,26 @@ export class DeliverQuoteCreatePartnerInput {
   dropoffDeadlineAt?: Date
 
   @ApiProperty({
-    required: true,
+    required: false,
     type: String,
   })
   @IsString()
-  pickupPhoneNumber: string
+  @IsOptional()
+  pickupPhoneNumber?: string
 
   @ApiProperty({
-    required: true,
+    required: false,
     type: String,
   })
   @IsString()
-  dropoffPhoneNumber: string
+  @IsOptional()
+  dropoffPhoneNumber?: string
 
   @ApiProperty({
-    required: true,
+    required: false,
     type: Number,
   })
   @IsNumber()
-  orderTotalValue: number
+  @IsOptional()
+  orderTotalValue?: number
 }

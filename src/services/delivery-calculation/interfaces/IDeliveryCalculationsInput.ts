@@ -7,7 +7,7 @@ export interface IDeliveryCalculationsInput {
     latitude: number
     longitude: number
   }
-  orderTotalValue: number
+  orderTotalValue?: number
   pickupReadyAt?: Date | null
   timeOfDay: Date
 }

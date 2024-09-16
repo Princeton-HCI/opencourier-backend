@@ -19,7 +19,7 @@ export interface IDeliveryQuoteCreate {
   dropoffEta: Date | string | null
   dropoffReadyAt?: Date | string | null
   dropoffDeadlineAt?: Date | string | null
-  orderTotalValue: number
+  orderTotalValue?: number
   partnerId?: string | null
   pickupLocationId: string
   dropoffLocationId: string

@@ -10,7 +10,7 @@ export class DeliveryQuoteEntity implements DeliveryQuote {
   duration: number
   distance: number
   distanceUnit: EnumDistanceUnit
-  orderTotalValue: number
+  orderTotalValue: number | null
   expiresAt: Date | null
 
   // Pickup data

@@ -7,5 +7,5 @@ export interface IDeliveryQuoteCreationData {
   pickupDeadlineAt?: Date | string | null
   dropoffReadyAt?: Date | string | null
   dropoffDeadlineAt?: Date | string | null
-  orderTotalValue: number
+  orderTotalValue?: number
 }

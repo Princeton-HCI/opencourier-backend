@@ -5,8 +5,8 @@
     "lastName": "Smith",
     "status": "ONLINE",
     "currentLocation": {
-      "latitude": 40.712776,
-      "longitude": -74.005974
+      "latitude": 40.567426666076756,
+      "longitude": -105.09629931808772
     },
     "userPassword": "password",
     "createdAt": "2024-07-24 13:48:07.672",

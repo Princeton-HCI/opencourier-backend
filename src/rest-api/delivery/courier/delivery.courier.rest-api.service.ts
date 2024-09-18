@@ -11,6 +11,7 @@ import { LocationNoteReactionDomainService } from 'src/domains/location-note-rea
 import { LocationNoteWithReactionCounts } from './types/location-note-with-reaction-counts.type'
 import { InProgressDeliveryCourier } from './types/in-progress-delivery.courier.type'
 import { NewDeliveryCourier } from './types/new-delivery.courier.type'
+import { DELIVERY_ONGOING_STATUSES } from 'src/shared-types'
 
 @Injectable()
 export class DeliveryRestApiCourierService {
@@ -51,7 +52,7 @@ export class DeliveryRestApiCourierService {
     const args: DeliveryWhereArgs = {
       courierId,
       status: {
-        in: [EnumDeliveryStatus.ACCEPTED, EnumDeliveryStatus.DISPATCHED, EnumDeliveryStatus.PICKED_UP],
+        in: DELIVERY_ONGOING_STATUSES,
       },
     }
 

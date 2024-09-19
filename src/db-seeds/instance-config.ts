@@ -19,7 +19,7 @@ export async function seedInitialInstanceConfig(prisma: PrismaClient) {
     courierCompensationCalculationType: EnumCourierCompensationCalculationType.FROM_QUOTE_FROM,
     maxAssignmentDistance: 3,
     maxDriftDistance: 0,
-    quoteExpirationMinutes: 4,
+    quoteExpirationMinutes: 10,
     feePercentageAmount: 10,
     defaultCourierPayRate: 1,
     defaultMinimumCourierPay: 1,

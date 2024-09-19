@@ -14,13 +14,8 @@ export class AblyDispatcher extends WebsocketDispatcher {
   }
 
   async sendOfferToCourier(userId: string, delivery: DeliveryCourierDto) {
-    const data = {
-      delivery,
-    }
-
-    this.logger.log(`emitting event to courier: ${JSON.stringify(data)}, channel: COURIER:${userId}`)
-
-    await this.publishMessage(courierNotificationChannel(userId), NotificationEventType.NEW_DELIVERY_OFFER, data)
+    this.logger.log(`emitting event to courier: ${JSON.stringify(delivery)}, channel: COURIER:${userId}`)
+    await this.publishMessage(courierNotificationChannel(userId), NotificationEventType.NEW_DELIVERY_OFFER, delivery)
   }
   async dispatchDeliveryStatusUpdated(
     userId: string,

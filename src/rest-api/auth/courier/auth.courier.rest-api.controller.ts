@@ -16,6 +16,7 @@ import { PrivateWithRefreshToken } from 'src/decorators/private-with-refresh-tok
 import { Roles } from 'src/decorators/roles.decorator'
 import { Request } from 'express'
 import { UserWithCourierCourierDto } from './dtos/user-with-courier.courier.dto'
+import { AblyTokenDto } from 'src/rest-api/common/dtos/ably-token.dto'
 
 @swagger.ApiBearerAuth()
 @swagger.ApiTags('auth')
@@ -68,13 +69,13 @@ export class AuthCourierRestApiController {
     return new UserWithCourierCourierDto(data.user, data.courier)
   }
 
-  // @common.Get('ably-token')
-  // @swagger.ApiOkResponse({ type: AblyTokenDto })
-  // @swagger.ApiForbiddenResponse({
-  //   type: errors.ForbiddenException,
-  // })
-  // async getAblyToken(@CurrentUser() user: UserEntity): Promise<AblyTokenDto> {
-  //   const tokenRequest = await this.authDomainService.getAblyToken(user)
-  //   return new AblyTokenDto(tokenRequest)
-  // }
+  @common.Get('ably-token')
+  @swagger.ApiOkResponse({ type: AblyTokenDto })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  async getAblyToken(@CurrentUser() user: UserEntity): Promise<AblyTokenDto> {
+    const tokenRequest = await this.authDomainService.getAblyToken(user)
+    return new AblyTokenDto(tokenRequest)
+  }
 }

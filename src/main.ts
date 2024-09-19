@@ -45,7 +45,9 @@ async function main() {
   app.useGlobalInterceptors(new SentryInterceptor())
   app.use(rawBodyMiddleware())
 
-  app.useWebSocketAdapter(new SocketIOAdapter(app, app.get(ConfigService)))
+  if (process.env.WEBSOCKET_DISPATCHER !== 'ably') {
+    app.useWebSocketAdapter(new SocketIOAdapter(app, app.get(ConfigService)))
+  }
 
   // This somehow breaks the Middleware
   //app.setGlobalPrefix('v1', { exclude: ['v0(.*)', '(.*)/v1/(.*)'] })

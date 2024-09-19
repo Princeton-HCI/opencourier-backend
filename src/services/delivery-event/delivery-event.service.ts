@@ -114,10 +114,10 @@ export class DeliveryEventService {
           const { totalCost, totalCompensation, fee, feePercentage } = deliveryAmounts
           await this.updateDeliveryAmounts(deliveryId, totalCost, totalCompensation, fee, feePercentage)
 
-          await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
+          const updatedDelivery = await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
 
           this.logger.log(`Sending offer to courier: ${courier.id}`)
-          await this.websocketDispatcher.sendOfferToCourier(courier.userId, new DeliveryCourierDto(delivery))
+          await this.websocketDispatcher.sendOfferToCourier(courier.userId, new DeliveryCourierDto(updatedDelivery))
           break
         }
         case EnumDeliveryStatus.ACCEPTED: {
@@ -236,6 +236,8 @@ export class DeliveryEventService {
     if (updatedDelivery.courierId) {
       await this.notifyCourier(updatedDelivery.courierId, updatedDelivery, newStatus, oldStatus, deliveryEvent)
     }
+
+    return updatedDelivery
   }
 
   private async updateDeliveryAmounts(

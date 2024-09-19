@@ -1,16 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common'
-import * as errors from '../../errors'
-import { assign } from 'lodash'
-import { PasswordService } from './password.service'
-import { IEmailLogin } from './interfaces/IEmailLogin'
-import { IUserUpdate } from '../user/interfaces/IUserUpdate'
-import { TokenService } from './token.service'
-import { UserEntity } from '../user/entities/user.entity'
-import { isRecordNotFoundError } from '../../prisma.util'
-import { ICourierRegister } from './interfaces/ICourierRegister'
 import { EnumUserRole } from '@prisma/types'
-import { UserDomainService } from '../user/user.domain.service'
+import { assign } from 'lodash'
+import { AblyService } from 'src/integrations/ably/ably.service'
+import * as errors from '../../errors'
+import { isRecordNotFoundError } from '../../prisma.util'
 import { CourierDomainService } from '../courier/courier.domain.service'
+import { UserEntity } from '../user/entities/user.entity'
+import { IUserUpdate } from '../user/interfaces/IUserUpdate'
+import { UserDomainService } from '../user/user.domain.service'
+import { ICourierRegister } from './interfaces/ICourierRegister'
+import { IEmailLogin } from './interfaces/IEmailLogin'
+import { PasswordService } from './password.service'
+import { TokenService } from './token.service'
 
 @Injectable()
 export class AuthDomainService {
@@ -20,7 +21,8 @@ export class AuthDomainService {
     private userDomainService: UserDomainService,
     private courierDomainService: CourierDomainService,
     private passwordService: PasswordService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private ablyService: AblyService
   ) {}
 
   async verifyUniqueEmailInput(email: string) {
@@ -181,7 +183,7 @@ export class AuthDomainService {
   }
 
   async getAblyToken(user: UserEntity) {
-    // return this.ablyService.createToken(user)
+    return this.ablyService.createToken(user)
   }
 
   private async validateUser(password: string, email: string) {

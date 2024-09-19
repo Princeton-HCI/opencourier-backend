@@ -11,10 +11,12 @@ import { jwtRefreshSecretFactory, jwtSecretFactory } from './jwt/jwtSecretFactor
 import { UserDomainModule } from '../user/user.domain.module'
 import { CourierDomainModule } from '../courier/courier.domain.module'
 import { JwtRefreshStrategy } from './jwt/jwt-refresh.strategy'
+import { AblyModule } from 'src/integrations/ably/ably.module'
 
 @Global()
 @Module({
   imports: [
+    AblyModule, // Required to import ably service when global socket dispatcher is socketio.
     PassportModule,
     UserDomainModule,
     CourierDomainModule,

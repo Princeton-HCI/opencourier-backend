@@ -5,7 +5,6 @@ import { DeliveryMatchingService } from './delivery-matching.service'
 import { LocationDomainModule } from 'src/domains/location/location.domain.module'
 import { CourierMatcherModule } from '../courier-matcher/courier-matcher.module'
 import { CacheModule } from '../cache/cache.module'
-import { SocketIOModule } from '../socketio/socketio.module'
 
 @Global()
 @Module({
@@ -14,7 +13,6 @@ import { SocketIOModule } from '../socketio/socketio.module'
     CourierDomainModule,
     LocationDomainModule,
     CourierMatcherModule.forRoot(),
-    SocketIOModule,
     CacheModule,
   ],
   providers: [DeliveryMatchingService],

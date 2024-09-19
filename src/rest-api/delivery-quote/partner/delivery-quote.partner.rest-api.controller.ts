@@ -52,10 +52,9 @@ export class DeliveryQuotePartnerRestApiController {
   async createDeliveryQuote(
     @common.Body() data: DeliverQuoteCreatePartnerInput,
     @CurrentUserPartner() partner: PartnerEntity
-  ): Promise<DeliveryQuotePartnerDto> {
+  ): Promise<DeliveryQuotePartnerDto | null> {
     const deliveryQuote = await this.deliveryQuoteRestApiPartnerService.create(partner.id, data)
 
-    const dto = new DeliveryQuotePartnerDto(deliveryQuote)
-    return dto
+    return deliveryQuote ? new DeliveryQuotePartnerDto(deliveryQuote) : null
   }
 }

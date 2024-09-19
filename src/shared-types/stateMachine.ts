@@ -88,3 +88,10 @@ export const STATUS_TO_HUMAN: Record<EnumDeliveryStatus, string> = {
   CANCELED: 'canceled',
   FAILED: 'failed',
 }
+
+export const DELIVERY_ONGOING_STATUSES = [
+  EnumDeliveryStatus.ACCEPTED,
+  EnumDeliveryStatus.DISPATCHED,
+  EnumDeliveryStatus.PICKED_UP,
+  EnumDeliveryStatus.ON_THE_WAY,
+]

@@ -2,6 +2,9 @@ import { EnumUserRole, PrismaClient } from '@prisma/types'
 import { hash } from 'bcryptjs'
 import { parseSalt } from 'src/domains/auth/password.service'
 
+const DEV_PARTNER_API_KEY =
+  'zn0vTaZobhvd95utXZ0dY4LIcoofhUGBV2NJ6WCNi5a9TIhaHgDLSxWiaw0nTHSqWlctMZLxKvJ009M4EqdkknozICP9u8zD6vIiCmdbduSoeTwNHX6Uhfp7KQLAVMnX'
+
 export async function seedPartnerUser(prisma: PrismaClient) {
   if (!process.env.BCRYPT_SALT) {
     throw new Error('BCRYPT_SALT is not defined')
@@ -39,6 +42,7 @@ export async function seedPartnerUser(prisma: PrismaClient) {
       email,
       password: await hash(pwd, userSalt),
       role: [EnumUserRole.PARTNER],
+      apiKey: DEV_PARTNER_API_KEY,
     },
   })
 

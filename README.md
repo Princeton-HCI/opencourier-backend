@@ -244,3 +244,49 @@ In your terminal:
 ```sh
 yarn gcloud
 ```
+
+
+# Setup on MacOS
+
+## Backend Setup
+
+1. Docker Desktop install: https://www.docker.com/products/docker-desktop/. Ensure Docker is running. 
+
+2. Postman install: https://www.postman.com/downloads/
+
+- Then, import these config files into postman (files are on Opendeli Courier System Eng shared drive; ask Varun / Andrés if you don't have access)
+    - [OpennDeli.postman_collection.json](./apps/backend/docs/postman/Open%20Courier.postman_collection.json) 
+    - [OpenDelli local.postman_environment.json](./apps/backend/docs/postman/OpenCourierlocal.postman_environment.json)
+- We will use Postman for testing with sample data.
+
+3. Install a DB client like TablePlus. 
+    - Download TablePlus: https://tableplus.com/download
+    - Connect to the database using the following credentials:
+        - Host: localhost
+        - Port: 5432
+        - User: admin
+        - Password: admin
+        - Database: opencourier-v2
+
+4. Node install: https://nodejs.org/en/download/package-manager
+
+5. `git clone https://github.com/Princeton-HCI/opencourier-backend.git`
+
+6. `cp local.env .env`
+
+7. `docker-compose -f docker-compose.db.yml up -d`
+
+8. Run this whenever there is a new package is added and during initial set up
+    - `yarn install`
+
+9. Run this whenever there is a change in the schema and the migrations and during initial setup
+    - ```yarn prisma:generate```
+    - ```yarn db:migrate-save```
+    - ```yarn prisma:seed```
+
+10. Run the app
+    - `yarn start:watch`
+    - If there are no errors on the terminal, go to http://localhost:3000/api/courier/docs/ and enter login details, you will see the Swagger documentation page load.
+        - username: `opencourier`
+        - password: `0p3nC0ur13r`
+    - You can make code changes on the editor; terminal will keep listening for changes

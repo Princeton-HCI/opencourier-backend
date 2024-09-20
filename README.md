@@ -255,8 +255,8 @@ yarn gcloud
 2. Postman install: https://www.postman.com/downloads/
 
 - Then, import these config files into postman (files are on Opendeli Courier System Eng shared drive; ask Varun / Andrés if you don't have access)
-    - [OpennDeli.postman_collection.json](./apps/backend/docs/postman/Open%20Courier.postman_collection.json) 
-    - [OpenDelli local.postman_environment.json](./apps/backend/docs/postman/OpenCourierlocal.postman_environment.json)
+    - [OpennDeli.postman_collection.json](./docs/postman/Open%20Courier.postman_collection.json) 
+    - [OpenDelli local.postman_environment.json](./docs/postman/OpenCourierlocal.postman_environment.json)
 - We will use Postman for testing with sample data.
 
 3. Install a DB client like TablePlus. 

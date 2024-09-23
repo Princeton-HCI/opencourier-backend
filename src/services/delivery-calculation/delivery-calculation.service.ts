@@ -12,6 +12,7 @@ import { IDeliveryAmountsCalculationsInput } from './interfaces/IDeliveryAmounts
 import { CourierCompensationService } from '../courier-compensation/courier-compensation.service'
 import { IDeliveryAmountsCalculationsResult } from './interfaces/IDeliveryAmountsCalculationsResult'
 import { DeliveryRepository } from 'src/persistence/repositories/delivery.repository'
+import { roundMoney } from 'src/core/utils/money'
 
 interface DeliveryQuoteAmountResultWithFeePercentage extends DeliveryQuoteAmountResult {
   feePercentage: number
@@ -57,8 +58,8 @@ export class DeliveryCalculationService implements IDeliveryCalculationService {
     const quoteToWithFee = this.addFeeToAmount(quote.quoteRangeTo, feePercentage)
 
     return {
-      quoteRangeFrom: quoteFromWithFee.amount,
-      quoteRangeTo: quoteToWithFee.amount,
+      quoteRangeFrom: roundMoney(quoteFromWithFee.amount),
+      quoteRangeTo: roundMoney(quoteToWithFee.amount),
       feePercentage: feePercentage,
     }
   }
@@ -91,9 +92,9 @@ export class DeliveryCalculationService implements IDeliveryCalculationService {
 
     return {
       deliveryId: deliveryId,
-      totalCompensation: courierCompensation,
-      totalCost: totalCostCalculation.amount,
-      fee: totalCostCalculation.fee,
+      totalCompensation: roundMoney(courierCompensation),
+      totalCost: roundMoney(totalCostCalculation.amount),
+      fee: roundMoney(totalCostCalculation.fee),
       feePercentage: feePercentage,
     }
   }

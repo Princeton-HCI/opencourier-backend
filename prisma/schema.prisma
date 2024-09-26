@@ -137,8 +137,8 @@ model Partner {
 model DeliveryQuote {
   id             String           @id @default(cuid())
   quote          Float?
-  quoteRangeFrom Float
-  quoteRangeTo   Float
+  quoteRangeFrom Int
+  quoteRangeTo   Int
   feePercentage  Float            @default(0)
   currency       String           @postgres.VarChar(255)
   duration       Int
@@ -160,7 +160,7 @@ model DeliveryQuote {
   dropoffEta        DateTime?
   dropoffDeadlineAt DateTime?
 
-  orderTotalValue Float?
+  orderTotalValue Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -232,12 +232,12 @@ model Delivery {
   partnerId          String?
   deliveryQuoteId    String             @unique
 
-  totalCost         Float?
-  fee               Float?
+  totalCost         Int?
+  fee               Int?
   feePercentage     Float?
-  pay               Float?
-  tips              Float  @default(0)
-  totalCompensation Float?
+  pay               Int?
+  tips              Int    @default(0)
+  totalCompensation Int?
 
   // Delivery matching data
   rejectedByCouriers String[] @default([])
@@ -354,7 +354,7 @@ model Payment {
   capturedAt DateTime?
   canceledAt DateTime?
 
-  amount     Decimal
+  amount     Int
   status     EnumPaymentStatus   @default(REQUIRES_CONFIRMATION)
   delivery   Delivery            @relation(fields: [deliveryId], references: [id])
   deliveryId String

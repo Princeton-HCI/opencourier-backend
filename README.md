@@ -263,7 +263,7 @@ yarn gcloud
     - Download TablePlus: https://tableplus.com/download
     - Connect to the database using the following credentials:
         - Host: localhost
-        - Port: 5432
+        - Port: 5442
         - User: admin
         - Password: admin
         - Database: opencourier-v2

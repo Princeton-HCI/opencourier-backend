@@ -82,4 +82,5 @@ export class DeliveryMatchingService {
 
     return rejectedCourierIds
   }
+  
 }

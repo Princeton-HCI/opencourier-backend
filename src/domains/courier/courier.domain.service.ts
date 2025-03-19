@@ -24,6 +24,12 @@ export class CourierDomainService {
     return courier
   }
 
+  async hasActiveDelivery(courierId: string): Promise<boolean> {
+    // Use repository instead of direct Prisma access
+    return await this.courierRepository.hasActiveDelivery(courierId)
+  }
+
+
   async update(id: string, input: ICourierUpdate) {
     const courier = await this.courierRepository.updateById(id, input)
 
@@ -35,6 +41,54 @@ export class CourierDomainService {
 
     return courier
   }
+
+  async findAllAvailable(options: { excludeIds?: string[] } = {}) {
+    const { excludeIds = [] } = options
+    
+    try {
+      // Get all couriers first
+      const paginatedResult = await this.courierRepository.findManyPaginated(1, 20) // Set a large enough limit
+      const allCouriers = paginatedResult.data
+      
+        // Map couriers to an array of promises
+    const courierChecks = allCouriers.map(async courier => {
+      // Skip excluded couriers
+      if (excludeIds.includes(courier.id)) {
+        return null
+      }
+      
+      // Check if courier is online
+      if (courier.status !== 'ONLINE' && courier.status !== 'LAST_CALL') {
+        return null
+      }
+      
+      // Check if courier has a valid location
+      const location = await this.courierRepository.getCurrentLocation(courier.id)
+      if (!location) {
+        return null
+      }
+      
+      // Check if courier has an ongoing delivery
+      const hasActiveDelivery = await this.courierRepository.hasActiveDelivery(courier.id)
+                
+      if (hasActiveDelivery) {
+        return null
+      }
+      
+      // Courier passes all checks
+      courier.currentLocation = location
+      return courier
+    })
+    
+    // Wait for all promises to resolve and filter out null values
+    const availableCouriers = (await Promise.all(courierChecks)).filter(Boolean)
+    
+    return availableCouriers
+  } catch (error) {
+    this.logger.error('Error finding available couriers', error)
+    return []
+  }
+}
 
   async getMostSeniorAvailableCourier(args: ICourierFindBySeniorityArgs) {
     const courier = await this.courierRepository.findMostSeniorAvailableCourier(args)
@@ -83,7 +137,7 @@ export class CourierDomainService {
 
     return result
   }
-
+  
   async updateDeliverySetting(id: string, deliverySetting: EnumCourierDeliverySetting) {
     const result = await this.courierRepository.updateDeliverySetting(id, deliverySetting)
 

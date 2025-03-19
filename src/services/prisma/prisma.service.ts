@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/types'
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+  courierRestriction: any
+  courierPreference: any
   // constructor() {
   //   super({
   //     log: [

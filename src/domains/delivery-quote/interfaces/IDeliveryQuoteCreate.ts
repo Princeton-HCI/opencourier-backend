@@ -23,4 +23,6 @@ export interface IDeliveryQuoteCreate {
   partnerId?: string | null
   pickupLocationId: string
   dropoffLocationId: string
+  contains?: string[]; // Add contains field
+  restaurantTags?: string[]; // Add restaurantTags field
 }

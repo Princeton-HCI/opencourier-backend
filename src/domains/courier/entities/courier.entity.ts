@@ -20,6 +20,9 @@ export class CourierEntity implements Courier {
   createdAt: Date
   updatedAt: Date
 
+  restrictions: string[];
+  preferences: string[];
+
   constructor(data: Courier & { currentLocation?: GeoPosition | null }) {
     this.id = data.id
     this.node_uri = data.node_uri
@@ -37,5 +40,8 @@ export class CourierEntity implements Courier {
     this.userId = data.userId
     this.createdAt = data.createdAt
     this.updatedAt = data.updatedAt
+
+    this.restrictions = data.restrictions || [];
+    this.preferences = data.preferences || [];
   }
 }

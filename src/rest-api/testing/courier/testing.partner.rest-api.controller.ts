@@ -22,10 +22,10 @@ export class TestingCourierRestApiController {
   @swagger.ApiOperation({ summary: 'Test endpoint: assigning courier for delivery' })
   @Roles(EnumUserRole.COURIER)
   async findCourier(@common.Param('deliveryId') deliveryId: string): Promise<any> {
-    // const courier = await this.deliveryMatchingService.matchDeliveryToCourier(deliveryId)
-    // if (!courier) {
-    //   throw new errors.NotFoundException('No couriers are available.')
-    // }
-    // return courier;
+    const courier = await this.deliveryMatchingService.matchDeliveryToCourier(deliveryId)
+    if (!courier) {
+      throw new errors.NotFoundException('No couriers are available.')
+    }
+    return courier;
   }
 }

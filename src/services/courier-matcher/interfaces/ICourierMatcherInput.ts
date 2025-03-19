@@ -5,4 +5,6 @@ export interface ICourierMatcherInput {
   pickupLocation: GeoPosition
   dropoffLocation: GeoPosition
   rejectedCourierIds: string[]
+  contains?: string[]; // Add contains field
+  restaurantTags?: string[]; // Add restaurantTags field
 }

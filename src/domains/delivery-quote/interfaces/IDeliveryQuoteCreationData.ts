@@ -8,4 +8,7 @@ export interface IDeliveryQuoteCreationData {
   dropoffReadyAt?: Date | string | null
   dropoffDeadlineAt?: Date | string | null
   orderTotalValue?: number
+  contains?: string[]; // Add contains field
+  restaurantTags?: string[]; // Add restaurantTags field
+
 }

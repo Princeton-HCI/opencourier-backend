@@ -30,6 +30,19 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
     super(prisma)
   }
 
+  async hasActiveDelivery(courierId: string): Promise<boolean> {
+    const delivery = await this.prisma.delivery.findFirst({
+      where: {
+        courierId: courierId,
+        status: {
+          in: ['CREATED', 'DISPATCHED', 'PICKED_UP']
+        }
+      }
+    })
+    
+    return !!delivery
+  }
+
   async create(data: Exact<ICourierCreate>) {
     const result = await this.prisma.courier.create({
       data: {

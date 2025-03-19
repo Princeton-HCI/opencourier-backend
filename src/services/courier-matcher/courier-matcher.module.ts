@@ -10,6 +10,7 @@ import { useProvideClass } from 'src/core/utils/provider'
 import { EnumCourierMatcherType } from 'src/shared-types/index'
 import { ConfigDomainModule } from 'src/domains/config/config.domain.module'
 import { CourierSeniorityMatcherService } from './courier-seniority-matcher.service'
+import { HungarianCourierMatcherService} from './hungarian-courier-matcher.service'
 
 @Global()
 @Module({
@@ -31,6 +32,11 @@ export class CourierMatcherModule {
         provide: EnumCourierMatcherType.STATIC,
         useClass: StaticCourierMatcherService,
       },
+      {
+        provide: EnumCourierMatcherType.HUNGARIAN,
+        useClass: HungarianCourierMatcherService
+      },
+      HungarianCourierMatcherService,
     ]
 
     return {

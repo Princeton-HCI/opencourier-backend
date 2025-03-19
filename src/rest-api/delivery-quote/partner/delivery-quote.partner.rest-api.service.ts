@@ -50,6 +50,8 @@ export class DeliveryQuotePartnerRestApiService {
         longitude: dropoffLocation.longitude,
       },
       rejectedCourierIds: [],
+      contains: input.contains || [],
+      restaurantTags: input.restaurantTags || [],
     })
 
     // TODO: Improve error message, no driver available.

@@ -49,7 +49,7 @@ export class TestingAdminRestApiController {
   @swagger.ApiOperation({ summary: 'Test endpoint: create a test delivery' })
   @Roles(EnumUserRole.ADMIN)
   async createTestDelivery(@common.Body() data: TestDeliveryCreateAdminInput): Promise<any> {
-    const delivery = await this.testAdminRestApiService.createTestQuoteAndDelivery(data)
+    const delivery = await this.testAdminRestApiService.createTestQuoteAndDelivery(data);
 
     if (!delivery) {
       throw new errors.NotFoundException('No deliveries are available.')

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsDate, IsNumber, IsOptional, IsString, IsArray } from 'class-validator'
 import { DeliveryQuoteAddressInput } from './delivery-quote-address.partner.input'
 
 export class DeliverQuoteCreatePartnerInput {
@@ -101,4 +101,23 @@ export class DeliverQuoteCreatePartnerInput {
   @IsNumber()
   @IsOptional()
   orderTotalValue?: number
+
+  @ApiProperty({
+    required: false,
+    type: [String],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  contains?: string[]
+
+  @ApiProperty({
+    required: false,
+    type: [String],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  restaurantTags?: string[]
+
 }

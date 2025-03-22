@@ -10,6 +10,19 @@ import { ConfigDomainService } from 'src/domains/config/config.domain.service';
 
 const HIGH_COST = 1000;
 const DISTANCE_THRESHOLD = 10;
+const MAX_PRICE = 100;
+const WEIGHTS = {
+  area: 0.2,
+  distance: 0.2,
+  location_type: 0.2,
+  item_type: 0.2,
+  price: 0.2,
+}; // weight for score calculation 
+const LOCATION_TYPE_SCORES = {
+  urban: 1.0,
+  suburban: 0.8,
+  rural: 0.5,
+};
 
 @Injectable()
 export class HungarianCourierMatcherService implements ICourierMatcherService {
@@ -30,81 +43,20 @@ export class HungarianCourierMatcherService implements ICourierMatcherService {
     }
 
     // Transform deliveries and couriers into the required format
-    const deliveries = deliveriesInput.map((input) => ({
-      id: input.deliveryId,
-      start_location: input.pickupLocation,
-      end_location: input.dropoffLocation,
-      contains: input.contains || [],
-      restaurantTags: input.restaurantTags || [],
-    }));
-
-    const couriers = availableCouriers.map((courier) => ({
-      id: courier.id,
-      location: courier.currentLocation,
-      hard: {
-        order_restrictions: courier.restrictions || [],
-      },
-      soft: {
-        preferences: courier.preferences || [],
-      },
-    }));
+    const deliveries = this.transformDeliveries(deliveriesInput);
+    const couriers = this.transformCouriers(availableCouriers);
 
     const numOrders = deliveries.length;
     const numCouriers = couriers.length;
     const size = Math.max(numOrders, numCouriers);
     const costMatrix = math.ones(size, size).map(() => HIGH_COST) as math.Matrix;
 
-    const calculateDistance = (loc1: GeoPosition, loc2: GeoPosition) => {
-      return Math.sqrt(
-        Math.pow(loc1.latitude - loc2.latitude, 2) +
-          Math.pow(loc1.longitude - loc2.longitude, 2)
-      );
-    };
-
-    const calculateCompatibility = (order: any, courier: any) => {
-      let score = 0;
-
-      // Hard restrictions - return high cost if incompatible
-      if (courier.hard?.order_restrictions && order.contains) {
-        if (
-          courier.hard.order_restrictions.some((restriction: any) =>
-            order.contains.includes(restriction)
-          )
-        ) {
-          return HIGH_COST;
-        }
-      }
-
-      // Soft preferences - add score if compatible
-      if (courier.soft?.preferences) {
-        if (
-          courier.soft.preferences.some((preference: any) =>
-            order.restaurantTags.includes(preference)
-          )
-        ) {
-          score += 1;
-        }
-      }
-
-      // Apply distance factor scores
-      const distanceToStart = calculateDistance(
-        order.start_location,
-        courier.location
-      );
-      if (distanceToStart > DISTANCE_THRESHOLD) {
-        return HIGH_COST; // Set high cost if distance exceeds threshold
-      }
-      score -= distanceToStart;
-
-      return -score; // Negate score for Hungarian minimizing
-    };
-
     // Fill the cost matrix with compatibility scores
     for (let i = 0; i < numOrders; i++) {
       for (let j = 0; j < numCouriers; j++) {
         costMatrix.subset(
           math.index(i, j),
-          calculateCompatibility(deliveries[i], couriers[j])
+          this.calculateCompatibility(deliveries[i], couriers[j])
         );
       }
     }
@@ -127,7 +79,7 @@ export class HungarianCourierMatcherService implements ICourierMatcherService {
       ) {
         const courierId = couriers[courierIndex]?.id;
         const deliveryId = deliveries[orderIndex]?.id;
-        const distance = calculateDistance(
+        const distance = this.calculateDistance(
           deliveries[orderIndex]?.start_location ?? { latitude: 0, longitude: 0 },
           couriers[courierIndex]?.location ?? { latitude: 0, longitude: 0 }
         );
@@ -148,22 +100,40 @@ export class HungarianCourierMatcherService implements ICourierMatcherService {
   async findCourierForDelivery(
     deliveryInput: ICourierMatcherInput
   ): Promise<ICourierMatcherResult | null> {
-    // Get all available couriers
-    const availableCouriers = await this.courierDomainService.findAllAvailable({});
-    if (!availableCouriers || availableCouriers.length === 0) {
-      return null; // No couriers available
+    // Treat the single delivery as a batch with one delivery
+    const batchResult = await this.matchCouriersToDeliveries([deliveryInput]);
+
+    // If no result is found, return null
+    if (!batchResult || batchResult.length === 0) {
+      return null; // No suitable courier found
     }
-  
-    // Transform the delivery input into the required format
-    const delivery = {
-      id: deliveryInput.deliveryId,
-      start_location: deliveryInput.pickupLocation,
-      end_location: deliveryInput.dropoffLocation,
-      contains: deliveryInput.contains || [],
-      restaurantTags: deliveryInput.restaurantTags || [],
-    };
-  
-    const couriers = availableCouriers.map((courier) => ({
+
+    // Return the first (and only) result from the batch
+    return batchResult[0] ?? null;
+  }
+
+  // Private helper methods
+
+  /**
+   * Transforms delivery inputs into the required format.
+   */
+  private transformDeliveries(deliveriesInput: ICourierMatcherInput[]) {
+    return deliveriesInput.map((input) => ({
+      id: input.deliveryId,
+      start_location: input.pickupLocation,
+      end_location: input.dropoffLocation,
+      contains: input.contains || [],
+      restaurantTags: input.restaurantTags || [],
+      totalComp: input.totalCompensation || 0,
+      area: input.area,
+    }));
+  }
+
+  /**
+   * Transforms couriers into the required format.
+   */
+  private transformCouriers(couriers: any[]) {
+    return couriers.map((courier) => ({
       id: courier.id,
       location: courier.currentLocation,
       hard: {
@@ -173,69 +143,58 @@ export class HungarianCourierMatcherService implements ICourierMatcherService {
         preferences: courier.preferences || [],
       },
     }));
+  }
+
+  /**
+   * Calculates the compatibility score between a delivery and a courier.
+   */
+  private calculateCompatibility(order: any, courier: any): number {
+    let areaScore = 0.5; // default neutral score
+    if (order.area && courier.soft.preferences?.includes(order.area)) {
+      areaScore = 1.0; // preferred area
+    }else {
+        areaScore = 0.5; //TODO: return high cost if in invalid area
+  }
+
+      // Distance score
+      const distanceToStart = this.calculateDistance(order.start_location, courier.location);
+      let distanceScore = Math.max(0, 1 - distanceToStart / DISTANCE_THRESHOLD);
   
-    const calculateDistance = (loc1: GeoPosition, loc2: GeoPosition) => {
-      if (!loc1 || !loc2) {
-        return HIGH_COST; // Return high cost if locations are invalid
-      }
-      return Math.sqrt(
-        Math.pow(loc1.latitude - loc2.latitude, 2) +
-        Math.pow(loc1.longitude - loc2.longitude, 2)
-      );
-    };
+      // Location type score
+      const locationTypeScore = LOCATION_TYPE_SCORES[order.location_type as keyof typeof LOCATION_TYPE_SCORES] || 1.0; // Default to 1.0
   
-    const calculateCompatibility = (order: any, courier: any) => {
-      let score = 0;
-  
-      // Hard restrictions - return high cost if incompatible
-      if (courier.hard?.order_restrictions && order.contains) {
-        if (
-          courier.hard.order_restrictions.some((restriction: any) =>
-            order.contains.includes(restriction)
-          )
-        ) {
-          return HIGH_COST;
-        }
-      }
-  
-      // Soft preferences - add score if compatible
-      const preferences = courier.soft?.preferences || [];
-      const restaurantTags = order.restaurantTags || [];
-      if (preferences.some((preference: any) => restaurantTags.includes(preference))) {
-        score += 1;
-      }
-  
-      // Apply distance factor scores
-      const distanceToStart = calculateDistance(order.start_location, courier.location);
-      if (distanceToStart > DISTANCE_THRESHOLD) {
-        return HIGH_COST; // Set high cost if distance exceeds threshold
-      }
-      score -= distanceToStart;
-  
-      return -score; // Negate score for Hungarian minimizing
-    };
-  
-    // Find the best courier for the delivery
-    let bestCourier: any = null;
-    let bestScore = HIGH_COST;
-  
-    for (const courier of couriers) {
-      const compatibilityScore = calculateCompatibility(delivery, courier);
-      if (compatibilityScore < bestScore) {
-        bestScore = compatibilityScore;
-        bestCourier = courier;
-      }
+     // Item type preference
+     let itemTypeScore = 0.5; // Default neutral score
+     if (order.contains && courier.soft.preferences?.includes(order.contains)) {
+       itemTypeScore = 1.0; // Perfect match
+     } else if (order.contains && courier.hard.order_restrictions?.includes(order.contains)) {
+       return HIGH_COST; // Hard preference violation
+     }
+    
+     // Price score
+     const priceScore = order.totalComp ? Math.min(order.totalComp / MAX_PRICE, 1.0) : 1.0; // Default to 1.0 if price is missing
+
+     // Calculate total weighted score
+     const totalScore =
+       WEIGHTS.area * areaScore +
+       WEIGHTS.distance * distanceScore +
+       WEIGHTS.location_type * locationTypeScore +
+       WEIGHTS.item_type * itemTypeScore +
+       WEIGHTS.price * priceScore;
+ 
+     return -totalScore; // negate score for matrix calculation 
+  }
+
+  /**
+   * Calculates the distance between two locations.
+   */
+  private calculateDistance(loc1: GeoPosition, loc2: GeoPosition): number {
+    if (!loc1 || !loc2) {
+      return HIGH_COST; // Return high cost if locations are invalid
     }
-  
-    if (!bestCourier) {
-      return null; // No suitable courier found
-    }
-  
-    // Return the result
-    return {
-      courierId: bestCourier.id,
-      deliveryId: delivery.id!,
-      distance: calculateDistance(delivery.start_location, bestCourier.location),
-    };
+    return Math.sqrt(
+      Math.pow(loc1.latitude - loc2.latitude, 2) +
+      Math.pow(loc1.longitude - loc2.longitude, 2)
+    );
   }
 }

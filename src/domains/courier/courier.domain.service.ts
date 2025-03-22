@@ -42,12 +42,13 @@ export class CourierDomainService {
     return courier
   }
 
+  
   async findAllAvailable(options: { excludeIds?: string[] } = {}) {
     const { excludeIds = [] } = options
     
     try {
       // Get all couriers first
-      const paginatedResult = await this.courierRepository.findManyPaginated(1, 20) // Set a large enough limit
+      const paginatedResult = await this.courierRepository.findManyPaginated(1, 20) // Modify to set a larger limit
       const allCouriers = paginatedResult.data
       
         // Map couriers to an array of promises

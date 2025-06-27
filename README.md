@@ -37,7 +37,7 @@ Private Key: 0xb10ea9d1aebd39f4c256ac9229b1d0d50cd435fc16f80af8d45910e5ba6f4492
 
 ### Prerequisites
 
-Make sure you have Node.js 16.x, yarn, and [Docker](https://www.docker.com/products/docker-desktop/) installed.
+Make sure you have Node.js 20.x, yarn, and [Docker](https://www.docker.com/products/docker-desktop/) installed.
 
 ### Local development setup
 
@@ -50,7 +50,7 @@ cd apps/server
 yarn install             # will also automatically run prepare set up our commit hooks, which we use to enforce code formatting and quality standards.
 yarn run docker:db       # Start database using Docker
 yarn run prisma:generate # Generate Prisma client
-yarn run db:init         # Initialize the database
+yarn run db:migrate-up   # Initialize the database
 yarn run start:debug     # Start the server in development mode (watch & debug).
 ```
 

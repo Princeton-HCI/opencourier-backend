@@ -20,7 +20,7 @@
     "db:migrate-up": "prisma migrate deploy",
     "prisma:generate": "prisma generate",
     "prisma:seed": "ts-node ./src/db-seeds/seed.ts",
-    "docker:db": "docker-compose -f docker-compose.db.yml up -d && docker-compose -f docker-compose.minio.yml up -d && docker-compose -f docker-compose.shovel.yml up -d",
+    "docker:db": "docker compose -f docker-compose.db.yml up -d && docker compose -f docker-compose.minio.yml up -d && docker compose -f docker-compose.shovel.yml up -d",
     "docker:shovel": "docker-compose -f docker-compose.shovel.yml up -d",
     "docker:reset-shovel": "docker-compose -f docker-compose.shovel.yml down -v && docker-compose -f docker-compose.shovel.yml build && yarn docker:shovel",
     "docker:minio": "docker-compose -f docker-compose.minio.yml up -d",

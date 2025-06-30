@@ -11,7 +11,7 @@ export class QueryMiddleware implements NestMiddleware {
     for (const key of Object.keys(filteredQuery)) {
       req.query = {
         ...req.query,
-        [key]: this.parseValue(filteredQuery[key]),
+        [key]: this.parseValue(filteredQuery[key] as string | string[] | ParsedQs | ParsedQs[] | undefined),
       }
     }
 

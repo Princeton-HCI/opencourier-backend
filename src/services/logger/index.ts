@@ -27,7 +27,7 @@ googleLogger.on('error', (err) => {
   console.log('Logging transport error', err)
 })
 
-const filterOutNest = winston.format((info) => {
+const filterOutNest = winston.format((info: any) => {
   if (
     info.context &&
     typeof info.context.includes === 'function' &&
@@ -40,16 +40,16 @@ const filterOutNest = winston.format((info) => {
   return info
 })
 
-const truncateLongMessages = winston.format((info) => {
+const truncateLongMessages = winston.format((info: any) => {
   // we use flatted.stringify() because sometimes circular objects are passed
   const sizeInfo = stringify(info).length
 
   if (sizeInfo > MAX_LOG_SIZE) {
     return {
       ...info,
-      message: info.message.slice(0, MAX_LOG_SIZE),
-      error: info.error ? info.error.slice(0, MAX_LOG_SIZE) : info.error,
-      stack: info.stack ? info.stack.slice(0, MAX_LOG_SIZE) : info.stack,
+      message: typeof info.message === 'string' ? info.message.slice(0, MAX_LOG_SIZE) : info.message,
+      error: info.error && typeof info.error === 'string' ? info.error.slice(0, MAX_LOG_SIZE) : info.error,
+      stack: info.stack && typeof info.stack === 'string' ? info.stack.slice(0, MAX_LOG_SIZE) : info.stack,
     }
   }
   return info

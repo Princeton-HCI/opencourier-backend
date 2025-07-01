@@ -239,6 +239,7 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
 
     const deliveryOngoingStatuses = [
       EnumDeliveryStatus.CREATED,
+      EnumDeliveryStatus.ACCEPTED,
       EnumDeliveryStatus.DISPATCHED,
       EnumDeliveryStatus.PICKED_UP,
     ]

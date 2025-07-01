@@ -226,6 +226,25 @@ export class DeliveryCourierRestApiController {
     return dto
   }
 
+  @common.Post(':deliveryId/arrived-at-dropoff')
+  @swagger.ApiCreatedResponse({
+    type: DeliveryCourierDto,
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  @swagger.ApiOperation({ summary: 'Courier arrived at dropoff' })
+  @Roles(EnumUserRole.COURIER)
+  async courierArrivedAtDropoff(
+    @common.Param('deliveryId') deliveryId: string,
+    @CurrentUserCourier() courier: CourierEntity
+  ): Promise<DeliveryCourierDto> {
+    const deliveries = await this.deliveryRestApiCourierService.courierArrivedAtDropOff(deliveryId, courier.id)
+
+    const dto = new DeliveryCourierDto(deliveries)
+    return dto
+  }
+
   @common.Post(':deliveryId/mark-as-picked-up')
   @swagger.ApiCreatedResponse({
     type: DeliveryCourierDto,

@@ -67,7 +67,7 @@ const seedCouriersFromSeedFile = async (prisma: PrismaClient) => {
   let createdNr = 0
 
   for (const courier of couriers) {
-    const email = `opencourier-courier-${courier.firstName.toLowerCase()}.${courier.lastName.toLowerCase()}@opencourier.com`
+    const email = `courier-${courier.firstName.toLowerCase()}-${courier.lastName.toLowerCase()}@opencourier.com`
     const existingUser = await prisma.user.findUnique({
       where: {
         email,

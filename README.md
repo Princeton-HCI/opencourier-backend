@@ -46,13 +46,14 @@ Here's how to get started with development on the backend server. Ensure Docker 
 Follow these commands in order to set up the database and server:
 
 ```sh
-cd apps/server
 yarn install             # will also automatically run prepare set up our commit hooks, which we use to enforce code formatting and quality standards.
 yarn run docker:db       # Start database using Docker
 yarn run prisma:generate # Generate Prisma client
 yarn run db:migrate-up   # Initialize the database
 yarn run start:debug     # Start the server in development mode (watch & debug).
 ```
+
+Note that you can use `yarn run prisma:seed` to insert testing courier data in the database
 
 Now that this initial setup is complete, going forward you can use `npm run dev` to start the database and server in development mode.
 **IMPORTANT NOTE:** if you make any changes to DTOs or the Prisma schema, you must regenerate your prisma client with `npm run prisma:generate` before starting the server.

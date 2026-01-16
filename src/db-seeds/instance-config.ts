@@ -12,8 +12,8 @@ import {
 
 export async function seedInitialInstanceConfig(prisma: PrismaClient) {
   const metadata = {
-    instanceName: 'Your Instance Name',
-    link: 'https://instanceURL.com',
+    name: '',
+    link: '',
     region: null,
     imageUrl: '',
     rulesUrl: '',

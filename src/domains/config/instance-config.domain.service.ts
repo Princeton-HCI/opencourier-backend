@@ -27,6 +27,7 @@ import {
   EnumQuoteToDeliveryConversionServiceType,
   InstanceConfigSettingOptions,
   InstanceConfigSettings,
+  InstanceMetadata,
   convertToKM,
 } from 'src/shared-types/index'
 import { ConfigService } from '@nestjs/config'
@@ -52,6 +53,7 @@ export class InstanceConfigDomainService {
     const feePercentageAmount = await this.getFeePercentageAmount()
     const distanceUnit = await this.getDistanceUnit()
     const currency = await this.getCurrency()
+    const metadata = await this.getMetadata()
 
     // Instance courier defaults
     const defaultCourierPayRate = await this.getDefaultCourierPayRate()
@@ -75,6 +77,7 @@ export class InstanceConfigDomainService {
       defaultDietaryRestrictions,
       distanceUnit,
       currency,
+      metadata,
     }
   }
 
@@ -143,6 +146,9 @@ export class InstanceConfigDomainService {
     }
     if (data.maxDriftDistance) {
       await this.configRepository.saveByKey(ConfigKey.MAX_DRIFT_DISTANCE, data.maxDriftDistance)
+    }
+    if (data.metadata) {
+      await this.configRepository.saveByKey(ConfigKey.METADATA, JSON.stringify(data.metadata))
     }
 
     return this.getInstanceConfigSettings()
@@ -299,6 +305,27 @@ export class InstanceConfigDomainService {
     const defaultDietaryRestrictions = await this.getConfigValueOrDefault(ConfigKey.DEFAULT_DIETARY_RESTRICTIONS, null)
 
     return defaultDietaryRestrictions.value as EnumCourierDietaryRestrictions
+  }
+
+  async getMetadata(): Promise<InstanceMetadata> {
+    const metadata = await this.getConfigValueOrDefault(ConfigKey.METADATA, null)
+
+    if (!metadata.value) {
+      return {
+        name: '',
+        link: '',
+        region: null,
+        imageUrl: '',
+        rulesUrl: '',
+        descriptionUrl: '',
+        termsOfServiceUrl: '',
+        privacyPolicyUrl: '',
+      }
+    }
+
+    const parsedMetadata = typeof metadata.value === 'string' ? JSON.parse(metadata.value) : metadata.value
+
+    return parsedMetadata as InstanceMetadata
   }
 
   async getConfigValueOrDefault(

@@ -8,6 +8,7 @@ import {
   EnumDistanceUnit,
   EnumGeoCalculationType,
   EnumQuoteCalculationType,
+  InstanceMetadata,
 } from 'src/shared-types/index'
 import { ApiProperty } from '@nestjs/swagger'
 
@@ -57,6 +58,9 @@ export class InstanceConfigSettingsDto implements ConfigMap {
   @ApiProperty({ type: Number, nullable: true })
   defaultMaxWorkingHours: number | null
 
+  @ApiProperty({ type: Object, nullable: true })
+  metadata: InstanceMetadata | null
+
   constructor(data: ConfigMap) {
     this.courierMatcherType = data.courierMatcherType as EnumCourierMatcherType
     this.quoteCalculationType = data.quoteCalculationType as EnumQuoteCalculationType
@@ -76,5 +80,6 @@ export class InstanceConfigSettingsDto implements ConfigMap {
     this.defaultCourierPayRate = data.defaultCourierPayRate ? (data.defaultCourierPayRate as number) : null
     this.defaultMinimumCourierPay = data.defaultMinimumCourierPay ? (data.defaultMinimumCourierPay as number) : null
     this.defaultMaxWorkingHours = data.defaultMaxWorkingHours ? (data.defaultMaxWorkingHours as number) : null
+    this.metadata = data.metadata && typeof data.metadata === 'object' ? (data.metadata as InstanceMetadata) : null
   }
 }

@@ -11,6 +11,17 @@ import {
 } from 'src/shared-types/index'
 
 export async function seedInitialInstanceConfig(prisma: PrismaClient) {
+  const metadata = {
+    instanceName: 'Your Instance Name',
+    link: 'https://instanceURL.com',
+    region: null,
+    imageUrl: '',
+    rulesUrl: '',
+    descriptionUrl: '',
+    termsOfServiceUrl: '',
+    privacyPolicyUrl: '',
+  }
+
   const initialConfigsData = {
     courierMatcherType: EnumCourierMatcherType.COURIER_SENIORITY,
     quoteCalculationType: EnumQuoteCalculationType.CUSTOM,
@@ -28,6 +39,7 @@ export async function seedInitialInstanceConfig(prisma: PrismaClient) {
     distanceUnit: EnumDistanceUnit.KILOMETERS,
     currency: EnumCurrency.USD,
     quoteToDeliveryConversionType: EnumQuoteToDeliveryConversionServiceType.SIMPLE,
+    metadata,
   }
 
   for (const [key, value] of Object.entries(initialConfigsData)) {

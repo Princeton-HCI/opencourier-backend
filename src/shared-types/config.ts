@@ -6,6 +6,7 @@ import { EnumDeliveryDurationCalculationType } from './delivery-duration'
 import { EnumGeoCalculationType } from './geo-calculation'
 import { EnumQuoteCalculationType } from './quote-calculation'
 import { EnumCurrency } from './currency'
+import { FeatureCollection, Polygon, MultiPolygon } from 'geojson'
 
 export type InstanceConfigSettings = {
   courierMatcherType: EnumCourierMatcherType
@@ -23,6 +24,18 @@ export type InstanceConfigSettings = {
   defaultDietaryRestrictions: EnumCourierDietaryRestrictions | null
   distanceUnit: EnumDistanceUnit | null
   currency: EnumCurrency | null
+  metadata: InstanceMetadata
+}
+
+export type InstanceMetadata = {
+  name: string
+  link: string
+  region: FeatureCollection | Polygon | MultiPolygon | null
+  imageUrl: string
+  rulesUrl: string
+  descriptionUrl: string
+  termsOfServiceUrl: string
+  privacyPolicyUrl: string
 }
 
 export type InstanceCourierDefaults = {
@@ -62,6 +75,7 @@ export enum ConfigKey {
   DISTANCE_UNIT = 'distanceUnit',
   CURRENCY = 'currency',
   MAX_DRIFT_DISTANCE = 'maxDriftDistance',
+  METADATA = 'metadata',
 }
 
-export type ConfigMap = { [key in ConfigKey]?: string | number | boolean | null }
+export type ConfigMap = { [key in ConfigKey]?: string | number | boolean | null | InstanceMetadata }

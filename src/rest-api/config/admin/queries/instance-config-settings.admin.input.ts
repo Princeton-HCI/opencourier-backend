@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsArray, IsEnum, IsNumber, IsOptional } from 'class-validator'
+import { IsArray, IsEnum, IsNumber, IsOptional, IsObject } from 'class-validator'
 import {
   EnumCourierCompensationCalculationType,
   EnumCourierDietaryRestrictions,
@@ -9,6 +9,7 @@ import {
   EnumDistanceUnit,
   EnumGeoCalculationType,
   EnumQuoteCalculationType,
+  InstanceMetadata,
 } from 'src/shared-types/index'
 import { InstanceConfigSettingsInput } from './instance-config-settings.input'
 
@@ -90,4 +91,9 @@ export class InstanceConfigSettingsAdminInput implements InstanceConfigSettingsI
     each: true,
   })
   defaultDietaryRestrictions?: EnumCourierDietaryRestrictions[]
+
+  @ApiProperty({ type: Object, required: false })
+  @IsOptional()
+  @IsObject()
+  metadata?: InstanceMetadata
 }

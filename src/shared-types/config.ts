@@ -34,9 +34,13 @@ export type InstanceMetadata = {
   region: FeatureCollection | Polygon | MultiPolygon | null
   imageUrl: string
   rulesUrl: string
+  rulesContent: string
   descriptionUrl: string
+  descriptionContent: string
   termsOfServiceUrl: string
+  termsOfServiceContent: string
   privacyPolicyUrl: string
+  privacyPolicyContent: string
 }
 
 export type InstanceCourierDefaults = {

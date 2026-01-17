@@ -18,9 +18,13 @@ export async function seedInitialInstanceConfig(prisma: PrismaClient) {
     region: null,
     imageUrl: '',
     rulesUrl: '',
+    rulesContent: '',
     descriptionUrl: '',
+    descriptionContent: '',
     termsOfServiceUrl: '',
+    termsOfServiceContent: '',
     privacyPolicyUrl: '',
+    privacyPolicyContent: '',
   }
 
   const initialConfigsData = {

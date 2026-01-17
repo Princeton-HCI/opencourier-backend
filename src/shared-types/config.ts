@@ -30,6 +30,7 @@ export type InstanceConfigSettings = {
 export type InstanceMetadata = {
   name: string
   link: string
+  websocketLink: string
   region: FeatureCollection | Polygon | MultiPolygon | null
   imageUrl: string
   rulesUrl: string

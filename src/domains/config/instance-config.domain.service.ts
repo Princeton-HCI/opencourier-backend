@@ -314,6 +314,7 @@ export class InstanceConfigDomainService {
       return {
         name: '',
         link: '',
+        websocketLink: '',
         region: null,
         imageUrl: '',
         rulesUrl: '',

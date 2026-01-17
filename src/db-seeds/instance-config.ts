@@ -14,6 +14,7 @@ export async function seedInitialInstanceConfig(prisma: PrismaClient) {
   const metadata = {
     name: '',
     link: '',
+    websocketLink: '',
     region: null,
     imageUrl: '',
     rulesUrl: '',

@@ -37,6 +37,7 @@ import { AdminRestApiModule } from './rest-api/admin.rest-api.module'
 import { CourierRestApiModule } from './rest-api/courier.rest-api.module'
 import { PartnerRestApiModule } from './rest-api/partner.rest-api.module'
 import { TestingRestApiModule } from './rest-api/testing.rest-api.module'
+import { ConfigPublicRestApiModule } from './rest-api/config/public/config.public.rest-api.module'
 
 // Domains
 import { APP_GUARD } from '@nestjs/core'
@@ -83,6 +84,7 @@ const REST_API_MODULES: ModuleMetadata['imports'] = [
   CourierRestApiModule,
   PartnerRestApiModule,
   TestingRestApiModule,
+  ConfigPublicRestApiModule,
 ]
 
 const INFRASTRUCTURE_MODULES: ModuleMetadata['imports'] = [EventBusModule, TaskBusModule, StorageModule]

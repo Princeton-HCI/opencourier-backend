@@ -4,7 +4,6 @@ import { PUBLIC_API_V1_PREFIX } from '../../../constants'
 import { ConfigDomainService } from '../../../domains/config/config.domain.service'
 import { InstanceConfigPublicDto } from './dtos/instance-config.public.dto'
 import { Public } from '../../../decorators/public.decorator'
-import { InstanceLinkInput } from './queries/instance-link.input'
 
 @swagger.ApiTags('config')
 @common.Controller(`${PUBLIC_API_V1_PREFIX}/config`)

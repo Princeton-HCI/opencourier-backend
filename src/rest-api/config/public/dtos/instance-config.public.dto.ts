@@ -12,7 +12,7 @@ import {
   InstanceMetadata,
 } from 'src/shared-types/index'
 
-export class InstanceConfigPublicDto {
+class ConfigDto {
   @ApiProperty({ enum: EnumCourierMatcherType })
   courierMatcherType: EnumCourierMatcherType
 
@@ -57,8 +57,9 @@ export class InstanceConfigPublicDto {
 
   @ApiProperty({ enum: EnumCurrency, nullable: true })
   currency: EnumCurrency | null
+}
 
-  // Metadata subset (9 fields)
+class MetadataDto {
   @ApiProperty({ type: String })
   name: string
 
@@ -85,33 +86,45 @@ export class InstanceConfigPublicDto {
 
   @ApiProperty({ type: String, nullable: true })
   privacyPolicyUrl: string | null
+}
+
+export class InstanceConfigPublicDto {
+  @ApiProperty({ type: ConfigDto })
+  config: ConfigDto
+
+  @ApiProperty({ type: MetadataDto })
+  metadata: MetadataDto
 
   constructor(data: InstanceConfigSettings) {
-    this.courierMatcherType = data.courierMatcherType
-    this.quoteCalculationType = data.quoteCalculationType
-    this.geoCalculationType = data.geoCalculationType
-    this.deliveryDurationCalculationType = data.deliveryDurationCalculationType
-    this.courierCompensationCalculationType = data.courierCompensationCalculationType
-    this.maxAssignmentDistance = data.maxAssignmentDistance ?? null
-    this.maxDriftDistance = data.maxDriftDistance ?? null
-    this.quoteExpirationMinutes = data.quoteExpirationMinutes ?? null
-    this.feePercentageAmount = data.feePercentageAmount ?? null
-    this.defaultCourierPayRate = data.defaultCourierPayRate ?? null
-    this.defaultMinimumCourierPay = data.defaultMinimumCourierPay ?? null
-    this.defaultMaxWorkingHours = data.defaultMaxWorkingHours ?? null
-    this.defaultDietaryRestrictions = data.defaultDietaryRestrictions ?? null
-    this.distanceUnit = data.distanceUnit ?? null
-    this.currency = data.currency ?? null
+    this.config = {
+      courierMatcherType: data.courierMatcherType,
+      quoteCalculationType: data.quoteCalculationType,
+      geoCalculationType: data.geoCalculationType,
+      deliveryDurationCalculationType: data.deliveryDurationCalculationType,
+      courierCompensationCalculationType: data.courierCompensationCalculationType,
+      maxAssignmentDistance: data.maxAssignmentDistance ?? null,
+      maxDriftDistance: data.maxDriftDistance ?? null,
+      quoteExpirationMinutes: data.quoteExpirationMinutes ?? null,
+      feePercentageAmount: data.feePercentageAmount ?? null,
+      defaultCourierPayRate: data.defaultCourierPayRate ?? null,
+      defaultMinimumCourierPay: data.defaultMinimumCourierPay ?? null,
+      defaultMaxWorkingHours: data.defaultMaxWorkingHours ?? null,
+      defaultDietaryRestrictions: data.defaultDietaryRestrictions ?? null,
+      distanceUnit: data.distanceUnit ?? null,
+      currency: data.currency ?? null,
+    }
 
     const m: InstanceMetadata = data.metadata
-    this.name = m.name
-    this.link = m.link
-    this.websocketLink = m.websocketLink
-    this.region = m.region
-    this.imageUrl = m.imageUrl
-    this.rulesUrl = m.rulesUrl || null
-    this.descriptionUrl = m.descriptionUrl || null
-    this.termsOfServiceUrl = m.termsOfServiceUrl || null
-    this.privacyPolicyUrl = m.privacyPolicyUrl || null
+    this.metadata = {
+      name: m.name,
+      link: m.link,
+      websocketLink: m.websocketLink,
+      region: m.region,
+      imageUrl: m.imageUrl,
+      rulesUrl: m.rulesUrl || null,
+      descriptionUrl: m.descriptionUrl || null,
+      termsOfServiceUrl: m.termsOfServiceUrl || null,
+      privacyPolicyUrl: m.privacyPolicyUrl || null,
+    }
   }
 }

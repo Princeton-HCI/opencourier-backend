@@ -45,6 +45,7 @@ export async function seedInitialInstanceConfig(prisma: PrismaClient) {
     currency: EnumCurrency.USD,
     quoteToDeliveryConversionType: EnumQuoteToDeliveryConversionServiceType.SIMPLE,
     metadata,
+    updatedAt: new Date().toISOString(),
   }
 
   for (const [key, value] of Object.entries(initialConfigsData)) {

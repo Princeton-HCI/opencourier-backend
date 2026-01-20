@@ -54,6 +54,7 @@ export class InstanceConfigDomainService {
     const distanceUnit = await this.getDistanceUnit()
     const currency = await this.getCurrency()
     const metadata = await this.getMetadata()
+    const updatedAt = await this.getUpdatedAt()
 
     // Instance courier defaults
     const defaultCourierPayRate = await this.getDefaultCourierPayRate()
@@ -78,6 +79,7 @@ export class InstanceConfigDomainService {
       distanceUnit,
       currency,
       metadata,
+      updatedAt,
     }
   }
 
@@ -150,6 +152,9 @@ export class InstanceConfigDomainService {
     if (data.metadata) {
       await this.configRepository.saveByKey(ConfigKey.METADATA, JSON.stringify(data.metadata))
     }
+
+    // Update the updated_at timestamp whenever config is changed
+    await this.configRepository.saveByKey(ConfigKey.UPDATED_AT, new Date().toISOString())
 
     return this.getInstanceConfigSettings()
   }
@@ -331,6 +336,12 @@ export class InstanceConfigDomainService {
     const parsedMetadata = typeof metadata.value === 'string' ? JSON.parse(metadata.value) : metadata.value
 
     return parsedMetadata as InstanceMetadata
+  }
+
+  async getUpdatedAt(): Promise<string | null> {
+    const updatedAt = await this.getConfigValueOrDefault(ConfigKey.UPDATED_AT, null)
+
+    return updatedAt.value as string | null
   }
 
   async getConfigValueOrDefault(

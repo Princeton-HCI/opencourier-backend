@@ -98,6 +98,9 @@ export class InstanceConfigPublicDto {
   @ApiProperty({ type: MetadataDto })
   metadata: MetadataDto
 
+  @ApiProperty({ type: String, nullable: true })
+  updatedAt: string | null
+
   constructor(data: InstanceConfigSettings, userCount?: number | null) {
     this.config = {
       courierMatcherType: data.courierMatcherType,
@@ -130,5 +133,7 @@ export class InstanceConfigPublicDto {
       privacyPolicyUrl: m.privacyPolicyUrl || null,
       userCount: userCount ?? null,
     }
+
+    this.updatedAt = data.updatedAt ?? null
   }
 }

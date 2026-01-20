@@ -25,6 +25,7 @@ export type InstanceConfigSettings = {
   distanceUnit: EnumDistanceUnit | null
   currency: EnumCurrency | null
   metadata: InstanceMetadata
+  updatedAt: string | null
 }
 
 export type InstanceMetadata = {
@@ -81,6 +82,7 @@ export enum ConfigKey {
   CURRENCY = 'currency',
   MAX_DRIFT_DISTANCE = 'maxDriftDistance',
   METADATA = 'metadata',
+  UPDATED_AT = 'updatedAt',
 }
 
 export type ConfigMap = { [key in ConfigKey]?: string | number | boolean | null | InstanceMetadata }

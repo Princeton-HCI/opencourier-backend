@@ -86,6 +86,9 @@ class MetadataDto {
 
   @ApiProperty({ type: String, nullable: true })
   privacyPolicyUrl: string | null
+
+  @ApiProperty({ type: Number, nullable: true })
+  userCount?: number | null
 }
 
 export class InstanceConfigPublicDto {
@@ -95,7 +98,7 @@ export class InstanceConfigPublicDto {
   @ApiProperty({ type: MetadataDto })
   metadata: MetadataDto
 
-  constructor(data: InstanceConfigSettings) {
+  constructor(data: InstanceConfigSettings, userCount?: number | null) {
     this.config = {
       courierMatcherType: data.courierMatcherType,
       quoteCalculationType: data.quoteCalculationType,
@@ -125,6 +128,7 @@ export class InstanceConfigPublicDto {
       descriptionUrl: m.descriptionUrl || null,
       termsOfServiceUrl: m.termsOfServiceUrl || null,
       privacyPolicyUrl: m.privacyPolicyUrl || null,
+      userCount: userCount ?? null,
     }
   }
 }

@@ -105,6 +105,10 @@ export class UserRepository extends EntityRepository implements IUserRepository 
     return this.toDomain(result)
   }
 
+  async countAll() {
+    return this.prisma.user.count()
+  }
+
   private toDomain(data: User) {
     return new UserEntity(data)
   }

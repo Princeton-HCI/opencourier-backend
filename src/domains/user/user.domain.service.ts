@@ -40,4 +40,8 @@ export class UserDomainService {
   async deleteMe(user: UserEntity) {
     return this.userRepository.deleteById(user.id)
   }
+
+  async countAll() {
+    return this.userRepository.countAll()
+  }
 }

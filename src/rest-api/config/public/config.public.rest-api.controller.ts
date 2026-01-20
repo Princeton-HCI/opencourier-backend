@@ -3,7 +3,7 @@ import * as common from '@nestjs/common'
 import { PUBLIC_API_V1_PREFIX } from '../../../constants'
 import { ConfigDomainService } from '../../../domains/config/config.domain.service'
 import { UserDomainService } from '../../../domains/user/user.domain.service'
-import { InstanceConfigPublicDto } from './dtos/instance-config.public.dto'
+import { MetadataPublicDto } from './dtos/metadata.public.dto'
 import { Public } from '../../../decorators/public.decorator'
 
 @swagger.ApiTags('config')
@@ -15,27 +15,27 @@ export class ConfigPublicRestApiController {
   ) {}
 
   @Public()
-  @common.Get('instance-config')
+  @common.Get('metadata')
   @swagger.ApiQuery({
     name: 'instanceLink',
     type: String,
     required: true,
     description: 'The instance link',
   })
-  @swagger.ApiOkResponse({ type: InstanceConfigPublicDto })
+  @swagger.ApiOkResponse({ type: MetadataPublicDto })
   @swagger.ApiNotFoundResponse({ description: 'Instance not found' })
-  async getInstanceConfig(@common.Query('instanceLink') instanceLink: string): Promise<InstanceConfigPublicDto> {
+  async getMetadata(@common.Query('instanceLink') instanceLink: string): Promise<MetadataPublicDto> {
     const instanceConfig = await this.configDomainService.instanceConfig.getInstanceConfigSettings()
     const userCount = await this.userDomainService.countAll()
 
-    if (!instanceConfig.metadata) {
-      throw new common.NotFoundException('Instance metadata not found')
+    if (!instanceConfig.details) {
+      throw new common.NotFoundException('Instance details not found')
     }
 
-    if (instanceConfig.metadata.link !== instanceLink) {
+    if (instanceConfig.details.link !== instanceLink) {
       throw new common.NotFoundException('Instance not found')
     }
 
-    return new InstanceConfigPublicDto(instanceConfig, userCount)
+    return new MetadataPublicDto(instanceConfig, userCount)
   }
 }

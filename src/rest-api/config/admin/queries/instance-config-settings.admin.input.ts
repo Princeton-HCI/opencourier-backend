@@ -9,7 +9,7 @@ import {
   EnumDistanceUnit,
   EnumGeoCalculationType,
   EnumQuoteCalculationType,
-  InstanceMetadata,
+  InstanceDetails,
 } from 'src/shared-types/index'
 import { InstanceConfigSettingsInput } from './instance-config-settings.input'
 
@@ -95,5 +95,5 @@ export class InstanceConfigSettingsAdminInput implements InstanceConfigSettingsI
   @ApiProperty({ type: Object, required: false })
   @IsOptional()
   @IsObject()
-  metadata?: InstanceMetadata
+  details?: InstanceDetails
 }

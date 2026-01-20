@@ -9,7 +9,7 @@ import {
   EnumGeoCalculationType,
   EnumQuoteCalculationType,
   InstanceConfigSettings,
-  InstanceMetadata,
+  InstanceDetails,
 } from 'src/shared-types/index'
 
 class ConfigDto {
@@ -59,7 +59,7 @@ class ConfigDto {
   currency: EnumCurrency | null
 }
 
-class MetadataDto {
+class DetailsDto {
   @ApiProperty({ type: String })
   name: string
 
@@ -91,12 +91,12 @@ class MetadataDto {
   userCount?: number | null
 }
 
-export class InstanceConfigPublicDto {
+export class MetadataPublicDto {
   @ApiProperty({ type: ConfigDto })
   config: ConfigDto
 
-  @ApiProperty({ type: MetadataDto })
-  metadata: MetadataDto
+  @ApiProperty({ type: DetailsDto })
+  details: DetailsDto
 
   @ApiProperty({ type: String, nullable: true })
   updatedAt: string | null
@@ -120,8 +120,8 @@ export class InstanceConfigPublicDto {
       currency: data.currency ?? null,
     }
 
-    const m: InstanceMetadata = data.metadata
-    this.metadata = {
+    const m: InstanceDetails = data.details
+    this.details = {
       name: m.name,
       link: m.link,
       websocketLink: m.websocketLink,

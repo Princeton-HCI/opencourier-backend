@@ -24,11 +24,11 @@ export type InstanceConfigSettings = {
   defaultDietaryRestrictions: EnumCourierDietaryRestrictions | null
   distanceUnit: EnumDistanceUnit | null
   currency: EnumCurrency | null
-  metadata: InstanceMetadata
+  details: InstanceDetails
   updatedAt: string | null
 }
 
-export type InstanceMetadata = {
+export type InstanceDetails = {
   name: string
   link: string
   websocketLink: string
@@ -81,8 +81,8 @@ export enum ConfigKey {
   DISTANCE_UNIT = 'distanceUnit',
   CURRENCY = 'currency',
   MAX_DRIFT_DISTANCE = 'maxDriftDistance',
-  METADATA = 'metadata',
+  DETAILS = 'details',
   UPDATED_AT = 'updatedAt',
 }
 
-export type ConfigMap = { [key in ConfigKey]?: string | number | boolean | null | InstanceMetadata }
+export type ConfigMap = { [key in ConfigKey]?: string | number | boolean | null | InstanceDetails }

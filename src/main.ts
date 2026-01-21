@@ -73,7 +73,7 @@ async function main() {
   const { httpAdapter } = app.get(HttpAdapterHost)
   app.useGlobalFilters(new HttpExceptionFilter(httpAdapter))
 
-  void app.listen(PORT)
+  await app.listen(PORT)
   logger.info(`Started server on port ${PORT}`)
 
   return app

@@ -1,18 +1,33 @@
 import './telemetry'
+console.log('[IMPORT] telemetry loaded')
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
+console.log('[IMPORT] @nestjs/common loaded')
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core'
+console.log('[IMPORT] @nestjs/core loaded')
 import { WinstonModule } from 'nest-winston'
+console.log('[IMPORT] nest-winston loaded')
 import * as Sentry from '@sentry/node'
+console.log('[IMPORT] @sentry/node loaded')
 import { HttpExceptionFilter } from './filters/HttpExceptions.filter'
+console.log('[IMPORT] HttpExceptionFilter loaded')
 import { AppModule } from './app.module'
+console.log('[IMPORT] AppModule loaded')
 import { setupLegacyDocs, setupCourierDocs, setupAdminDocs, setupPartnerDocs } from './swagger'
+console.log('[IMPORT] swagger loaded')
 import { getLogger } from './services/logger'
+console.log('[IMPORT] logger loaded')
 import { NestExpressApplication } from '@nestjs/platform-express'
+console.log('[IMPORT] @nestjs/platform-express loaded')
 import { SentryInterceptor } from './integrations/sentry/sentry.interceptor'
+console.log('[IMPORT] SentryInterceptor loaded')
 import rawBodyMiddleware from './middleware/RawBodyMiddleware'
+console.log('[IMPORT] RawBodyMiddleware loaded')
 import { ErrorLoggingInterceptor } from './middleware/ErrorLoggingInterceptor'
+console.log('[IMPORT] ErrorLoggingInterceptor loaded')
 import { SocketIOAdapter } from './services/socketio/socketio.adapter'
+console.log('[IMPORT] SocketIOAdapter loaded')
 import { ConfigService } from '@nestjs/config'
+console.log('[IMPORT] ConfigService loaded')
 
 const { PORT = 4000 } = process.env
 
@@ -25,20 +40,29 @@ console.log('ENV VARS:', {
 })
 
 async function main() {
-  const logger = getLogger('Nest')
   console.log('=== STARTUP BEGIN ===')
-  logger.info('Starting.') // Logs to console to diagnose startup and not logger failures
 
   try {
     console.log('Creating logger...')
+    const logger = getLogger('Nest')
+    logger.info('Starting.') // Logs to console to diagnose startup and not logger failures
     logger.info('Initialized logger.')
+    console.log('✓ Logger created')
 
+    console.log('About to import AppModule...')
     console.log('Creating NestJS app...')
+
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
       cors: true,
       logger: WinstonModule.createLogger({
         instance: logger,
       }),
+    }).catch((err) => {
+      console.error('!!! NestFactory.create failed !!!')
+      console.error('Error:', err)
+      console.error('Message:', err?.message)
+      console.error('Stack:', err?.stack)
+      throw err
     })
     console.log('✓ NestJS app created')
 
@@ -126,25 +150,41 @@ async function main() {
 }
 
 const panicLogger = getLogger('Panic')
+console.log('[SETUP] Installing global error handlers...')
+
 process
   .on('unhandledRejection', (reason, p) => {
     console.error('=== UNHANDLED REJECTION ===')
-    console.error(reason, 'Unhandled Rejection at Promise', p)
+    process.stderr.write('=== UNHANDLED REJECTION ===\n')
+    console.error('Reason:', reason)
+    console.error('Promise:', p)
+    if (reason instanceof Error) {
+      console.error('Message:', reason.message)
+      console.error('Stack:', reason.stack)
+    }
     panicLogger.error('Unhandled Rejection at Promise', reason)
+    process.exit(1)
   })
   .on('uncaughtException', (err) => {
     console.error('=== UNCAUGHT EXCEPTION ===')
-    console.error(err, 'Uncaught Exception thrown')
+    process.stderr.write('=== UNCAUGHT EXCEPTION ===\n')
+    console.error('Error:', err)
+    console.error('Message:', err?.message)
+    console.error('Stack:', err?.stack)
     panicLogger.error('Uncaught Exception thrown', err)
     process.exit(1)
   })
 
+console.log('[SETUP] Calling main()...')
+
 main().catch((error) => {
   console.error('=== MAIN CATCH BLOCK ===')
+  process.stderr.write('=== MAIN CATCH BLOCK ===\n')
   console.error('Fatal error:', error)
   if (error instanceof Error) {
     console.error('Message:', error.message)
     console.error('Stack:', error.stack)
   }
+  process.stderr.write(`Error: ${error}\n`)
   process.exit(1)
 })

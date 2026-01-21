@@ -7,7 +7,7 @@
     "yarn": ">=1.22"
   },
   "scripts": {
-    "clean": "shx rm -rf dist",
+    "clean": "rm -rf dist",
     "start": "yarn clean && nest start --webpack",
     "start:chain-watcher": "nest start --config ./nest-cli.chain-watcher.json",
     "start:watch": "yarn clean && nest start --watch --webpack",

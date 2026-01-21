@@ -52,18 +52,27 @@ async function main() {
     console.log('About to import AppModule...')
     console.log('Creating NestJS app...')
 
-    const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-      cors: true,
-      logger: WinstonModule.createLogger({
-        instance: logger,
-      }),
-    }).catch((err) => {
-      console.error('!!! NestFactory.create failed !!!')
-      console.error('Error:', err)
-      console.error('Message:', err?.message)
-      console.error('Stack:', err?.stack)
-      throw err
-    })
+    let app: NestExpressApplication
+    try {
+      app = await NestFactory.create<NestExpressApplication>(AppModule, {
+        cors: true,
+        logger: ['error', 'warn', 'log', 'debug', 'verbose'],
+        abortOnError: false,
+      })
+      console.log('✓ NestJS app created successfully')
+    } catch (nestError) {
+      console.error('!!! CRITICAL: NestFactory.create threw an error !!!')
+      console.error('Error type:', typeof nestError)
+      console.error('Error:', nestError)
+      console.error('Error name:', (nestError as any)?.name)
+      console.error('Error message:', (nestError as any)?.message)
+      console.error('Error stack:', (nestError as any)?.stack)
+      if (nestError && typeof nestError === 'object') {
+        console.error('Error keys:', Object.keys(nestError))
+        console.error('Error JSON:', JSON.stringify(nestError, null, 2))
+      }
+      process.exit(1)
+    }
     console.log('✓ NestJS app created')
 
     // Sentry

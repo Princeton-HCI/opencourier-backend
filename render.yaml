@@ -1,0 +1,38 @@
+services:
+  - name: opencourier-backend
+    type: web
+    runtime: node
+    plan: free
+    env: node
+    branch: main
+    buildCommand: |
+      yarn install --frozen-lockfile
+      yarn prisma:generate
+      yarn build
+    startCommand: node dist/main.js
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NODE_ENV
+        value: production
+      - key: DB_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        sync: false
+      - key: JWT_EXPIRATION
+        value: '3153600000'
+      - key: JWT_REFRESH_SECRET_KEY
+        sync: false
+      - key: JWT_REFRESH_EXPIRATION
+        value: '3153600000'
+      - key: PUBLIC_API_URL
+        sync: false
+      - key: ADMIN_URL
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+      - key: OPENCOURIER_ENV
+        value: production
+      - key: WEBSOCKET_DISPATCHER
+        value: socketio
+    healthCheckPath: /health

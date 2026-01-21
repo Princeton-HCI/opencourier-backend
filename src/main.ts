@@ -128,13 +128,23 @@ async function main() {
 const panicLogger = getLogger('Panic')
 process
   .on('unhandledRejection', (reason, p) => {
+    console.error('=== UNHANDLED REJECTION ===')
     console.error(reason, 'Unhandled Rejection at Promise', p)
     panicLogger.error('Unhandled Rejection at Promise', reason)
   })
   .on('uncaughtException', (err) => {
+    console.error('=== UNCAUGHT EXCEPTION ===')
     console.error(err, 'Uncaught Exception thrown')
     panicLogger.error('Uncaught Exception thrown', err)
     process.exit(1)
   })
 
-module.exports = main().catch(console.error)
+main().catch((error) => {
+  console.error('=== MAIN CATCH BLOCK ===')
+  console.error('Fatal error:', error)
+  if (error instanceof Error) {
+    console.error('Message:', error.message)
+    console.error('Stack:', error.stack)
+  }
+  process.exit(1)
+})

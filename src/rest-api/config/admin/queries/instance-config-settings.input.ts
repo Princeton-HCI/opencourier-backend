@@ -7,7 +7,7 @@ import {
   EnumDistanceUnit,
   EnumGeoCalculationType,
   EnumQuoteCalculationType,
-  InstanceMetadata,
+  InstanceDetails,
 } from 'src/shared-types/index'
 
 export class InstanceConfigSettingsInput {
@@ -26,5 +26,5 @@ export class InstanceConfigSettingsInput {
   defaultDietaryRestrictions?: EnumCourierDietaryRestrictions[]
   distanceUnit?: EnumDistanceUnit
   currency?: EnumCurrency
-  metadata?: InstanceMetadata
+  details?: InstanceDetails
 }

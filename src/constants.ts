@@ -93,6 +93,7 @@ export const COURIER_API_V1_PREFIX = 'api/courier/v1'
 export const PARTNER_API_V1_PREFIX = 'api/partner/v1'
 export const PARTNER_ADMIN_API_V1_PREFIX = 'api/partner-admin/v1'
 export const COMMON_API_V1_PREFIX = 'api/common/v1'
+export const PUBLIC_API_V1_PREFIX = 'api/public/v1'
 
 export const ABLY_API_KEY = 'ABLY_API_KEY'
 

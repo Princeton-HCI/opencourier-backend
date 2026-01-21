@@ -11,7 +11,7 @@ import {
 } from 'src/shared-types/index'
 
 export async function seedInitialInstanceConfig(prisma: PrismaClient) {
-  const metadata = {
+  const details = {
     name: '',
     link: '',
     websocketLink: '',
@@ -44,7 +44,8 @@ export async function seedInitialInstanceConfig(prisma: PrismaClient) {
     distanceUnit: EnumDistanceUnit.KILOMETERS,
     currency: EnumCurrency.USD,
     quoteToDeliveryConversionType: EnumQuoteToDeliveryConversionServiceType.SIMPLE,
-    metadata,
+    details,
+    updatedAt: new Date().toISOString(),
   }
 
   for (const [key, value] of Object.entries(initialConfigsData)) {

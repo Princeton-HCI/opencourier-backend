@@ -27,7 +27,7 @@ import {
   EnumQuoteToDeliveryConversionServiceType,
   InstanceConfigSettingOptions,
   InstanceConfigSettings,
-  InstanceMetadata,
+  InstanceDetails,
   convertToKM,
 } from 'src/shared-types/index'
 import { ConfigService } from '@nestjs/config'
@@ -53,7 +53,8 @@ export class InstanceConfigDomainService {
     const feePercentageAmount = await this.getFeePercentageAmount()
     const distanceUnit = await this.getDistanceUnit()
     const currency = await this.getCurrency()
-    const metadata = await this.getMetadata()
+    const details = await this.getDetails()
+    const updatedAt = await this.getUpdatedAt()
 
     // Instance courier defaults
     const defaultCourierPayRate = await this.getDefaultCourierPayRate()
@@ -77,7 +78,8 @@ export class InstanceConfigDomainService {
       defaultDietaryRestrictions,
       distanceUnit,
       currency,
-      metadata,
+      details,
+      updatedAt,
     }
   }
 
@@ -147,9 +149,12 @@ export class InstanceConfigDomainService {
     if (data.maxDriftDistance) {
       await this.configRepository.saveByKey(ConfigKey.MAX_DRIFT_DISTANCE, data.maxDriftDistance)
     }
-    if (data.metadata) {
-      await this.configRepository.saveByKey(ConfigKey.METADATA, JSON.stringify(data.metadata))
+    if (data.details) {
+      await this.configRepository.saveByKey(ConfigKey.DETAILS, JSON.stringify(data.details))
     }
+
+    // Update the updated_at timestamp whenever config is changed
+    await this.configRepository.saveByKey(ConfigKey.UPDATED_AT, new Date().toISOString())
 
     return this.getInstanceConfigSettings()
   }
@@ -307,10 +312,10 @@ export class InstanceConfigDomainService {
     return defaultDietaryRestrictions.value as EnumCourierDietaryRestrictions
   }
 
-  async getMetadata(): Promise<InstanceMetadata> {
-    const metadata = await this.getConfigValueOrDefault(ConfigKey.METADATA, null)
+  async getDetails(): Promise<InstanceDetails> {
+    const details = await this.getConfigValueOrDefault(ConfigKey.DETAILS, null)
 
-    if (!metadata.value) {
+    if (!details.value) {
       return {
         name: '',
         link: '',
@@ -328,9 +333,15 @@ export class InstanceConfigDomainService {
       }
     }
 
-    const parsedMetadata = typeof metadata.value === 'string' ? JSON.parse(metadata.value) : metadata.value
+    const parsedDetails = typeof details.value === 'string' ? JSON.parse(details.value) : details.value
 
-    return parsedMetadata as InstanceMetadata
+    return parsedDetails as InstanceDetails
+  }
+
+  async getUpdatedAt(): Promise<string | null> {
+    const updatedAt = await this.getConfigValueOrDefault(ConfigKey.UPDATED_AT, null)
+
+    return updatedAt.value as string | null
   }
 
   async getConfigValueOrDefault(

@@ -5,6 +5,7 @@ import { CourierSettingAdminRestApiModule } from './courier-setting/admin/courie
 import { DeliveryAdminRestApiModule } from './delivery/admin/delivery.admin.rest-api.module'
 import { LocationAdminRestApiModule } from './location/admin/location.admin.rest-api.module'
 import { ConfigAdminRestApiModule } from './config/admin/config.admin.rest-api.module'
+import { UserAdminRestApiModule } from './user/admin/user.admin.rest-api.module'
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigAdminRestApiModule } from './config/admin/config.admin.rest-api.m
     DeliveryAdminRestApiModule,
     LocationAdminRestApiModule,
     ConfigAdminRestApiModule,
+    UserAdminRestApiModule,
   ],
 })
 export class AdminRestApiModule {}

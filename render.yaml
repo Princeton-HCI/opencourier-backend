@@ -9,7 +9,7 @@ services:
       yarn install --frozen-lockfile
       yarn prisma:generate
       yarn build
-    startCommand: node dist/main.js
+    startCommand: yarn start:prod
     envVars:
       - key: PORT
         value: 3000

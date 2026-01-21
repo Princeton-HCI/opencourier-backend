@@ -2,6 +2,10 @@
   "name": "courier-backend",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20 <21",
+    "yarn": ">=1.22"
+  },
   "scripts": {
     "clean": "shx rm -rf dist",
     "start": "yarn clean && nest start --webpack",
@@ -9,6 +13,7 @@
     "start:watch": "yarn clean && nest start --watch --webpack",
     "start:debug": "yarn clean && nest start --debug --watch --webpack",
     "build": "yarn clean && nest build",
+    "start:prod": "node dist/main.js",
     "dev": "run-s docker:db prisma:generate start:debug",
     "lint": "eslint --ext .js,.ts src scripts --cache --cache-strategy content",
     "lint:fix": "eslint --ext .js,.ts src scripts --fix --cache --cache-strategy content",

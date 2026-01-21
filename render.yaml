@@ -18,24 +18,3 @@ services:
         value: production
       - key: NODE_VERSION
         value: 20.x
-      - key: DB_URL
-        sync: false
-      - key: JWT_SECRET_KEY
-        sync: false
-      - key: JWT_EXPIRATION
-        value: '3153600000'
-      - key: JWT_REFRESH_SECRET_KEY
-        sync: false
-      - key: JWT_REFRESH_EXPIRATION
-        value: '3153600000'
-      - key: PUBLIC_API_URL
-        sync: false
-      - key: ADMIN_URL
-        sync: false
-      - key: SENTRY_DSN
-        sync: false
-      - key: OPENCOURIER_ENV
-        value: production
-      - key: WEBSOCKET_DISPATCHER
-        value: socketio
-    healthCheckPath: /health

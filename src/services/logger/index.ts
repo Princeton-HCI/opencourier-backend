@@ -13,19 +13,29 @@ const textFormat = winston.format.printf(({ level, message, label, timestamp, st
 
 const MAX_LOG_SIZE = 150000 // It is really 256k but I'd give it a good margin of error
 
-const googleLogger = new GoogleWinstonLogger({
-  logName: `API-winston-${process.env.NOSH_ENV || 'local'}`,
-  maxEntrySize: MAX_LOG_SIZE,
-  defaultCallback: (err) => {
-    if (err) {
-      console.error(err)
-    }
-  },
-})
+let googleLogger: GoogleWinstonLogger | null = null
 
-googleLogger.on('error', (err) => {
-  console.log('Logging transport error', err)
-})
+// Only initialize Google logger if GCP is configured
+if (process.env.NODE_ENV === 'production' && process.env.GCP_PROJECT_NAME) {
+  try {
+    googleLogger = new GoogleWinstonLogger({
+      logName: `API-winston-${process.env.NOSH_ENV || 'local'}`,
+      maxEntrySize: MAX_LOG_SIZE,
+      defaultCallback: (err) => {
+        if (err) {
+          console.error(err)
+        }
+      },
+    })
+
+    googleLogger.on('error', (err) => {
+      console.log('Logging transport error', err)
+    })
+  } catch (err) {
+    console.error('Failed to initialize Google Cloud Logger:', err)
+    googleLogger = null
+  }
+}
 
 const filterOutNest = winston.format((info: any) => {
   if (
@@ -71,13 +81,11 @@ export function getLogger(label: string) {
 
   const prodFormat = winston.format.combine(filterOutNest(), truncateLongMessages(), winston.format.json())
 
-  const transports = process.env.NODE_ENV === 'production' && process.env.GCP_PROJECT_NAME 
-    ? [googleLogger] 
-    : [new winston.transports.Console()]
+  const transports = googleLogger ? [googleLogger] : [new winston.transports.Console()]
 
   return winston.createLogger({
     level: 'info', // Log pretty much everything everywhere, for now
-    format: process.env.NODE_ENV === 'production' && process.env.GCP_PROJECT_NAME ? prodFormat : devFormat,
+    format: googleLogger ? prodFormat : devFormat,
     transports,
   })
 }

@@ -12,7 +12,7 @@
     "start:chain-watcher": "nest start --config ./nest-cli.chain-watcher.json",
     "start:watch": "yarn clean && nest start --watch --webpack",
     "start:debug": "yarn clean && nest start --debug --watch --webpack",
-    "build": "yarn clean && nest build",
+    "build": "nest build",
     "start:prod": "node dist/main.js",
     "dev": "run-s docker:db prisma:generate start:debug",
     "lint": "eslint --ext .js,.ts src scripts --cache --cache-strategy content",

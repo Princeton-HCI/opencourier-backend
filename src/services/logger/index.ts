@@ -71,11 +71,13 @@ export function getLogger(label: string) {
 
   const prodFormat = winston.format.combine(filterOutNest(), truncateLongMessages(), winston.format.json())
 
-  const transports = process.env.NODE_ENV === 'production' ? [googleLogger] : [new winston.transports.Console()]
+  const transports = process.env.NODE_ENV === 'production' && process.env.GCP_PROJECT_NAME 
+    ? [googleLogger] 
+    : [new winston.transports.Console()]
 
   return winston.createLogger({
     level: 'info', // Log pretty much everything everywhere, for now
-    format: process.env.NODE_ENV === 'production' ? prodFormat : devFormat,
+    format: process.env.NODE_ENV === 'production' && process.env.GCP_PROJECT_NAME ? prodFormat : devFormat,
     transports,
   })
 }

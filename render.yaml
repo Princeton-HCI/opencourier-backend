@@ -6,13 +6,14 @@ services:
     env: node
     branch: main
     buildCommand: |
-      yarn install --frozen-lockfile
+      yarn install --frozen-lockfile --production=false
       yarn prisma:generate
       yarn build
+      mkdir -p dist/prisma && cp -r prisma/client dist/prisma/client
     startCommand: yarn start:prod
     envVars:
       - key: PORT
-        value: 3000
+        value: 10000
       - key: NODE_ENV
         value: production
       - key: NODE_VERSION

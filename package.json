@@ -13,7 +13,7 @@
     "start:watch": "yarn clean && nest start --watch --webpack",
     "start:debug": "yarn clean && nest start --debug --watch --webpack",
     "build": "nest build",
-    "start:prod": "node dist/main.js",
+    "start:prod": "node dist/src/main.js",
     "dev": "run-s docker:db prisma:generate start:debug",
     "lint": "eslint --ext .js,.ts src scripts --cache --cache-strategy content",
     "lint:fix": "eslint --ext .js,.ts src scripts --fix --cache --cache-strategy content",

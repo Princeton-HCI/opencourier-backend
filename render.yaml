@@ -20,6 +20,8 @@ services:
         value: 20.x
       - key: DB_URL
         sync: false
+      - key: REDIS_URL
+        sync: false
       - key: JWT_SECRET_KEY
         sync: false
       - key: JWT_EXPIRATION

@@ -1,5 +1,4 @@
 import {
-  ConfigMap,
   EnumCourierCompensationCalculationType,
   EnumCourierDietaryRestrictions,
   EnumCourierMatcherType,
@@ -8,11 +7,12 @@ import {
   EnumDistanceUnit,
   EnumGeoCalculationType,
   EnumQuoteCalculationType,
+  InstanceConfigSettings,
   InstanceDetails,
 } from 'src/shared-types/index'
 import { ApiProperty } from '@nestjs/swagger'
 
-export class InstanceConfigSettingsDto implements ConfigMap {
+export class InstanceConfigSettingsDto {
   @ApiProperty({ enum: EnumCourierMatcherType })
   courierMatcherType: EnumCourierMatcherType
 
@@ -64,7 +64,10 @@ export class InstanceConfigSettingsDto implements ConfigMap {
   @ApiProperty({ type: String, nullable: true })
   updatedAt: string | null
 
-  constructor(data: ConfigMap) {
+  @ApiProperty({ type: String, isArray: true, nullable: true })
+  registeredRegistries: string[]
+
+  constructor(data: InstanceConfigSettings) {
     this.courierMatcherType = data.courierMatcherType as EnumCourierMatcherType
     this.quoteCalculationType = data.quoteCalculationType as EnumQuoteCalculationType
     this.geoCalculationType = data.geoCalculationType as EnumGeoCalculationType
@@ -85,5 +88,6 @@ export class InstanceConfigSettingsDto implements ConfigMap {
     this.defaultMaxWorkingHours = data.defaultMaxWorkingHours ? (data.defaultMaxWorkingHours as number) : null
     this.details = data.details && typeof data.details === 'object' ? (data.details as InstanceDetails) : null
     this.updatedAt = data.updatedAt ? (data.updatedAt as string) : null
+    this.registeredRegistries = Array.isArray(data.registeredRegistries) ? (data.registeredRegistries as string[]) : []
   }
 }

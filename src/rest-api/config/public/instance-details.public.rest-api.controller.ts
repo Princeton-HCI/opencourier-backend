@@ -6,6 +6,7 @@ import { ConfigDomainService } from '../../../domains/config/config.domain.servi
 import { UserDomainService } from '../../../domains/user/user.domain.service'
 import { MetadataPublicDto } from './dtos/metadata.public.dto'
 import { Public } from '../../../decorators/public.decorator'
+import { normalizeRegionForPostGIS } from '../../../utils/geoJsonUtils'
 
 @swagger.ApiTags('public')
 @common.Controller('')
@@ -33,6 +34,11 @@ export class InstanceDetailsPublicRestApiController {
 
     if (!instanceConfig.details) {
       throw new common.NotFoundException('Instance details not found')
+    }
+
+    // Normalize region for PostGIS
+    if (instanceConfig.details.region) {
+      instanceConfig.details.region = normalizeRegionForPostGIS(instanceConfig.details.region)
     }
 
     return new MetadataPublicDto(instanceConfig, userCount)

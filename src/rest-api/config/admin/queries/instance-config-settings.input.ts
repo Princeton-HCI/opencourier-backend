@@ -27,4 +27,5 @@ export class InstanceConfigSettingsInput {
   distanceUnit?: EnumDistanceUnit
   currency?: EnumCurrency
   details?: InstanceDetails
+  registeredRegistries?: string[]
 }

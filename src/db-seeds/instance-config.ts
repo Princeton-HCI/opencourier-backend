@@ -46,6 +46,7 @@ export async function seedInitialInstanceConfig(prisma: PrismaClient) {
     quoteToDeliveryConversionType: EnumQuoteToDeliveryConversionServiceType.SIMPLE,
     details,
     updatedAt: new Date().toISOString(),
+    registeredRegistries: []
   }
 
   for (const [key, value] of Object.entries(initialConfigsData)) {

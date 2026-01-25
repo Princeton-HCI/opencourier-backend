@@ -55,6 +55,7 @@ export class InstanceConfigDomainService {
     const currency = await this.getCurrency()
     const details = await this.getDetails()
     const updatedAt = await this.getUpdatedAt()
+    const registeredRegistries = await this.getRegisteredRegistries()
 
     // Instance courier defaults
     const defaultCourierPayRate = await this.getDefaultCourierPayRate()
@@ -80,6 +81,7 @@ export class InstanceConfigDomainService {
       currency,
       details,
       updatedAt,
+      registeredRegistries,
     }
   }
 
@@ -151,6 +153,9 @@ export class InstanceConfigDomainService {
     }
     if (data.details) {
       await this.configRepository.saveByKey(ConfigKey.DETAILS, JSON.stringify(data.details))
+    }
+    if (data.registeredRegistries) {
+      await this.configRepository.saveByKey(ConfigKey.REGISTERED_REGISTRIES, JSON.stringify(data.registeredRegistries))
     }
 
     // Update the updated_at timestamp whenever config is changed
@@ -342,6 +347,25 @@ export class InstanceConfigDomainService {
     const updatedAt = await this.getConfigValueOrDefault(ConfigKey.UPDATED_AT, null)
 
     return updatedAt.value as string | null
+  }
+
+  async getRegisteredRegistries(): Promise<string[]> {
+    const registeredRegistries = await this.getConfigValueOrDefault(ConfigKey.REGISTERED_REGISTRIES, null)
+
+    if (!registeredRegistries.value) {
+      return []
+    }
+
+    const parsedRegistries =
+      typeof registeredRegistries.value === 'string'
+        ? JSON.parse(registeredRegistries.value)
+        : registeredRegistries.value
+
+    return Array.isArray(parsedRegistries) ? (parsedRegistries as string[]) : []
+  }
+
+  async setRegisteredRegistries(registries: string[]): Promise<void> {
+    await this.configRepository.saveByKey(ConfigKey.REGISTERED_REGISTRIES, JSON.stringify(registries))
   }
 
   async getConfigValueOrDefault(

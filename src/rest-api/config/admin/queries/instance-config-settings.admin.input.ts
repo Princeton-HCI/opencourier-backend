@@ -96,4 +96,9 @@ export class InstanceConfigSettingsAdminInput implements InstanceConfigSettingsI
   @IsOptional()
   @IsObject()
   details?: InstanceDetails
+
+  @ApiProperty({ type: String, required: false, isArray: true })
+  @IsOptional()
+  @IsArray()
+  registeredRegistries?: string[]
 }

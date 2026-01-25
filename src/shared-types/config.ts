@@ -26,6 +26,7 @@ export type InstanceConfigSettings = {
   currency: EnumCurrency | null
   details: InstanceDetails
   updatedAt: string | null
+  registeredRegistries: string[]
 }
 
 export type InstanceDetails = {
@@ -83,6 +84,9 @@ export enum ConfigKey {
   MAX_DRIFT_DISTANCE = 'maxDriftDistance',
   DETAILS = 'details',
   UPDATED_AT = 'updatedAt',
+  REGISTERED_REGISTRIES = 'registeredRegistries',
 }
 
-export type ConfigMap = { [key in ConfigKey]?: string | number | boolean | null | InstanceDetails }
+export type ConfigMap = {
+  [key in ConfigKey]?: string | number | boolean | null | InstanceDetails | string[]
+}

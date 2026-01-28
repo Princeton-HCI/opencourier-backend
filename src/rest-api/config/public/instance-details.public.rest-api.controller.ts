@@ -1,6 +1,8 @@
 import * as swagger from '@nestjs/swagger'
 import * as common from '@nestjs/common'
 import { Request, Response } from 'express'
+import { marked } from 'marked'
+import sanitizeHtml from 'sanitize-html'
 import { PUBLIC_API_V1_PREFIX } from '../../../constants'
 import { ConfigDomainService } from '../../../domains/config/config.domain.service'
 import { UserDomainService } from '../../../domains/user/user.domain.service'
@@ -22,6 +24,24 @@ export class InstanceDetailsPublicRestApiController {
       throw new common.NotFoundException('Instance details not found')
     }
     return details
+  }
+
+  private async processMarkdown(markdown: string | null | undefined): Promise<string> {
+    if (!markdown) return ''
+
+    // Convert markdown to HTML
+    const html = await marked(markdown)
+
+    // Sanitize the HTML to prevent XSS attacks
+    return sanitizeHtml(html, {
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2', 'h3']),
+      allowedAttributes: {
+        ...sanitizeHtml.defaults.allowedAttributes,
+        img: ['src', 'alt', 'title'],
+        a: ['href', 'name', 'target', 'rel'],
+      },
+      allowedSchemes: ['http', 'https', 'mailto'],
+    })
   }
 
   @Public()
@@ -163,13 +183,17 @@ export class InstanceDetailsPublicRestApiController {
   @swagger.ApiNotFoundResponse({ description: 'Instance details not found' })
   async getPrivacyPolicy(@common.Req() req: Request, @common.Res() res: Response) {
     const details = await this.getDetails()
-    return this.respondWithContentNegotiation(
-      req,
-      res,
-      'Privacy Policy',
-      { privacyPolicyContent: details.privacyPolicyContent },
-      details
-    )
+    const acceptHeader = (req.get('accept') || '').toLowerCase()
+
+    // Default to JSON unless client explicitly prefers HTML
+    if (!acceptHeader.includes('text/html')) {
+      res.json({ privacyPolicyContent: details.privacyPolicyContent })
+      return
+    }
+
+    const processedContent = await this.processMarkdown(details.privacyPolicyContent)
+    const html = this.renderHtml('Privacy Policy', processedContent, details)
+    res.type('text/html').send(html)
   }
 
   @Public()
@@ -186,13 +210,17 @@ export class InstanceDetailsPublicRestApiController {
   @swagger.ApiNotFoundResponse({ description: 'Instance details not found' })
   async getTermsOfService(@common.Req() req: Request, @common.Res() res: Response) {
     const details = await this.getDetails()
-    return this.respondWithContentNegotiation(
-      req,
-      res,
-      'Terms of Service',
-      { termsOfServiceContent: details.termsOfServiceContent },
-      details
-    )
+    const acceptHeader = (req.get('accept') || '').toLowerCase()
+
+    // Default to JSON unless client explicitly prefers HTML
+    if (!acceptHeader.includes('text/html')) {
+      res.json({ termsOfServiceContent: details.termsOfServiceContent })
+      return
+    }
+
+    const processedContent = await this.processMarkdown(details.termsOfServiceContent)
+    const html = this.renderHtml('Terms of Service', processedContent, details)
+    res.type('text/html').send(html)
   }
 
   @Public()
@@ -209,7 +237,17 @@ export class InstanceDetailsPublicRestApiController {
   @swagger.ApiNotFoundResponse({ description: 'Instance details not found' })
   async getRules(@common.Req() req: Request, @common.Res() res: Response) {
     const details = await this.getDetails()
-    return this.respondWithContentNegotiation(req, res, 'Rules', { rulesContent: details.rulesContent }, details)
+    const acceptHeader = (req.get('accept') || '').toLowerCase()
+
+    // Default to JSON unless client explicitly prefers HTML
+    if (!acceptHeader.includes('text/html')) {
+      res.json({ rulesContent: details.rulesContent })
+      return
+    }
+
+    const processedContent = await this.processMarkdown(details.rulesContent)
+    const html = this.renderHtml('Rules', processedContent, details)
+    res.type('text/html').send(html)
   }
 
   @Public()
@@ -226,13 +264,17 @@ export class InstanceDetailsPublicRestApiController {
   @swagger.ApiNotFoundResponse({ description: 'Instance details not found' })
   async getDescription(@common.Req() req: Request, @common.Res() res: Response) {
     const details = await this.getDetails()
-    return this.respondWithContentNegotiation(
-      req,
-      res,
-      'Description',
-      { descriptionContent: details.descriptionContent },
-      details
-    )
+    const acceptHeader = (req.get('accept') || '').toLowerCase()
+
+    // Default to JSON unless client explicitly prefers HTML
+    if (!acceptHeader.includes('text/html')) {
+      res.json({ descriptionContent: details.descriptionContent })
+      return
+    }
+
+    const processedContent = await this.processMarkdown(details.descriptionContent)
+    const html = this.renderHtml('Description', processedContent, details)
+    res.type('text/html').send(html)
   }
 
   @Public()
@@ -270,8 +312,12 @@ export class InstanceDetailsPublicRestApiController {
     const acceptHeader = req.get('accept') || ''
 
     if (acceptHeader.includes('application/json')) {
-      return res.json(aboutData)
+      res.json(aboutData)
+      return
     }
+
+    const rulesHtml = details.rulesContent ? await this.processMarkdown(details.rulesContent) : ''
+    const descriptionHtml = details.descriptionContent ? await this.processMarkdown(details.descriptionContent) : ''
 
     const aboutContent = `
       <h2>About ${details.name}</h2>
@@ -286,8 +332,8 @@ export class InstanceDetailsPublicRestApiController {
           ? `<p><strong>Terms of Service:</strong> <a href="${details.termsOfServiceUrl}" target="_blank">View</a></p>`
           : ''
       }
-      ${details.rulesContent ? `<h3>Rules</h3><div>${details.rulesContent}</div>` : ''}
-      ${details.descriptionContent ? `<h3>Description</h3><div>${details.descriptionContent}</div>` : ''}
+      ${rulesHtml ? `<h3>Rules</h3><div>${rulesHtml}</div>` : ''}
+      ${descriptionHtml ? `<h3>Description</h3><div>${descriptionHtml}</div>` : ''}
     `
 
     const html = this.renderHtml('About', aboutContent, details)

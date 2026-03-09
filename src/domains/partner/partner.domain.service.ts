@@ -17,4 +17,8 @@ export class PartnerDomainService {
 
     return partner
   }
+
+  async getFirst() {
+    return this.partnerRepository.findFirst()
+  }
 }

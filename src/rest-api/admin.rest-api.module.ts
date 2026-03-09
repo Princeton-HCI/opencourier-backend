@@ -6,6 +6,7 @@ import { DeliveryAdminRestApiModule } from './delivery/admin/delivery.admin.rest
 import { LocationAdminRestApiModule } from './location/admin/location.admin.rest-api.module'
 import { ConfigAdminRestApiModule } from './config/admin/config.admin.rest-api.module'
 import { UserAdminRestApiModule } from './user/admin/user.admin.rest-api.module'
+import { ManualRequestAdminRestApiModule } from './manual-request/admin/manual-request.admin.rest-api.module'
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserAdminRestApiModule } from './user/admin/user.admin.rest-api.module'
     LocationAdminRestApiModule,
     ConfigAdminRestApiModule,
     UserAdminRestApiModule,
+    ManualRequestAdminRestApiModule,
   ],
 })
 export class AdminRestApiModule {}

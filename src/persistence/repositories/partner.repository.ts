@@ -42,6 +42,11 @@ export class PartnerRepository extends EntityRepository implements IPartnerRepos
     return this.toDomain(result)
   }
 
+  async findFirst() {
+    const result = await this.prisma.partner.findFirst()
+    return result ? this.toDomain(result) : null
+  }
+
   private toDomain(data: Partner) {
     return new PartnerEntity(data)
   }

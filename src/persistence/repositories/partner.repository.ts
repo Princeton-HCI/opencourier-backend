@@ -3,7 +3,7 @@ import { Partner } from '@prisma/types'
 
 import { PrismaService } from '../../services/prisma/prisma.service'
 import { EntityRepository } from '../EntityRepository'
-import { IPartnerRepository } from 'src/domains/partner/interfaces/IPartnerRepository'
+import { IPartnerCreate, IPartnerRepository } from 'src/domains/partner/interfaces/IPartnerRepository'
 import { PartnerEntity } from 'src/domains/partner/entities/partner.entity'
 
 @Injectable()
@@ -45,6 +45,20 @@ export class PartnerRepository extends EntityRepository implements IPartnerRepos
   async findFirst() {
     const result = await this.prisma.partner.findFirst()
     return result ? this.toDomain(result) : null
+  }
+
+  async create(data: IPartnerCreate) {
+    const result = await this.prisma.partner.create({
+      data: {
+        name: data.name,
+        userId: data.userId,
+        logo: data.logo ?? null,
+        phoneNumber: data.phoneNumber ?? null,
+        webhookUrl: data.webhookUrl ?? null,
+      },
+    })
+
+    return this.toDomain(result)
   }
 
   private toDomain(data: Partner) {

@@ -1,1 +1,3 @@
-export class IUserUpdate {}
+export class IUserUpdate {
+	apiKey?: string | null
+}

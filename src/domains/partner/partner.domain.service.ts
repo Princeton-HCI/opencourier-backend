@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { PartnerRepository } from 'src/persistence/repositories/partner.repository'
+import { IPartnerCreate } from './interfaces/IPartnerRepository'
 
 @Injectable()
 export class PartnerDomainService {
@@ -20,5 +21,9 @@ export class PartnerDomainService {
 
   async getFirst() {
     return this.partnerRepository.findFirst()
+  }
+
+  async create(data: IPartnerCreate) {
+    return this.partnerRepository.create(data)
   }
 }

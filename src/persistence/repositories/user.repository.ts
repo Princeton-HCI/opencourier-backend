@@ -73,11 +73,14 @@ export class UserRepository extends EntityRepository implements IUserRepository 
   }
 
   async findByUsername(username: string) {
-    const result = await this.prisma.user.findUniqueOrThrow({
+    const result = await this.prisma.user.findUnique({
       where: {
         username,
       },
     })
+    if (!result) {
+      throw new Error('No User found')
+    }
     return this.toDomain(result)
   }
 

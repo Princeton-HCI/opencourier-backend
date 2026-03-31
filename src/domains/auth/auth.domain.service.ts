@@ -109,7 +109,7 @@ export class AuthDomainService {
 
     const session = await this.tokenService.createEmailAuthSession({
       sub: user.id,
-      email: user.email || '',
+      email: user.email || user.username || '',
       role: user.role,
     })
 
@@ -122,12 +122,7 @@ export class AuthDomainService {
   async registerPartner(input: { username: string; password: string; partnerName?: string }) {
     const username = input.username.trim()
 
-    const userExists = await this.userDomainService.findByUsername(username).catch((error) => {
-      if (error instanceof Error && isRecordNotFoundError(error)) {
-        return null
-      }
-      throw error
-    })
+    const userExists = await this.userDomainService.findByUsername(username).catch(() => null)
 
     if (userExists) {
       throw new errors.UserExistsException('A partner with this username already exists')
@@ -150,7 +145,7 @@ export class AuthDomainService {
 
     const session = await this.tokenService.createEmailAuthSession({
       sub: user.id,
-      email: user.email || '',
+      email: user.email || user.username || '',
       role: user.role,
     })
 
@@ -278,11 +273,8 @@ export class AuthDomainService {
       if (user.password && (await this.passwordService.compare(password, user.password))) {
         return user
       }
-    } catch (error) {
-      if (error instanceof Error && isRecordNotFoundError(error)) {
-        return null
-      }
-      throw error
+    } catch {
+      return null
     }
 
     return null

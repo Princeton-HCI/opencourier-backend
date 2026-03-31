@@ -10,6 +10,7 @@ import { DeliveryQuotePartnerRestApiService } from './delivery-quote.partner.res
 import { CurrentUserPartner } from 'src/decorators/currentUserPartner.decorator'
 import { PartnerEntity } from 'src/domains/partner/entities/partner.entity'
 import { ApiKeyAuth } from 'src/decorators/api-key-auth.decorator'
+import { ServiceUnavailableException } from '@nestjs/common'
 
 @swagger.ApiBearerAuth()
 @swagger.ApiTags('delivery-quotes')
@@ -52,9 +53,13 @@ export class DeliveryQuotePartnerRestApiController {
   async createDeliveryQuote(
     @common.Body() data: DeliverQuoteCreatePartnerInput,
     @CurrentUserPartner() partner: PartnerEntity
-  ): Promise<DeliveryQuotePartnerDto | null> {
+  ): Promise<DeliveryQuotePartnerDto> {
     const deliveryQuote = await this.deliveryQuoteRestApiPartnerService.create(partner.id, data)
 
-    return deliveryQuote ? new DeliveryQuotePartnerDto(deliveryQuote) : null
+    if (!deliveryQuote) {
+      throw new ServiceUnavailableException('No couriers are currently available to fulfill this delivery quote.')
+    }
+
+    return new DeliveryQuotePartnerDto(deliveryQuote)
   }
 }

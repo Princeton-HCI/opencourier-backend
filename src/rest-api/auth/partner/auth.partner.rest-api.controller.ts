@@ -13,6 +13,7 @@ import { ApiKeyAuth } from 'src/decorators/api-key-auth.decorator'
 import { Roles } from 'src/decorators/roles.decorator'
 import { UsernameLoginPartnerInput } from './queries/username-login.partner.input'
 import { RegisterPartnerInput } from './queries/register.partner.input'
+import { Public } from 'src/decorators/public.decorator'
 
 @swagger.ApiBearerAuth()
 @swagger.ApiTags('auth')
@@ -21,6 +22,7 @@ export class AuthPartnerRestApiController {
   constructor(private readonly authDomainService: AuthDomainService) {}
 
   @Post('login')
+  @Public()
   @swagger.ApiOkResponse({ type: UserInfoPartnerDto })
   @swagger.ApiOperation({ summary: 'Sign in with partner username and password' })
   @swagger.ApiForbiddenResponse({
@@ -37,6 +39,7 @@ export class AuthPartnerRestApiController {
   }
 
   @Post('register')
+  @Public()
   @swagger.ApiOkResponse({ type: UserInfoPartnerDto })
   @swagger.ApiOperation({ summary: 'Create a partner account and return partner credentials' })
   async register(@Body() body: RegisterPartnerInput): Promise<UserInfoPartnerDto> {

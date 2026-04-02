@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString, MinLength } from 'class-validator'
+import { IsEmail, IsString, MinLength } from 'class-validator'
 
 export class UsernameLoginPartnerInput {
   @ApiProperty({
     required: true,
     type: String,
   })
-  @IsString()
-  username: string
+  @IsEmail()
+  email: string
 
   @ApiProperty({
     required: true,

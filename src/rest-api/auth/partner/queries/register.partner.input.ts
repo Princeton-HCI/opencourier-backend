@@ -1,13 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsOptional, IsString, MinLength } from 'class-validator'
+import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator'
 
 export class RegisterPartnerInput {
   @ApiProperty({
     required: true,
     type: String,
   })
-  @IsString()
-  username: string
+  @IsEmail()
+  email: string
 
   @ApiProperty({
     required: true,

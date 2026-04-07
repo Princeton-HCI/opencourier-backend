@@ -12,6 +12,7 @@ import { UserDomainModule } from '../user/user.domain.module'
 import { CourierDomainModule } from '../courier/courier.domain.module'
 import { JwtRefreshStrategy } from './jwt/jwt-refresh.strategy'
 import { AblyModule } from 'src/integrations/ably/ably.module'
+import { PartnerDomainModule } from '../partner/partner.domain.module'
 
 @Global()
 @Module({
@@ -20,6 +21,7 @@ import { AblyModule } from 'src/integrations/ably/ably.module'
     PassportModule,
     UserDomainModule,
     CourierDomainModule,
+    PartnerDomainModule,
     JwtModule.registerAsync({
       imports: [],
       inject: [ConfigService],

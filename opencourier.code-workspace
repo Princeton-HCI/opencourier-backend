@@ -8,6 +8,9 @@
         },
         {
             "path": "../opencourier-request-web"
+        },
+        {
+            "path": "../opencourier-beckn-adapter"
         }
     ]
 }

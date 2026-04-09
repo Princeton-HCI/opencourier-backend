@@ -224,8 +224,8 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       courier: this.toDomain(courier),
       distance,
       courierLocation: {
-        latitude: currentLocation.coordinates[0],
-        longitude: currentLocation.coordinates[1],
+        latitude: currentLocation.coordinates[1],
+        longitude: currentLocation.coordinates[0],
       },
       pickupLocation: {
         latitude: location.latitude,
@@ -319,8 +319,8 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
       courier: this.toDomain(courier),
       distance,
       courierLocation: {
-        latitude: currentLocation.coordinates[0],
-        longitude: currentLocation.coordinates[1],
+        latitude: currentLocation.coordinates[1],
+        longitude: currentLocation.coordinates[0],
       },
       pickupLocation: {
         latitude: location.latitude,

@@ -340,6 +340,7 @@ export class DeliveryDomainService {
           actor,
           message,
           source: EnumDeliveryEventSource.OPENCOURIER,
+          courierId: event.courierId,
         }
         await this.deliveryEventService.processDeliveryEvent(preparedEvent)
         break

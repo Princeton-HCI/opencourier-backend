@@ -22,6 +22,17 @@ export class DeliverySubmitEventAdminInput {
     required: false,
     nullable: true,
     type: String,
+    description:
+      'When eventType is ACCEPTED, the courier id to assign to this delivery. Required for that transition in processing.',
+  })
+  @IsString()
+  @IsOptional()
+  courierId?: string
+
+  @ApiProperty({
+    required: false,
+    nullable: true,
+    type: String,
   })
   @IsDate()
   @IsOptional()

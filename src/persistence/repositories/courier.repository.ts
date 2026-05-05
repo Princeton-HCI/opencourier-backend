@@ -371,7 +371,9 @@ export class CourierRepository extends EntityRepository implements ICourierRepos
 
     return {
       courier: this.toDomain(result),
-      courierSettings: new CourierSettingEntity(result.settings as CourierSetting),
+      courierSettings: result.settings
+        ? new CourierSettingEntity(result.settings as CourierSetting)
+        : null,
     }
   }
 

@@ -11,7 +11,7 @@ import { CourierSettingEntity } from 'src/domains/courier-setting/entities/couri
 export interface DeliveryPartnerDtoRelations {
   courierWithSettings: {
     courier: CourierEntity
-    courierSettings: CourierSettingEntity
+    courierSettings: CourierSettingEntity | null
   } | null
   pickupLocation?: LocationEntity | null
   dropoffLocation?: LocationEntity | null

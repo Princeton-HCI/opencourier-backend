@@ -232,8 +232,10 @@ export class DeliveryEventService {
       throw new CantUpdateDeliveryStatusError(`Delivery ${deliveryId} already has an assigned courier`)
     }
 
-    const assignableStatuses = [EnumDeliveryStatus.CREATED, EnumDeliveryStatus.ASSIGNING_COURIER]
-    if (!assignableStatuses.includes(delivery.status)) {
+    if (
+      delivery.status !== EnumDeliveryStatus.CREATED &&
+      delivery.status !== EnumDeliveryStatus.ASSIGNING_COURIER
+    ) {
       throw new CantUpdateDeliveryStatusError(
         `Delivery ${deliveryId} cannot be assigned manually from status ${delivery.status}`
       )

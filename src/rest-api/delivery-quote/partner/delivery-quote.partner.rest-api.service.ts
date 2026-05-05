@@ -130,6 +130,9 @@ export class DeliveryQuotePartnerRestApiService {
 
   private isPointInPolygon(position: GeoPosition, polygonCoordinates: number[][][]): boolean {
     const [outerRing, ...holes] = polygonCoordinates
+    if (!outerRing) {
+      return false
+    }
     const isInOuterRing = this.isPointInRing(position, outerRing)
 
     if (!isInOuterRing) {
@@ -140,15 +143,33 @@ export class DeliveryQuotePartnerRestApiService {
   }
 
   private isPointInRing(position: GeoPosition, ring: number[][]): boolean {
+    if (ring.length < 3) {
+      return false
+    }
+
     const pointX = position.longitude
     const pointY = position.latitude
     let inside = false
 
     for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-      const vertexIX = ring[i][0]
-      const vertexIY = ring[i][1]
-      const vertexJX = ring[j][0]
-      const vertexJY = ring[j][1]
+      const vertexI = ring[i]
+      const vertexJ = ring[j]
+      if (!vertexI || !vertexJ) {
+        continue
+      }
+
+      const vertexIX = vertexI[0]
+      const vertexIY = vertexI[1]
+      const vertexJX = vertexJ[0]
+      const vertexJY = vertexJ[1]
+      if (
+        vertexIX === undefined ||
+        vertexIY === undefined ||
+        vertexJX === undefined ||
+        vertexJY === undefined
+      ) {
+        continue
+      }
 
       const intersects =
         vertexIY > pointY !== vertexJY > pointY &&

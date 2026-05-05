@@ -5,6 +5,19 @@ import { PartnerDomainService } from 'src/domains/partner/partner.domain.service
 import { NotFoundException } from 'src/errors'
 import { CourierMatcherService } from 'src/services/courier-matcher/courier-matcher.service'
 import { DeliverQuoteCreatePartnerInput } from './queries/delivery-quote-create.partner.input'
+import { ConfigDomainService } from 'src/domains/config/config.domain.service'
+import { GeoPosition } from 'src/shared-types'
+import { normalizeRegionForPostGIS } from 'src/utils/geoJsonUtils'
+
+export enum DeliveryQuoteCreationFailureReason {
+  NO_AVAILABLE_COURIERS = 'NO_AVAILABLE_COURIERS',
+  OUTSIDE_SERVICE_AREA = 'OUTSIDE_SERVICE_AREA',
+}
+
+type DeliveryQuoteCreationResult = {
+  deliveryQuote: Awaited<ReturnType<DeliveryQuoteDomainService['create']>> | null
+  failureReason?: DeliveryQuoteCreationFailureReason
+}
 
 @Injectable()
 export class DeliveryQuotePartnerRestApiService {
@@ -13,7 +26,8 @@ export class DeliveryQuotePartnerRestApiService {
     private deliveryQuoteDomainService: DeliveryQuoteDomainService,
     private partnerDomainService: PartnerDomainService,
     private locationDomainService: LocationDomainService,
-    private courierMatcherService: CourierMatcherService
+    private courierMatcherService: CourierMatcherService,
+    private configDomainService: ConfigDomainService
   ) {}
 
   async getByIdOrThrow(deliveryQuoteId: string) {
@@ -22,7 +36,7 @@ export class DeliveryQuotePartnerRestApiService {
     return deliveryQuote
   }
 
-  async create(partnerId: string, input: DeliverQuoteCreatePartnerInput) {
+  async create(partnerId: string, input: DeliverQuoteCreatePartnerInput): Promise<DeliveryQuoteCreationResult> {
     const partner = await this.partnerDomainService.getById(partnerId)
 
     if (!partner) {
@@ -40,6 +54,24 @@ export class DeliveryQuotePartnerRestApiService {
       longitude: input.dropoffLongitude,
     })
 
+    const [pickupInServiceArea, dropoffInServiceArea] = await Promise.all([
+      this.isInsideConfiguredServiceArea({
+        latitude: pickupLocation.latitude,
+        longitude: pickupLocation.longitude,
+      }),
+      this.isInsideConfiguredServiceArea({
+        latitude: dropoffLocation.latitude,
+        longitude: dropoffLocation.longitude,
+      }),
+    ])
+
+    if (!pickupInServiceArea || !dropoffInServiceArea) {
+      return {
+        deliveryQuote: null,
+        failureReason: DeliveryQuoteCreationFailureReason.OUTSIDE_SERVICE_AREA,
+      }
+    }
+
     const result = await this.courierMatcherService.findCourierForDelivery({
       pickupLocation: {
         latitude: pickupLocation.latitude,
@@ -52,8 +84,12 @@ export class DeliveryQuotePartnerRestApiService {
       rejectedCourierIds: [],
     })
 
-    // TODO: Improve error message, no driver available.
-    if (!result) return null
+    if (!result) {
+      return {
+        deliveryQuote: null,
+        failureReason: DeliveryQuoteCreationFailureReason.NO_AVAILABLE_COURIERS,
+      }
+    }
 
     const deliveryQuote = await this.deliveryQuoteDomainService.create(pickupLocation, dropoffLocation, partner, {
       pickupPhoneNumber: input.pickupPhoneNumber,
@@ -65,6 +101,64 @@ export class DeliveryQuotePartnerRestApiService {
       orderTotalValue: input.orderTotalValue,
     })
 
-    return deliveryQuote
+    return {
+      deliveryQuote,
+    }
+  }
+
+  private async isInsideConfiguredServiceArea(position: GeoPosition): Promise<boolean> {
+    const details = await this.configDomainService.instanceConfig.getDetails()
+    const normalizedRegion = normalizeRegionForPostGIS(details.region)
+
+    if (!normalizedRegion) {
+      return true
+    }
+
+    if (normalizedRegion.type === 'Polygon') {
+      return this.isPointInPolygon(position, normalizedRegion.coordinates)
+    }
+
+    if (normalizedRegion.type === 'MultiPolygon') {
+      return normalizedRegion.coordinates.some((polygonCoordinates: number[][][]) =>
+        this.isPointInPolygon(position, polygonCoordinates)
+      )
+    }
+
+    this.logger.warn(`Unsupported region type in instance config: ${normalizedRegion.type as string}`)
+    return true
+  }
+
+  private isPointInPolygon(position: GeoPosition, polygonCoordinates: number[][][]): boolean {
+    const [outerRing, ...holes] = polygonCoordinates
+    const isInOuterRing = this.isPointInRing(position, outerRing)
+
+    if (!isInOuterRing) {
+      return false
+    }
+
+    return !holes.some((hole) => this.isPointInRing(position, hole))
+  }
+
+  private isPointInRing(position: GeoPosition, ring: number[][]): boolean {
+    const pointX = position.longitude
+    const pointY = position.latitude
+    let inside = false
+
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const vertexIX = ring[i][0]
+      const vertexIY = ring[i][1]
+      const vertexJX = ring[j][0]
+      const vertexJY = ring[j][1]
+
+      const intersects =
+        vertexIY > pointY !== vertexJY > pointY &&
+        pointX < ((vertexJX - vertexIX) * (pointY - vertexIY)) / (vertexJY - vertexIY) + vertexIX
+
+      if (intersects) {
+        inside = !inside
+      }
+    }
+
+    return inside
   }
 }

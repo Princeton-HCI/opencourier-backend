@@ -33,7 +33,7 @@ export async function seedInitialInstanceConfig(prisma: PrismaClient) {
     geoCalculationType: EnumGeoCalculationType.HAVERSINE,
     deliveryDurationCalculationType: EnumDeliveryDurationCalculationType.SIMPLE,
     courierCompensationCalculationType: EnumCourierCompensationCalculationType.FROM_QUOTE_FROM,
-    maxAssignmentDistance: 3,
+    maxAssignmentDistance: 100,
     maxDriftDistance: 0,
     quoteExpirationMinutes: 10,
     feePercentageAmount: 10,

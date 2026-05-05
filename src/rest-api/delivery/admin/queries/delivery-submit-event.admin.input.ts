@@ -23,7 +23,7 @@ export class DeliverySubmitEventAdminInput {
     nullable: true,
     type: String,
     description:
-      'When eventType is ACCEPTED, the courier id to assign to this delivery. Required for that transition in processing.',
+      'When eventType is ACCEPTED, the courier to offer the delivery to (required). Sets status to ASSIGNING_COURIER with matchedCourierId; courier must accept via the courier API.',
   })
   @IsString()
   @IsOptional()

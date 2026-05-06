@@ -34,7 +34,7 @@
     "docker:clean": "docker system prune -a -f --volumes",
     "compose:up": "docker-compose up -d --build",
     "compose:down": "docker-compose down --volumes --remove-orphans",
-    "sdk:clean": "shx rm -rf ../../packages/backend-courier-sdk/src/{apis,models}",
+    "sdk:clean": "shx rm -rf ../../packages/backend-courier-sdk/src/apis ../../packages/backend-courier-sdk/src/models ../../packages/backend-admin-sdk/src/apis ../../packages/backend-admin-sdk/src/models",
     "sdk:generate": "yarn sdk:clean && ts-node scripts/generateSdk.ts",
     "format": "prettier --check \"**/*.{ts,tsxLike,js,jsx,json,md}\" --cache --cache-strategy content --loglevel warn",
     "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --cache --cache-strategy content --loglevel warn"

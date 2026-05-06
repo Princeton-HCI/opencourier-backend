@@ -19,6 +19,7 @@ import {
   DeliveryDispatchedEvent,
   DeliveryDroppedOffEvent,
   DeliveryFailedEvent,
+  DeliveryOnTheWayEvent,
   DeliveryPickedUpEvent,
   DeliveryRejectedEvent,
 } from 'src/shared-types/index'
@@ -367,6 +368,16 @@ export class DeliveryDomainService {
           source: EnumDeliveryEventSource.OPENCOURIER,
         }
         await this.deliveryEventService.processDeliveryEvent(pickedUpEvent)
+        break
+      case EnumDeliveryEventType.ON_THE_WAY:
+        const onTheWayEvent: DeliveryOnTheWayEvent = {
+          deliveryId: event.deliveryId,
+          type: EnumDeliveryEventType.ON_THE_WAY,
+          actor,
+          message,
+          source: EnumDeliveryEventSource.OPENCOURIER,
+        }
+        await this.deliveryEventService.processDeliveryEvent(onTheWayEvent)
         break
       case EnumDeliveryEventType.CANCELED:
         const canceledEvent: DeliveryCanceledEvent = {

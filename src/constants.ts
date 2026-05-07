@@ -87,6 +87,9 @@ export const DEFAULT_DELIVERY_DURATION_CALCULATION_TYPE = 'DEFAULT_DELIVERY_DURA
 export const DELIVERY_QUOTE_EXPIRATION_MINUTES = 'DELIVERY_QUOTE_EXPIRATION_MINUTES'
 export const DEFAULT_FEE_PERCENTAGE_AMOUNT = 'DEFAULT_FEE_PERCENTAGE_AMOUNT'
 
+/** When `true`, after courier marks picked up we immediately emit ON_THE_WAY (mobile must handle that status). Default off for backwards compatibility with older courier apps. */
+export const DELIVERY_AUTO_ON_THE_WAY_AFTER_PICKUP = 'DELIVERY_AUTO_ON_THE_WAY_AFTER_PICKUP'
+
 // API
 export const ADMIN_API_V1_PREFIX = 'api/admin/v1'
 export const COURIER_API_V1_PREFIX = 'api/courier/v1'

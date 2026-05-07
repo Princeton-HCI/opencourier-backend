@@ -110,12 +110,8 @@ export class DeliveryRestApiCourierService {
     const args: DeliveryWhereArgs = {
       courierId,
       status: {
-        notIn: [
-          EnumDeliveryStatus.ASSIGNING_COURIER,
-          EnumDeliveryStatus.ACCEPTED,
-          EnumDeliveryStatus.DISPATCHED,
-          EnumDeliveryStatus.PICKED_UP,
-        ],
+        // Keep in sync with `DELIVERY_ONGOING_STATUSES` so mid-flight deliveries (incl. ON_THE_WAY) never appear under "done".
+        notIn: [EnumDeliveryStatus.ASSIGNING_COURIER, ...DELIVERY_ONGOING_STATUSES],
       },
     }
 

@@ -11,7 +11,7 @@ import {
 import { DeliveryConfirmedEvent, DeliveryEvent, STATE_MACHINE } from 'src/shared-types/index'
 import { NEST_DELIVERY_EVENT_NAME } from './delivery-event.type'
 import { CantUpdateDeliveryStatusError, DeliveryNotFoundException, InconsistentDataError } from '../../errors'
-import { PICKUP_ORDER_FORCED_FULFILL_DELAY_MINUTES } from '../../constants'
+import { DELIVERY_AUTO_ON_THE_WAY_AFTER_PICKUP, PICKUP_ORDER_FORCED_FULFILL_DELAY_MINUTES } from '../../constants'
 import { isRecordNotFoundError } from '../../prisma.util'
 import { WebsocketDispatcher } from '../websocket/models/WebsocketDispatcher'
 import { TaskBusScheduler } from '../taskBus/models/TaskBusScheduler'
@@ -32,6 +32,7 @@ interface ForcePickupFulfillmentPayload {
 @Injectable()
 export class DeliveryEventService {
   private readonly logger = new Logger(DeliveryEventService.name)
+  private readonly autoOnTheWayAfterPickup: boolean
 
   constructor(
     private readonly configService: ConfigService,
@@ -47,6 +48,8 @@ export class DeliveryEventService {
     private readonly deliveryMatchingService: DeliveryMatchingService,
     private readonly deliveryCalculationService: DeliveryCalculationService
   ) {
+    this.autoOnTheWayAfterPickup =
+      this.configService.get<string>(DELIVERY_AUTO_ON_THE_WAY_AFTER_PICKUP, 'false').toLowerCase() === 'true'
     // this.taskBusService.registerTaskHandler(
     //   'schedule-force-pickup-fulfillment',
     //   (payload: ForcePickupFulfillmentPayload) => {
@@ -185,7 +188,7 @@ export class DeliveryEventService {
 
           await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
 
-          if (deliveryEvent.actor === EnumEventActor.COURIER) {
+          if (this.autoOnTheWayAfterPickup && deliveryEvent.actor === EnumEventActor.COURIER) {
             await this.processDeliveryEvent({
               deliveryId: deliveryEvent.deliveryId,
               type: EnumDeliveryEventType.ON_THE_WAY,

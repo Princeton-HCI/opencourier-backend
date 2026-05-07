@@ -184,6 +184,17 @@ export class DeliveryEventService {
           this.logger.log(`Delivery ${deliveryEvent.deliveryId} was picked up by: ${deliveryEvent.actor}`)
 
           await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
+
+          if (deliveryEvent.actor === EnumEventActor.COURIER) {
+            await this.processDeliveryEvent({
+              deliveryId: deliveryEvent.deliveryId,
+              type: EnumDeliveryEventType.ON_THE_WAY,
+              actor: EnumEventActor.COURIER,
+              courierId: deliveryEvent.courierId ?? dbDelivery.courierId,
+              source: deliveryEvent.source,
+              message: `Delivery ${deliveryEvent.deliveryId} automatically marked as on the way after pickup by courier ${deliveryEvent.courierId ?? dbDelivery.courierId}`,
+            })
+          }
           break
         case EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION:
           this.logger.log(

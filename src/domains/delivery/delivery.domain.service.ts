@@ -276,15 +276,6 @@ export class DeliveryDomainService {
       message: `Delivery ${delivery.id} was marked as pickedup by courier ${delivery.courierId}`,
     })
 
-    await this.deliveryEventService.processDeliveryEvent({
-      deliveryId: delivery.id,
-      type: EnumDeliveryEventType.ON_THE_WAY,
-      actor: EnumEventActor.COURIER,
-      courierId: delivery.courierId,
-      source: EnumDeliveryEventSource.OPENCOURIER,
-      message: `Delivery ${delivery.id} automatically marked as on the way after pickup by courier ${delivery.courierId}`,
-    })
-
     return this.deliveryRepository.findByIdOrThrow(deliveryId)
   }
 

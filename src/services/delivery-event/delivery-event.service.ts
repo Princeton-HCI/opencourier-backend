@@ -7,6 +7,7 @@ import {
   EnumDeliveryEventType,
   EnumDeliveryStatus,
   EnumEventActor,
+  Prisma,
 } from '@prisma/types'
 import { DeliveryConfirmedEvent, DeliveryEvent, STATE_MACHINE } from 'src/shared-types/index'
 import { NEST_DELIVERY_EVENT_NAME } from './delivery-event.type'
@@ -183,7 +184,9 @@ export class DeliveryEventService {
         case EnumDeliveryStatus.PICKED_UP:
           this.logger.log(`Delivery ${deliveryEvent.deliveryId} was picked up by: ${deliveryEvent.actor}`)
 
-          await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
+          await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus, {
+            pickupReadyAt: new Date(),
+          })
           break
         case EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION:
           this.logger.log(
@@ -195,7 +198,9 @@ export class DeliveryEventService {
         case EnumDeliveryStatus.DROPPED_OFF:
           this.logger.log(`Delivery ${deliveryEvent.deliveryId} was dropped off by: ${deliveryEvent.actor}`)
 
-          await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
+          await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus, {
+            dropoffReadyAt: new Date(),
+          })
           break
         case EnumDeliveryStatus.FAILED: {
           this.logger.log(`Delivery ${deliveryEvent.deliveryId} has failed with reason: ${deliveryEvent.message}`)
@@ -295,9 +300,14 @@ export class DeliveryEventService {
   private async updateDeliveryAndSendNotifications(
     deliveryEvent: DeliveryEvent,
     newStatus: EnumDeliveryStatus,
-    oldStatus: EnumDeliveryStatus
+    oldStatus: EnumDeliveryStatus,
+    additionalDeliveryData: Omit<Prisma.DeliveryUncheckedUpdateInput, 'status'> = {}
   ) {
-    const updatedDelivery = await this.updateDeliveryStatus(deliveryEvent.deliveryId, newStatus)
+    const updatedDelivery = await this.updateDeliveryStatus(
+      deliveryEvent.deliveryId,
+      newStatus,
+      additionalDeliveryData
+    )
 
     await this.saveDeliveryEvent(deliveryEvent, true, newStatus, oldStatus)
 
@@ -389,12 +399,15 @@ export class DeliveryEventService {
     })
   }
 
-  private async updateDeliveryStatus(deliveryId: string, status: EnumDeliveryStatus) {
-    const updatedDelivery = await this.deliveryRepository.update(deliveryId, {
-      status: status,
+  private async updateDeliveryStatus(
+    deliveryId: string,
+    status: EnumDeliveryStatus,
+    additionalData: Omit<Prisma.DeliveryUncheckedUpdateInput, 'status'> = {}
+  ) {
+    return await this.deliveryRepository.update(deliveryId, {
+      status,
+      ...additionalData,
     })
-
-    return updatedDelivery
   }
 
   async schedulePickupDeliveryFulfillAndCapture(deliveryId: string) {

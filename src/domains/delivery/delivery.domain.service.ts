@@ -275,7 +275,7 @@ export class DeliveryDomainService {
       message: `Delivery ${delivery.id} was marked as pickedup by courier ${delivery.courierId}`,
     })
 
-    return delivery
+    return this.deliveryRepository.findByIdOrThrow(deliveryId)
   }
 
   async markAsOnTheWay(deliveryId: string) {

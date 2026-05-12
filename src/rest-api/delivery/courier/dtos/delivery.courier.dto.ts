@@ -5,9 +5,9 @@ import { DeliveryEntity } from 'src/domains/delivery/entities/delivery.entity'
 import { LocationEntity } from 'src/domains/location/entities/location.entity'
 
 const formatAddress = (address: LocationEntity) => {
-  const { addressLine1, city, state } = address
+  const { street, city, state } = address
   let formattedAddress = ''
-  if (addressLine1) formattedAddress += `${addressLine1}, `
+  if (street) formattedAddress += `${street}, `
   if (city) formattedAddress += `${city}, `
   if (state) formattedAddress += state
   return formattedAddress

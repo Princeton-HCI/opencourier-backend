@@ -5,11 +5,18 @@ import { PartnerDomainModule } from 'src/domains/partner/partner.domain.module'
 import { DeliveryQuotePartnerRestApiService } from './delivery-quote.partner.rest-api.service'
 import { LocationDomainModule } from 'src/domains/location/location.domain.module'
 import { CourierMatcherModule } from 'src/services/courier-matcher/courier-matcher.module'
+import { ConfigDomainModule } from 'src/domains/config/config.domain.module'
 
 @Module({
   providers: [DeliveryQuotePartnerRestApiService],
   exports: [DeliveryQuotePartnerRestApiService],
-  imports: [DeliveryQuoteDomainModule, PartnerDomainModule, LocationDomainModule, CourierMatcherModule.forRoot()],
+  imports: [
+    DeliveryQuoteDomainModule,
+    PartnerDomainModule,
+    LocationDomainModule,
+    CourierMatcherModule.forRoot(),
+    ConfigDomainModule,
+  ],
   controllers: [DeliveryQuotePartnerRestApiController],
 })
 export class DeliveryQuotePartnerRestApiModule {}

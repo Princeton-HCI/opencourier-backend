@@ -20,12 +20,12 @@ export class DeliveryCourierPartnerDto implements Partial<CourierEntity> {
   @ApiProperty({ type: String, nullable: true })
   phoneNumber: string | null
 
-  constructor(delivery: DeliveryEntity, courier: CourierEntity, courierSettings: CourierSettingEntity) {
+  constructor(delivery: DeliveryEntity, courier: CourierEntity, courierSettings: CourierSettingEntity | null) {
     this.id = courier.id
     this.firstName = courier.firstName
     this.lastName = courier.lastName
     this.phoneNumber = courier.phoneNumber
 
-    this.vehicleType = courierSettings.vehicleType
+    this.vehicleType = courierSettings?.vehicleType ?? null
   }
 }

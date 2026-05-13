@@ -92,6 +92,8 @@ export const STATUS_TO_HUMAN: Record<EnumDeliveryStatus, string> = {
 export const DELIVERY_ONGOING_STATUSES = [
   EnumDeliveryStatus.ACCEPTED,
   EnumDeliveryStatus.DISPATCHED,
+  EnumDeliveryStatus.COURIER_ARRIVED_AT_PICKUP_LOCATION,
   EnumDeliveryStatus.PICKED_UP,
   EnumDeliveryStatus.ON_THE_WAY,
+  EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION,
 ]

@@ -22,5 +22,8 @@ export interface ICourierRepository {
   findManyPaginated(page?: number, perPage?: number): Promise<PaginatedResult<CourierEntity>>
   findNearestAvailableCourier(args: ICourierFindNearestArgs): Promise<ICourierFindNearestResult | null>
   findMostSeniorAvailableCourier(args: ICourierFindBySeniorityArgs): Promise<ICourierFindBySeniorityResult | null>
-  findByIdWithSettings(courierId: string): Promise<{ courier: CourierEntity; courierSettings: CourierSettingEntity }>
+  findByIdWithSettings(courierId: string): Promise<{
+    courier: CourierEntity
+    courierSettings: CourierSettingEntity | null
+  }>
 }

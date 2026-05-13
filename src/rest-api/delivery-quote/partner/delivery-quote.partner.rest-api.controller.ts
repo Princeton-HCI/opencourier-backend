@@ -6,7 +6,10 @@ import { Roles } from 'src/decorators/roles.decorator'
 import { PARTNER_API_V1_PREFIX } from 'src/constants'
 import { DeliveryQuotePartnerDto } from './dtos/delivery-quote.partner.dto'
 import { DeliverQuoteCreatePartnerInput } from './queries/delivery-quote-create.partner.input'
-import { DeliveryQuotePartnerRestApiService } from './delivery-quote.partner.rest-api.service'
+import {
+  DeliveryQuoteCreationFailureReason,
+  DeliveryQuotePartnerRestApiService,
+} from './delivery-quote.partner.rest-api.service'
 import { CurrentUserPartner } from 'src/decorators/currentUserPartner.decorator'
 import { PartnerEntity } from 'src/domains/partner/entities/partner.entity'
 import { ApiKeyAuth } from 'src/decorators/api-key-auth.decorator'
@@ -54,12 +57,18 @@ export class DeliveryQuotePartnerRestApiController {
     @common.Body() data: DeliverQuoteCreatePartnerInput,
     @CurrentUserPartner() partner: PartnerEntity
   ): Promise<DeliveryQuotePartnerDto> {
-    const deliveryQuote = await this.deliveryQuoteRestApiPartnerService.create(partner.id, data)
+    const creationResult = await this.deliveryQuoteRestApiPartnerService.create(partner.id, data)
 
-    if (!deliveryQuote) {
+    if (!creationResult.deliveryQuote) {
+      if (creationResult.failureReason === DeliveryQuoteCreationFailureReason.OUTSIDE_SERVICE_AREA) {
+        throw new ServiceUnavailableException(
+          'Pickup or dropoff location is beyond the geo area this instance serves.'
+        )
+      }
+
       throw new ServiceUnavailableException('No couriers are currently available to fulfill this delivery quote.')
     }
 
-    return new DeliveryQuotePartnerDto(deliveryQuote)
+    return new DeliveryQuotePartnerDto(creationResult.deliveryQuote)
   }
 }

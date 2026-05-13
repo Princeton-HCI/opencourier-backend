@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { DeliveryRepository } from 'src/persistence/repositories/delivery.repository'
 import { DeliveryWhereArgs } from './types/delivery-where-args.type'
 import { EnumDeliveryEventSource, EnumDeliveryEventType, EnumDeliveryStatus, EnumEventActor } from '@prisma/types'
@@ -14,7 +14,6 @@ import {
 } from 'src/errors'
 import { DeliveryEventService } from 'src/services/delivery-event/delivery-event.service'
 import {
-  DeliveryAcceptedEvent,
   DeliveryCanceledEvent,
   DeliveryConfirmedEvent,
   DeliveryDispatchedEvent,
@@ -276,7 +275,7 @@ export class DeliveryDomainService {
       message: `Delivery ${delivery.id} was marked as pickedup by courier ${delivery.courierId}`,
     })
 
-    return delivery
+    return this.deliveryRepository.findByIdOrThrow(deliveryId)
   }
 
   async markAsOnTheWay(deliveryId: string) {
@@ -334,14 +333,10 @@ export class DeliveryDomainService {
         await this.deliveryEventService.processDeliveryEvent(confirmedEvent)
         break
       case EnumDeliveryEventType.ACCEPTED:
-        const preparedEvent: DeliveryAcceptedEvent = {
-          deliveryId: event.deliveryId,
-          type: EnumDeliveryEventType.ACCEPTED,
-          actor,
-          message,
-          source: EnumDeliveryEventSource.OPENCOURIER,
+        if (!event.courierId) {
+          throw new BadRequestException('courierId is required when submitting ACCEPTED to assign a courier')
         }
-        await this.deliveryEventService.processDeliveryEvent(preparedEvent)
+        await this.deliveryEventService.offerDeliveryToCourierAsAdmin(event.deliveryId, event.courierId, message)
         break
       case EnumDeliveryEventType.DISPATCHED:
         const dispatchedEvent: DeliveryDispatchedEvent = {

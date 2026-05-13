@@ -22,6 +22,17 @@ export class DeliverySubmitEventAdminInput {
     required: false,
     nullable: true,
     type: String,
+    description:
+      'When eventType is ACCEPTED, the courier to offer the delivery to (required). Sets status to ASSIGNING_COURIER with matchedCourierId; courier must accept via the courier API.',
+  })
+  @IsString()
+  @IsOptional()
+  courierId?: string
+
+  @ApiProperty({
+    required: false,
+    nullable: true,
+    type: String,
   })
   @IsDate()
   @IsOptional()

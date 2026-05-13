@@ -1,10 +1,17 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { ConfigService } from '@nestjs/config'
-import { EnumCourierStatus, EnumDeliveryEventType, EnumDeliveryStatus } from '@prisma/types'
-import { DeliveryEvent, STATE_MACHINE } from 'src/shared-types/index'
+import {
+  EnumCourierStatus,
+  EnumDeliveryEventSource,
+  EnumDeliveryEventType,
+  EnumDeliveryStatus,
+  EnumEventActor,
+  Prisma,
+} from '@prisma/types'
+import { DeliveryConfirmedEvent, DeliveryEvent, STATE_MACHINE } from 'src/shared-types/index'
 import { NEST_DELIVERY_EVENT_NAME } from './delivery-event.type'
-import { InconsistentDataError } from '../../errors'
+import { CantUpdateDeliveryStatusError, DeliveryNotFoundException, InconsistentDataError } from '../../errors'
 import { PICKUP_ORDER_FORCED_FULFILL_DELAY_MINUTES } from '../../constants'
 import { isRecordNotFoundError } from '../../prisma.util'
 import { WebsocketDispatcher } from '../websocket/models/WebsocketDispatcher'
@@ -177,7 +184,9 @@ export class DeliveryEventService {
         case EnumDeliveryStatus.PICKED_UP:
           this.logger.log(`Delivery ${deliveryEvent.deliveryId} was picked up by: ${deliveryEvent.actor}`)
 
-          await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
+          await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus, {
+            pickupReadyAt: new Date(),
+          })
           break
         case EnumDeliveryStatus.COURIER_ARRIVED_AT_DROPOFF_LOCATION:
           this.logger.log(
@@ -189,7 +198,9 @@ export class DeliveryEventService {
         case EnumDeliveryStatus.DROPPED_OFF:
           this.logger.log(`Delivery ${deliveryEvent.deliveryId} was dropped off by: ${deliveryEvent.actor}`)
 
-          await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus)
+          await this.updateDeliveryAndSendNotifications(deliveryEvent, newStatus, currentStatus, {
+            dropoffReadyAt: new Date(),
+          })
           break
         case EnumDeliveryStatus.FAILED: {
           this.logger.log(`Delivery ${deliveryEvent.deliveryId} has failed with reason: ${deliveryEvent.message}`)
@@ -215,6 +226,72 @@ export class DeliveryEventService {
     }
   }
 
+  async offerDeliveryToCourierAsAdmin(deliveryId: string, courierId: string, message?: string): Promise<void> {
+    const delivery = await this.deliveryRepository.findByIdOrThrow(deliveryId)
+
+    if (!delivery.partnerId) {
+      throw new DeliveryNotFoundException(`Delivery ${deliveryId} not found`)
+    }
+
+    if (delivery.courierId) {
+      throw new CantUpdateDeliveryStatusError(`Delivery ${deliveryId} already has an assigned courier`)
+    }
+
+    if (
+      delivery.status !== EnumDeliveryStatus.CREATED &&
+      delivery.status !== EnumDeliveryStatus.ASSIGNING_COURIER
+    ) {
+      throw new CantUpdateDeliveryStatusError(
+        `Delivery ${deliveryId} cannot be assigned manually from status ${delivery.status}`
+      )
+    }
+
+    const courier = await this.courierRepository.findByIdOrThrow(courierId)
+    const oldStatus = delivery.status
+    const previousMatchedCourierId = delivery.matchedCourierId
+
+    await this.deliveryRepository.update(deliveryId, { matchedCourierId: courierId })
+
+    try {
+      const deliveryAmounts = await this.deliveryCalculationService.calculateDeliveryAmountsForMatchedCourier({
+        deliveryId,
+      })
+
+      const { totalCost, totalCompensation, fee, feePercentage } = deliveryAmounts
+      await this.updateDeliveryAmounts(deliveryId, totalCost, totalCompensation, fee, feePercentage)
+
+      const updatedDelivery = await this.updateDeliveryStatus(deliveryId, EnumDeliveryStatus.ASSIGNING_COURIER)
+
+      const auditEvent: DeliveryConfirmedEvent = {
+        deliveryId,
+        type: EnumDeliveryEventType.CONFIRMED,
+        actor: EnumEventActor.ADMIN,
+        source: EnumDeliveryEventSource.OPENCOURIER,
+        message: message
+          ? `Admin offered delivery to courier ${courierId}: ${message}`
+          : `Admin offered delivery to courier ${courierId}`,
+      }
+
+      await this.saveDeliveryEvent(auditEvent, true, EnumDeliveryStatus.ASSIGNING_COURIER, oldStatus)
+
+      if (updatedDelivery.partnerId) {
+        await this.notifyPartner(
+          updatedDelivery.partnerId,
+          EnumDeliveryStatus.ASSIGNING_COURIER,
+          oldStatus,
+          auditEvent
+        )
+      }
+
+      await this.websocketDispatcher.sendOfferToCourier(courier.userId, new DeliveryCourierDto(updatedDelivery))
+    } catch (error) {
+      await this.deliveryRepository.update(deliveryId, {
+        matchedCourierId: previousMatchedCourierId ?? null,
+      })
+      throw error
+    }
+  }
+
   @OnEvent(NEST_DELIVERY_EVENT_NAME)
   private async handleDeliveryUpdateEvent(event: DeliveryEvent) {
     await this.processDeliveryEvent(event)
@@ -223,9 +300,14 @@ export class DeliveryEventService {
   private async updateDeliveryAndSendNotifications(
     deliveryEvent: DeliveryEvent,
     newStatus: EnumDeliveryStatus,
-    oldStatus: EnumDeliveryStatus
+    oldStatus: EnumDeliveryStatus,
+    additionalDeliveryData: Omit<Prisma.DeliveryUncheckedUpdateInput, 'status'> = {}
   ) {
-    const updatedDelivery = await this.updateDeliveryStatus(deliveryEvent.deliveryId, newStatus)
+    const updatedDelivery = await this.updateDeliveryStatus(
+      deliveryEvent.deliveryId,
+      newStatus,
+      additionalDeliveryData
+    )
 
     await this.saveDeliveryEvent(deliveryEvent, true, newStatus, oldStatus)
 
@@ -317,12 +399,15 @@ export class DeliveryEventService {
     })
   }
 
-  private async updateDeliveryStatus(deliveryId: string, status: EnumDeliveryStatus) {
-    const updatedDelivery = await this.deliveryRepository.update(deliveryId, {
-      status: status,
+  private async updateDeliveryStatus(
+    deliveryId: string,
+    status: EnumDeliveryStatus,
+    additionalData: Omit<Prisma.DeliveryUncheckedUpdateInput, 'status'> = {}
+  ) {
+    return await this.deliveryRepository.update(deliveryId, {
+      status,
+      ...additionalData,
     })
-
-    return updatedDelivery
   }
 
   async schedulePickupDeliveryFulfillAndCapture(deliveryId: string) {

@@ -142,6 +142,9 @@ export class DeliveryAdminDto implements Partial<DeliveryEntity> {
   courierId: string | null
 
   @ApiProperty({ type: String, nullable: true })
+  matchedCourierId: string | null
+
+  @ApiProperty({ type: String, nullable: true })
   partnerId: string | null
 
   @ApiProperty({ type: String })
@@ -205,6 +208,7 @@ export class DeliveryAdminDto implements Partial<DeliveryEntity> {
     this.externalUserInfo = data.externalUserInfo
     this.externalId = data.externalId
     this.courierId = data.courierId
+    this.matchedCourierId = data.matchedCourierId
     this.partnerId = data.partnerId
     this.deliveryQuoteId = data.deliveryQuoteId
 

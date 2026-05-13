@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { EnumDistanceUnit } from '@prisma/types'
 import { DeliveryQuoteEntity } from 'src/domains/delivery-quote/entities/delivery-quote.entity'
 
 export class DeliveryQuotePartnerDto implements Partial<DeliveryQuoteEntity> {
@@ -16,6 +17,12 @@ export class DeliveryQuotePartnerDto implements Partial<DeliveryQuoteEntity> {
 
   @ApiProperty({ type: Number })
   duration: number
+
+  @ApiProperty({ type: Number })
+  distance: number
+
+  @ApiProperty({ enum: EnumDistanceUnit })
+  distanceUnit: EnumDistanceUnit
 
   @ApiProperty({ type: Number, nullable: true })
   orderTotalValue?: number | null
@@ -62,6 +69,8 @@ export class DeliveryQuotePartnerDto implements Partial<DeliveryQuoteEntity> {
     this.quoteRangeTo = data.quoteRangeTo
     this.currency = data.currency
     this.duration = data.duration
+    this.distance = data.distance
+    this.distanceUnit = data.distanceUnit
     this.orderTotalValue = data.orderTotalValue
     this.expiresAt = data.expiresAt
 

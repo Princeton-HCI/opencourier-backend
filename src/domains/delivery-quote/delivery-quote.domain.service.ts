@@ -62,13 +62,15 @@ export class DeliveryQuoteDomainService {
     const expiresAt = await this.deliveryCalculationService.calculateDeliveryQuoteExpiration(
       deliveryQuoteCalculationData
     )
-    const duration = await this.deliveryCalculationService.calculateDeliveryQuoteDeliveryDuration(
+    const durationRaw = await this.deliveryCalculationService.calculateDeliveryQuoteDeliveryDuration(
       deliveryQuoteCalculationData
     )
+    // duration is stored as Int; fractional minutes (e.g. 0.92 mi * 2 = 1.84) must be rounded or they truncate to 1.
+    const durationMinutes = Math.round(durationRaw)
     const dropoffEta = await this.deliveryCalculationService.calculateDropoffEta({
       ...deliveryQuoteCalculationData,
       pickupReadyAt: input.pickupReadyAt ? new Date(input.pickupReadyAt) : null,
-      duration: duration,
+      duration: durationMinutes,
     })
 
     const deliveryQuote = await this.deliveryQuoteRepository.create({
@@ -76,7 +78,7 @@ export class DeliveryQuoteDomainService {
       quoteRangeTo,
       feePercentage,
       expiresAt,
-      duration,
+      duration: durationMinutes,
       distance,
       currency: await this.configDomainService.instanceConfig.getCurrency(),
       distanceUnit: await this.configDomainService.instanceConfig.getDistanceUnit(),
